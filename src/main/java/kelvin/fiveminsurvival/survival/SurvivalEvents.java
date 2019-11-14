@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Random;
 
+import kelvin.fiveminsurvival.blocks.BlockRegistry;
 import kelvin.fiveminsurvival.entity.AnimalWatcherEntity;
 import kelvin.fiveminsurvival.entity.EntityRegistry;
 import kelvin.fiveminsurvival.entity.NewSkeletonEntity;
@@ -24,15 +25,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.BlazeEntity;
+import net.minecraft.entity.monster.CaveSpiderEntity;
 import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.MagmaCubeEntity;
 import net.minecraft.entity.monster.PhantomEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.entity.monster.WitchEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.monster.ZombiePigmanEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -42,6 +49,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.TieredItem;
 import net.minecraft.item.ToolItem;
@@ -54,6 +62,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -65,6 +74,50 @@ import net.minecraftforge.registries.IRegistryDelegate;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class SurvivalEvents {
+	
+	@SubscribeEvent
+	public static void handleExperienceDrop(LivingExperienceDropEvent event) {
+		event.setDroppedExperience(5);
+		if (event.getEntity() instanceof SlimeEntity) event.setDroppedExperience(4);
+		if (event.getEntity() instanceof GhastEntity) event.setDroppedExperience(10);
+		if (event.getEntity() instanceof ZombiePigmanEntity) event.setDroppedExperience(15);
+		if (event.getEntity() instanceof CaveSpiderEntity) event.setDroppedExperience(10);
+		if (event.getEntity() instanceof BlazeEntity) event.setDroppedExperience(20);
+		if (event.getEntity() instanceof MagmaCubeEntity) event.setDroppedExperience(12);
+		if (event.getEntity() instanceof EnderDragonEntity) event.setDroppedExperience(100);
+		if (event.getEntity() instanceof WitherEntity) event.setDroppedExperience(50);
+		if (event.getEntity() instanceof WitchEntity) event.setDroppedExperience(20);
+		if (event.getEntity() instanceof IronGolemEntity) event.setDroppedExperience(20);
+//		if (event.getEntity() instanceof GhoulEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof WightEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof InvisibleStalkerEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof DemonSpiderEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof HellhoundEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof DireWolfEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof InfernalCreeperEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof ShadowEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof FireElementalEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof BlackWidowEntity) event.setDroppedExperience(8);
+//		if (event.getEntity() instanceof RevenantEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof EarthElementalEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof JellyEntity) event.setDroppedExperience(8);
+//		if (event.getEntity() instanceof BlobEntity) event.setDroppedExperience(12);
+//		if (event.getEntity() instanceof OozeEntity) event.setDroppedExperience(8);
+//		if (event.getEntity() instanceof PuddingEntity) event.setDroppedExperience(20);
+//		if (event.getEntity() instanceof SeaSludgeEntity) event.setDroppedExperience(20);
+//		if (event.getEntity() instanceof GiantVampireBatEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof LongdeadEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof LongdeadGuardianEntity) event.setDroppedExperience(25);
+//		if (event.getEntity() instanceof NightwingEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof NetherspawnEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof CopperspineEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof HoarySilverfishEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof EarthElementalEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof BoneLordEntity) event.setDroppedExperience(15);
+//		if (event.getEntity() instanceof AncientBoneLordEntity) event.setDroppedExperience(30);
+//		if (event.getEntity() instanceof PhaseSpiderEntity) event.setDroppedExperience(10);
+//		if (event.getEntity() instanceof BoneFishEntity) event.setDroppedExperience(10);
+	}
 	
 	@SubscribeEvent
 	public static void handleDamageEvent(LivingDamageEvent event) {
@@ -117,12 +170,15 @@ public class SurvivalEvents {
 					}
 					System.out.println(burnTime);
 					boolean canDestroy = true;
-					if (item == Items.FLINT_AND_STEEL) {
+//					if (item == Items.FLINT_AND_STEEL) {
+//						burnTime = 6000;
+//						canDestroy = false;
+//					}
+					if (item == Items.CHARCOAL) {
 						burnTime = 6000;
-						canDestroy = false;
 					}
-					if (item == Items.FIRE_CHARGE) {
-						burnTime = 6000;
+					if (item == Items.COAL || item == Items.LAVA_BUCKET || item == Items.BLAZE_ROD) {
+						burnTime = 0;
 					}
 					if (burnTime > 0) {
 						CampfireState fire = null;
@@ -258,10 +314,6 @@ public class SurvivalEvents {
 	
     @SubscribeEvent
     public static void livingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-    	
-    	
-    	
-
 		Entity entity = event.getEntity();
     	if (entity instanceof PlayerEntity) {
     		PlayerEntity player = (PlayerEntity)event.getEntity();
@@ -322,7 +374,7 @@ public class SurvivalEvents {
     		
     		PlayerEntity player = (PlayerEntity)event.getEntity();
     		
-    		double baseReach = 2.0;
+    		double baseReach = 3.0;
     		
     		Nutrients nutrients = null;
     		if (player.getEntityWorld().isRemote())
@@ -342,29 +394,53 @@ public class SurvivalEvents {
     			}
     		}
     		
-    		player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.0);
+    		player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach);
     		if (player.getHeldItemMainhand() != null) {
     			Item item = player.getHeldItemMainhand().getItem();
     			if (item == Items.STICK || item == Items.BONE) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.25);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
     			}
     			if (item instanceof SwordItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 2.0);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
     			}
     			if (item instanceof ShortswordItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.25);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.25);
     			}
     			if (item instanceof HatchetItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.25);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
     			}
     			if (item instanceof AxeItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.5);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
     			}
     			if (item instanceof PickaxeItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.5);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
     			}
     			if (item instanceof HoeItem) {
-    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 2.5);
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
+    			}
+    			if (item instanceof ShearsItem) {
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
+    			}
+//    			if (item instanceof MattockItem) {
+//    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
+//    			}
+//    			if (item instanceof BattleAxeItem) {
+//    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.75);
+//    			}
+//    			if (item instanceof ScytheItem) {
+//    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.0);
+//    			}
+    			if (item == ItemRegistry.WOODEN_CUDGEL) {
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.25);
+    			}
+    			if (item == ItemRegistry.WOODEN_CLUB) {
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
+    			}
+    			if (item == ItemRegistry.FLINT_KNIFE) {
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.25);
+    			}
+    			if (item instanceof HatchetItem) {
+    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
     			}
     		}
     		if (player.isSwingInProgress) 
@@ -448,7 +524,7 @@ public class SurvivalEvents {
 					return;
 				}
 				if (state.getMaterial() == Material.EARTH || state.getMaterial() == Material.SAND || state.getMaterial() == Material.LEAVES
-						|| state.getMaterial() == Material.ORGANIC) {					
+						|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL) {					
 					event.setNewSpeed(event.getOriginalSpeed() * 0.05f + event.getPlayer().experienceLevel * 0.01f);
 					return;
 				}
@@ -481,6 +557,7 @@ public class SurvivalEvents {
 				if (state.getBlock() == Blocks.CRAFTING_TABLE) {
 					return;
 				}
+				
 				
 				
 				

@@ -39,7 +39,7 @@ public class FiveMinSurvival
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
     
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     
     public FiveMinSurvival() {
     	

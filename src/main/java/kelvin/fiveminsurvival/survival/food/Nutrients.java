@@ -72,7 +72,7 @@ public class Nutrients implements Serializable {
 	// An increase in nutrients will make your character stronger, but at the same time it will cause them to lose hunger faster
 	public double getMetabolismRate(int level) {
 		double levelRate = -level * 0.01;
-		double rate = 1.0 - (fatigue + insulin_resistance + happiness + carbs * 1.25) / 400.0;
+		double rate = 1.0 - ((fatigue + insulin_resistance + happiness + carbs * 1.25) / 400.0 - sickness / 100.0);
 		double finalRate = levelRate * 8.5 + rate * 16.0;
 		if (finalRate < 3) finalRate = 3;
 		return finalRate;
@@ -273,15 +273,15 @@ public class Nutrients implements Serializable {
 			nightMul -= 0.5;
 		}
 		
-		if (sickness > 10) {
-			player.addPotionEffect(new EffectInstance(Effects.HUNGER, 20 * 5, (int)sickness / 30));
+		if (sickness > 15) {
+			player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 20 * 5, (int)sickness / 30));
 			if (sickness > 30) {
 				player.addPotionEffect(new EffectInstance(Effects.NAUSEA, 20 * 5, 1));
 			}
-			if (sickness > 60 && sickness <= 90) {
+			if (sickness > 60 && sickness <= 80) {
 				player.addPotionEffect(new EffectInstance(Effects.POISON, 20 * 5, 0));
 			}
-			if (sickness > 90) {
+			if (sickness > 80) {
 				player.addPotionEffect(new EffectInstance(Effects.WITHER, 20 * 5, 1));
 			}
 		}

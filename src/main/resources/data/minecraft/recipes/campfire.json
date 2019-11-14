@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LL",
+    "RR"
+  ],
+  "key": {
+    "L": {
+      "item": "fiveminsurvival:stripped_bark"
+    },
+    "R": {
+      "item": "fiveminsurvival:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "minecraft:campfire"
+  }
+}

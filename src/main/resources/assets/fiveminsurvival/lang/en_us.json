@@ -14,6 +14,8 @@
 	"item.fiveminsurvival.flax_seeds": "Flax Seeds",
 	"item.fiveminsurvival.bacon": "Bacon",
 	"item.fiveminsurvival.cooked_bacon": "Cooked Bacon",
+	"item.fiveminsurvival.twig": "Twig",
+	"item.fiveminsurvival.charred_food": "Charred Food",
 	"block.fiveminsurvival.flax": "Flax",
 	"block.fiveminsurvival.flint_crafting_table": "Flint Toolbench",
 	"block.fiveminsurvival.copper_crafting_table": "Copper Toolbench",
@@ -22,5 +24,14 @@
 	"block.fiveminsurvival.gold_crafting_table": "Gold Toolbench",
 	"block.fiveminsurvival.mithril_crafting_table": "Mithril Toolbench",
 	"block.fiveminsurvival.ancient_metal_crafting_table": "Ancient Metal Toolbench",
-	"block.fiveminsurvival.obsidian_crafting_table": "Obsidian Toolbench"
+	"block.fiveminsurvival.obsidian_crafting_table": "Obsidian Toolbench",
+	"block.fiveminsurvival.pea_gravel": "Pea Gravel",
+	"block.fiveminsurvival.clay_oven": "Clay Oven",
+	"block.fiveminsurvival.hardened_clay_oven": "Terracotta Oven",
+	"block.fiveminsurvival.sandstone_oven": "Sandstone Oven",
+	"block.fiveminsurvival.cobblestone_furnace": "Cobblestone Furnace",
+	"block.fiveminsurvival.obsidian_furnace": "Obsidian Furnace",
+	"block.fiveminsurvival.netherrack_furnace": "Netherrack Furnace",
+	"entity.fiveminsurvival.zombie": "Zombie",
+	"entity.fiveminsurvival.skeleton": "Skeleton"
 }

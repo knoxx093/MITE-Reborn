@@ -43,11 +43,11 @@ public class WorldStateHolder extends WorldSavedData {
 		}
 		
 		public double getDayRate() {
-			return (Math.cos(Math.toRadians((getDay() / 365.25) * 360.0)) / 2.0) + 1.0;
+			return ((Math.cos(Math.toRadians((getDay() / Seasons.year) * 360.0)) / 2.0) + 1.0) * 0.75;
 		}
 		
 		public double getNightRate() {
-			return (Math.sin(Math.toRadians((getDay() / 365.25) * 360.0)) / 2.0) + 1.0;
+			return ((Math.sin(Math.toRadians((getDay() / Seasons.year) * 360.0)) / 2.0) + 1.0) * 0.75;
 		}
 	}
 	public WorldStateHolder() {
@@ -170,9 +170,9 @@ public class WorldStateHolder extends WorldSavedData {
 			}
 			
 		}
-		
 		world.setDayTime(worldState.time);
-//		world.setGameTime(worldState.time);
+//		worldState.time = 13500+24000*(8 * 11 - 5);
+//		worldState.rainStrength = 0.0f;
 		NetworkHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SPacketSendWorldState(worldState.time, worldState.rainStrength));
 		this.markDirty();
 	}

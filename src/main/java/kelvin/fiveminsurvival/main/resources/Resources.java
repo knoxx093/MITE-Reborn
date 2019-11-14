@@ -15,6 +15,8 @@ public class Resources {
 	public static Nutrients clientNutrients = new Nutrients(null);
 	public static int currentTable = 0;
 	
+	public static boolean malnourished = false;
+	
 	public static void makeFieldAccessible(Field field) throws Exception {
 		Field modifiers = Field.class.getDeclaredField("modifiers");
 		modifiers.setAccessible(true);

@@ -2,6 +2,7 @@ package kelvin.fiveminsurvival.main.gui;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -185,11 +186,11 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
    protected String craftingMessage;
    protected boolean canCraft = false;
    protected long lastTick = 0;
-   protected int getDifficultyForCrafting(Slot slotIn) {
+   public static int getDifficultyForCrafting(Slot slotIn, List<Slot> inventorySlots) {
 	   int difficulty = 3 * 20;
 	   int difficulty2 = 0;
 	   for (int i = 1; i < 10; i++) {
-		   Slot slot = this.container.inventorySlots.get(i);
+		   Slot slot = inventorySlots.get(i);
 		   if (slot.getHasStack()) {
 			   ItemStack stack = slot.getStack();
 			   Item item = stack.getItem();
@@ -211,7 +212,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 			   }
 		   }
 	   }
-	   Slot slot = this.container.inventorySlots.get(0);
+	   Slot slot = inventorySlots.get(0);
 	   if (slot.getHasStack()) {
 		   Item item = slot.getStack().getItem();
 		   if (item == ItemRegistry.COPPER_CRAFTING_TABLE ||
@@ -223,6 +224,10 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 				   item == ItemRegistry.ADAMANTIUM_CRAFTING_TABLE)
 			   difficulty2 --;
 		   if (item == ItemRegistry.OBSIDIAN_CRAFTING_TABLE) difficulty2 = 0;
+	   }
+	   
+	   if (difficulty2 > 100) {
+		   difficulty2 = (int) (Math.pow((double)difficulty2 - 100, 0.8) + 100);
 	   }
 	   
 	   if (difficulty2 > 0) return difficulty2;
@@ -320,7 +325,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 			   this.craftSlot = slotIn;
 			   this.craftSlotId = slotId;
 			   this.clickButton = mouseButton;
-			   this.maxCraftTimer = getDifficultyForCrafting(slotIn);
+			   this.maxCraftTimer = getDifficultyForCrafting(slotIn, this.container.inventorySlots);
 			   this.crafting = true;
 		   } else {
 			   if (craftTimer >= maxCraftTimer) {

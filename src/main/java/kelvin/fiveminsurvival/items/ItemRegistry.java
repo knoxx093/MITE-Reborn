@@ -8,11 +8,23 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.tuple.Pair;
 
 import kelvin.fiveminsurvival.blocks.BlockRegistry;
+import kelvin.fiveminsurvival.blocks.MITECraftingTableBlock;
 import kelvin.fiveminsurvival.main.FiveMinSurvival;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredients;
 import kelvin.fiveminsurvival.main.resources.Resources;
 import kelvin.fiveminsurvival.survival.food.FoodNutrients;
+import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CarpetBlock;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.PaneBlock;
+import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StandingSignBlock;
+import net.minecraft.block.WallBlock;
+import net.minecraft.block.WallSignBlock;
+import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
@@ -66,6 +78,11 @@ public class ItemRegistry {
 	IRON_CRAFTING_TABLE;
 	public static Item BACON;
 	public static Item COOKED_BACON;
+	public static Item TWIG;
+	public static Item CHARRED_FOOD;
+	public static Item CLAY_OVEN,
+	HARDENED_CLAY_OVEN, SANDSTONE_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
+	public static Item PEA_GRAVEL;
 
 
 
@@ -228,6 +245,14 @@ public class ItemRegistry {
     		Resources.makeFieldAccessible(SUGAR);
     		SUGAR.set(null,register("sugar", new Item((new Item.Properties()).group(ItemGroup.MATERIALS).food(new Food.Builder().saturation(0.1F).build()))));
     		
+    		Field CHARCOAL = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "CHARCOAL" : "field_196155_l");
+    		Resources.makeFieldAccessible(CHARCOAL);
+    		CHARCOAL.set(null, register("charcoal", new Item(new Item.Properties().group(ItemGroup.MISC))));
+    		
+    		Field PAPER = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "PAPER" : "field_151121_aF");
+    		Resources.makeFieldAccessible(CHARCOAL);
+    		PAPER.set(null, register("paper", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 25)));
+    		
     		
     		Field ITEM = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "ITEM" : "field_212630_s");
     		Resources.makeFieldAccessible(ITEM);
@@ -253,10 +278,10 @@ public class ItemRegistry {
     			}
     			maxStack.set(item, 16);
     			if (item instanceof SoupItem) {
-    				maxStack.set(item, 8);
+    				maxStack.set(item, 4);
     			}
     			if (item.isFood()) {
-    				maxStack.set(item, 8);
+    				maxStack.set(item, 16);
     			}
     			
     			if (item instanceof BlockItem) {
@@ -267,17 +292,142 @@ public class ItemRegistry {
     				}
     			}
     			if (item instanceof BlockNamedItem) {
-    				maxStack.set(item, 32);
+    				maxStack.set(item, 64);
     			}
     			if (item == Items.TORCH) {
-    				maxStack.set(item, 32);
+    				maxStack.set(item, 16);
     			}
     			if (item == Items.REDSTONE_TORCH) {
-    				maxStack.set(item, 32);
+    				maxStack.set(item, 16);
     			}
     			if (item == Items.REDSTONE) {
-    				maxStack.set(item, 32);
+    				maxStack.set(item, 16);
     			}
+    			if (item == Items.POWERED_RAIL || item == Items.DETECTOR_RAIL) {
+    				maxStack.set(item, 8);
+    			}
+    			if (item == Items.TALL_GRASS || item == Items.GRASS || item == Items.FERN || item == Items.DEAD_BUSH)
+    				maxStack.set(item, 32);
+    			if (item instanceof BlockItem) {
+    				BlockItem block = (BlockItem)item;
+    				if (block.getBlock().getDefaultState().getMaterial() == Material.WOOL) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock().getDefaultState().getMaterial() == Material.PLANTS) {
+    					maxStack.set(item, 32);
+    				}
+    				if (block.getBlock() instanceof SlabBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() instanceof MITECraftingTableBlock) {
+    					maxStack.set(item, 1);
+    				}
+    				if (block.getBlock() instanceof PressurePlateBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() instanceof WeightedPressurePlateBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() == Blocks.SNOW) {
+    					maxStack.set(item, 32);
+    				}
+    				if (block.getBlock() instanceof FenceBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() instanceof PaneBlock) {
+    					maxStack.set(item, 16);
+    				}
+    				if (block.getBlock() instanceof WallBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() instanceof AnvilBlock) {
+    					maxStack.set(item, 1);
+    				}
+    				if (block.getBlock() instanceof CarpetBlock) {
+    					maxStack.set(item, 8);
+    				}
+    				if (block.getBlock() instanceof DoorBlock) {
+    					maxStack.set(item, 1);
+    				}
+    				if (block.getBlock() instanceof StandingSignBlock) {
+    					maxStack.set(item, 16);
+    				}
+    				if (block.getBlock() instanceof WallSignBlock) {
+    					maxStack.set(item, 16);
+    				}
+    				
+    			}
+    			if (item == Items.FURNACE || item == Items.BLAST_FURNACE || item == Items.SMOKER
+    					|| item == Items.CAMPFIRE) {
+    				maxStack.set(item, 1);
+    			}
+    			if (item == Items.LADDER || item == Items.RAIL
+    					|| item == Items.ACTIVATOR_RAIL) {
+    				maxStack.set(item, 8);
+    			}
+    			if (item == Items.PUMPKIN) maxStack.set(item, 8);
+    			if (item == Items.MELON) maxStack.set(item, 8);
+    			if (item == Items.CARVED_PUMPKIN) maxStack.set(item, 8);
+    			if (item == Items.JACK_O_LANTERN) maxStack.set(item, 8);
+    			if (item == Items.VINE) maxStack.set(item, 8);
+    			if (item == Items.LILY_PAD) maxStack.set(item, 32);
+    			if (item == Items.SWEET_BERRIES) maxStack.set(item, 8);
+    			if (item == Items.APPLE) maxStack.set(item, 16);
+    			if (item == Items.COAL) maxStack.set(item, 16);
+    			if (item == Items.CHARCOAL) maxStack.set(item, 16);
+    			if (item == Items.DIAMOND) maxStack.set(item, 32);
+    			if (item == Items.IRON_INGOT) maxStack.set(item, 8);
+    			if (item == Items.GOLD_INGOT) maxStack.set(item, 8);
+    			if (item == Items.STICK) maxStack.set(item, 32);
+    			if (item == Items.BOWL) maxStack.set(item, 16);
+    			if (item == Items.MUSHROOM_STEW) maxStack.set(item, 4);
+    			if (item == Items.STRING) maxStack.set(item, 16);
+    			if (item == Items.GUNPOWDER) maxStack.set(item, 16);
+    			if (item == Items.WHEAT) maxStack.set(item, 16);
+    			if (item == Items.BREAD) maxStack.set(item, 16);
+    			if (item == Items.FLINT) maxStack.set(item, 16);
+    			if (item == Items.PORKCHOP) maxStack.set(item, 16);
+    			if (item == Items.COOKED_PORKCHOP) maxStack.set(item, 16);
+    			if (item == Items.PAINTING) maxStack.set(item, 16);
+    			if (item == Items.GOLDEN_APPLE) maxStack.set(item, 16);
+    			if (item == Items.ENCHANTED_GOLDEN_APPLE) maxStack.set(item, 16);
+    			if (item == Items.BUCKET) maxStack.set(item, 8);
+    			if (item == Items.WATER_BUCKET) maxStack.set(item, 1);
+    			if (item == Items.LAVA_BUCKET) maxStack.set(item, 1);
+    			if (item == Items.MILK_BUCKET) maxStack.set(item, 1);
+    			if (item == Items.MINECART) maxStack.set(item, 1);
+    			if (item == Items.SADDLE) maxStack.set(item, 1);
+    			if (item == Items.REDSTONE) maxStack.set(item, 16);
+    			if (item == Items.SNOWBALL) maxStack.set(item, 16);
+    			if (item == Items.CLAY_BALL) maxStack.set(item, 16);
+    			if (item == Items.SUGAR_CANE) maxStack.set(item, 16);
+    			if (item == Items.PAPER) maxStack.set(item, 64);
+    			if (item == Items.BOOK) maxStack.set(item, 16);
+    			if (item == Items.EGG) maxStack.set(item, 16);
+    			if (item == Items.COMPASS) maxStack.set(item, 16);
+    			if (item == Items.CLOCK) maxStack.set(item, 16);
+    			if (item == Items.COD) maxStack.set(item, 16);
+    			if (item == Items.COOKED_COD) maxStack.set(item, 16);
+    			if (item == Items.CAKE) maxStack.set(item, 8);
+    			if (item == Items.REPEATER) maxStack.set(item, 16);
+    			if (item == Items.MAP) maxStack.set(item, 16);
+    			if (item == Items.ENDER_PEARL) maxStack.set(item, 16);
+    			if (item == Items.BLAZE_ROD) maxStack.set(item, 16);
+    			if (item == Items.GHAST_TEAR) maxStack.set(item, 16);
+    			if (item == Items.GOLD_NUGGET) maxStack.set(item, 64);
+    			if (item == Items.IRON_NUGGET) maxStack.set(item, 64);
+    			if (item == Items.NETHER_WART) maxStack.set(item, 64);
+    			if (item == Items.GLASS_BOTTLE) maxStack.set(item, 8);
+    			if (item == Items.EXPERIENCE_BOTTLE) maxStack.set(item, 32);
+    			if (item == Items.WRITABLE_BOOK) maxStack.set(item, 1);
+    			if (item == Items.MAP) maxStack.set(item, 16);
+    			if (item == Items.PUMPKIN_PIE) maxStack.set(item, 8);
+    			if (item == Items.BRICK) maxStack.set(item, 8);
+    			if (item == Items.NETHER_BRICK) maxStack.set(item, 8);
+    			if (item == Items.IRON_INGOT) maxStack.set(item, 8);
+    			if (item == Items.GOLD_INGOT) maxStack.set(item, 8);
+    			if (item == Items.ARROW) maxStack.set(item, 16);
+    			
     		}
     	}catch (Exception e) {
     		e.printStackTrace();
@@ -287,8 +437,8 @@ public class ItemRegistry {
     	
     	event.getRegistry().registerAll(
     			SMOOTH_STONE = new Item(new Properties().group(ItemGroup.MATERIALS).maxStackSize(8)).setRegistryName(new ResourceLocation("fiveminsurvival:smooth_stone")),
-    			STRIPPED_BARK = new ItemBurnable(new Properties().group(ItemGroup.MATERIALS).maxStackSize(8), 20 * 4).setRegistryName(new ResourceLocation("fiveminsurvival:stripped_bark")),
-    			FLINT_SHARD = new Item(new Properties().group(ItemGroup.MATERIALS).maxStackSize(8)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_shard")),
+    			STRIPPED_BARK = new ItemBurnable(new Properties().group(ItemGroup.MATERIALS).maxStackSize(32), 20 * 4).setRegistryName(new ResourceLocation("fiveminsurvival:stripped_bark")),
+    			FLINT_SHARD = new Item(new Properties().group(ItemGroup.MATERIALS).maxStackSize(64)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_shard")),
     	    	FLINT_HATCHET = new HatchetItem(SurvivalItemTier.FLINT_HATCHET, 2.0F, -3.0F, new Properties().group(ItemGroup.COMBAT).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_hatchet")),
     	    	FLINT_AXE = new AxeItem(SurvivalItemTier.FLINT_AXE, 2.0F, -3.0F, new Properties().group(ItemGroup.COMBAT).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_axe")),
     	    	FLINT_SHOVEL = new ShovelItem(SurvivalItemTier.FLINT_SHOVEL, 1.5F, -3.0F, new Properties().group(ItemGroup.COMBAT).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_shovel")),
@@ -298,19 +448,28 @@ public class ItemRegistry {
     			SINEW = new Item(new Properties().group(ItemGroup.MATERIALS).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:sinew")),
     			SPEAR = new SpearItem(new Properties().group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(10), 2.0D).setRegistryName(new ResourceLocation("fiveminsurvival:spear")),
     			WOODEN_SHIELD = new ShieldItem(new Properties().group(ItemGroup.FOOD).maxStackSize(1).maxDamage(15)).setRegistryName(new ResourceLocation("fiveminsurvival:wooden_shield")),
-        		FLAX_SEEDS = new Item((new Item.Properties()).group(ItemGroup.FOOD).maxStackSize(32).food(new Food.Builder().hunger(1).build())).setRegistryName(new ResourceLocation("fiveminsurvival:flax_seeds")),
+        		FLAX_SEEDS = new Item((new Item.Properties()).group(ItemGroup.FOOD).maxStackSize(64).food(new Food.Builder().hunger(1).build())).setRegistryName(new ResourceLocation("fiveminsurvival:flax_seeds")),
         		FLAX = new BlockItem(BlockRegistry.FLAX, (new Item.Properties()).group(ItemGroup.MATERIALS).maxStackSize(8)).setRegistryName(new ResourceLocation("fiveminsurvival:flax")),
-        		FLINT_CRAFTING_TABLE = new BlockItem(BlockRegistry.FLINT_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_crafting_table")),
-        		COPPER_CRAFTING_TABLE = new BlockItem(BlockRegistry.COPPER_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_crafting_table")),
-        		SILVER_CRAFTING_TABLE = new BlockItem(BlockRegistry.SILVER_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_crafting_table")),
-        		GOLD_CRAFTING_TABLE = new BlockItem(BlockRegistry.GOLD_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:gold_crafting_table")),
-        		IRON_CRAFTING_TABLE = new BlockItem(BlockRegistry.IRON_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:iron_crafting_table")),
-        		MITHRIL_CRAFTING_TABLE = new BlockItem(BlockRegistry.MITHRIL_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:mithril_crafting_table")),
-        		ANCIENT_METAL_CRAFTING_TABLE = new BlockItem(BlockRegistry.ANCIENT_METAL_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:ancient_metal_crafting_table")),
-        		ADAMANTIUM_CRAFTING_TABLE = new BlockItem(BlockRegistry.ADAMANTIUM_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:adamantium_crafting_table")),
-        		OBSIDIAN_CRAFTING_TABLE = new BlockItem(BlockRegistry.OBSIDIAN_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:obsidian_crafting_table")),
+        		FLINT_CRAFTING_TABLE = new BlockItem(BlockRegistry.FLINT_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:flint_crafting_table")),
+        		COPPER_CRAFTING_TABLE = new BlockItem(BlockRegistry.COPPER_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_crafting_table")),
+        		SILVER_CRAFTING_TABLE = new BlockItem(BlockRegistry.SILVER_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_crafting_table")),
+        		GOLD_CRAFTING_TABLE = new BlockItem(BlockRegistry.GOLD_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:gold_crafting_table")),
+        		IRON_CRAFTING_TABLE = new BlockItem(BlockRegistry.IRON_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:iron_crafting_table")),
+        		MITHRIL_CRAFTING_TABLE = new BlockItem(BlockRegistry.MITHRIL_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:mithril_crafting_table")),
+        		ANCIENT_METAL_CRAFTING_TABLE = new BlockItem(BlockRegistry.ANCIENT_METAL_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:ancient_metal_crafting_table")),
+        		ADAMANTIUM_CRAFTING_TABLE = new BlockItem(BlockRegistry.ADAMANTIUM_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:adamantium_crafting_table")),
+        		OBSIDIAN_CRAFTING_TABLE = new BlockItem(BlockRegistry.OBSIDIAN_CRAFTING_TABLE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:obsidian_crafting_table")),
         		BACON = new Item((new Item.Properties()).group(ItemGroup.FOOD).maxStackSize(16).food((new Food.Builder()).hunger(2).saturation(0.2F).meat().build())).setRegistryName(new ResourceLocation("fiveminsurvival:bacon")),
-        		COOKED_BACON = new Item((new Item.Properties()).group(ItemGroup.FOOD).maxStackSize(16).food((new Food.Builder()).hunger(5).saturation(0.4F).meat().build())).setRegistryName(new ResourceLocation("fiveminsurvival:cooked_bacon"))
+        		COOKED_BACON = new Item((new Item.Properties()).group(ItemGroup.FOOD).maxStackSize(16).food((new Food.Builder()).hunger(5).saturation(0.4F).meat().build())).setRegistryName(new ResourceLocation("fiveminsurvival:cooked_bacon")),
+        		TWIG = new ItemBurnable((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(32), 50).setRegistryName(new ResourceLocation("fiveminsurvival:twig")),
+        		CHARRED_FOOD = new Item((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:charred_food")),
+    			CLAY_OVEN = new BlockItem(BlockRegistry.CLAY_OVEN, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:clay_oven")),
+    			HARDENED_CLAY_OVEN = new BlockItem(BlockRegistry.HARDENED_CLAY_OVEN, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:hardened_clay_oven")),
+    			SANDSTONE_OVEN = new BlockItem(BlockRegistry.SANDSTONE_OVEN, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:sandstone_oven")),
+    			COBBLESTONE_FURNACE = new BlockItem(BlockRegistry.COBBLESTONE_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:cobblestone_furnace")),
+    			OBSIDIAN_FURNACE = new BlockItem(BlockRegistry.OBSIDIAN_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:obsidian_furnace")),
+    			NETHERRACK_FURNACE = new BlockItem(BlockRegistry.NETHERRACK_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:netherrack_furnace")),
+    			PEA_GRAVEL = new BlockItem(BlockRegistry.PEA_GRAVEL, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:pea_gravel"))
     			);
     	try {
     		Field f = Item.class.getDeclaredField(FiveMinSurvival.DEBUG ? "maxDamage" : "field_77699_b"); //maxDamage
