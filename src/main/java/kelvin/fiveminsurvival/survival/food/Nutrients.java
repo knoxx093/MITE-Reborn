@@ -108,7 +108,8 @@ public class Nutrients implements Serializable {
 //		System.out.println(fatigue);
 //		System.out.println(sugars);
 //		System.out.println(0.1 + 0.01 * ((phytonutrients + sugars * 25) / 200.0 - (fatigue / 100.0) * 10) - sickness * 0.001);
-		return 0.08 + 0.01 * ((phytonutrients + sugars * 25) / 200.0 - (fatigue / 100.0) * 25) - sickness * 0.001;
+		
+		return 0.08 + 0.01 * ((protein - 75) / 50.0 + (sugars * 5) / 100.0 - (fatigue / 100.0) * 25) - sickness * 0.001;
 	}
 	
 	public double getAttackSpeedModifier() {
@@ -142,7 +143,6 @@ public class Nutrients implements Serializable {
 	//protein goes down 1 every 10 seconds
 	public void tick(PlayerEntity player, CustomFoodStats foodStats) {
 		double foodMul = 0.1;
-		
 		if (player.isSleeping()) {
 			WorldStateHolder.get(player.getEntityWorld()).worldState.time+=2;
 			try {

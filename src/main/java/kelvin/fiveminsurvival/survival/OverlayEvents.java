@@ -2,6 +2,7 @@ package kelvin.fiveminsurvival.survival;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,17 +17,27 @@ import kelvin.fiveminsurvival.survival.food.CustomFoodStats;
 import kelvin.fiveminsurvival.survival.food.Nutrients;
 import kelvin.fiveminsurvival.survival.world.Seasons;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHelper;
+import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.screen.inventory.CraftingScreen;
 import net.minecraft.client.gui.screen.inventory.FurnaceScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,18 +75,74 @@ public class OverlayEvents {
 	private static final ResourceLocation BLOOD_MOON_RAIN_TEXTURES = new ResourceLocation("fiveminsurvival:textures/environment/blood_rain.png");
 	private static final ResourceLocation DEATH_MOON_RAIN_TEXTURES = new ResourceLocation("fiveminsurvival:textures/environment/death_rain.png");
 
-	
+	private static float mouseVelX, mouseVelY;
+	private static float lastMouseX, lastMouseY;
 	
 	@SubscribeEvent
 	public static void handleOverlayEvent(RenderGameOverlayEvent event) { 
 		
 		
+		float mx = (float)Minecraft.getInstance().mouseHelper.getMouseX();
+		float my = (float)Minecraft.getInstance().mouseHelper.getMouseY();
 		
+		float mvx = mx - lastMouseX;
+		float mvy = my - lastMouseY;
+		
+		lastMouseX = mx;
+		lastMouseY = my;
+		if (Minecraft.getInstance().player.isCreative() == false)
+		try {
+			float lerpSpeed = 0.001f;
+			float moveMul = (float)(100 - Resources.clientNutrients.phytonutrients + Resources.clientNutrients.sugars) * 0.05f;
+			
+			if (mvx != 0)
+			mouseVelX = Resources.lerp(mouseVelX, mvx * moveMul, 0.5f);
+			if (mvy != 0)
+			mouseVelY = Resources.lerp(mouseVelY, mvy * moveMul, 0.5f);
+			
+			mouseVelX = Resources.lerp(mouseVelX, mouseVelX + (float)Math.cos(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
+			mouseVelY = Resources.lerp(mouseVelY, mouseVelY + (float)Math.sin(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
+
+			
+			mouseVelX = Resources.lerp(mouseVelX, 0, lerpSpeed);
+			mouseVelY = Resources.lerp(mouseVelY, 0, lerpSpeed);
+			
+			
+			Field MX = MouseHelper.class.getDeclaredField("xVelocity");
+			MX.setAccessible(true);
+			
+			Field MY = MouseHelper.class.getDeclaredField("yVelocity");
+			MY.setAccessible(true);
+			
+			float MVX = (float) (double) MX.get(Minecraft.getInstance().mouseHelper);
+			float MVY = (float) (double) MY.get(Minecraft.getInstance().mouseHelper);
+			
+			MX.set(Minecraft.getInstance().mouseHelper, Resources.lerp(MVX, mouseVelX, 0.01f));
+			MY.set(Minecraft.getInstance().mouseHelper, Resources.lerp(MVY, mouseVelY, 0.01f));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		if (Minecraft.getInstance().player != null) {
 			PlayerEntity player = Minecraft.getInstance().player;
 			World world = player.getEntityWorld();
 			
+			
+			IAttributeInstance iattributeinstance = player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+		    player.setSprinting(false);
+			
+			try {
+		    	  Field SPRINTING_SPEED_BOOST = LivingEntity.class.getDeclaredField("SPRINTING_SPEED_BOOST");
+		    	  SPRINTING_SPEED_BOOST.setAccessible(true);
+		    	  
+		    	  if (Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown())
+		    		  iattributeinstance.applyModifier((AttributeModifier) SPRINTING_SPEED_BOOST.get(null));
+		    	  else
+		    		  iattributeinstance.removeModifier((AttributeModifier) SPRINTING_SPEED_BOOST.get(null));
+		      
+		      }catch (Exception e) {
+//		    	  e.printStackTrace();
+		      }
 			
 			GameRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
 			
@@ -166,15 +233,73 @@ public class OverlayEvents {
 		
 		
 		PlayerEntity playerentity = Minecraft.getInstance().player;
-		if (Minecraft.getInstance().gameSettings.gamma > 0.25) Minecraft.getInstance().gameSettings.gamma = 0.25;
+		double lightLevel = playerentity.getEntityWorld().getLightFor(LightType.BLOCK, playerentity.getPosition()) / 15.0;
+		double eyeAdjust = ((1.0 - lightLevel) - 0.8) * 1.0;
+		
+		Minecraft.getInstance().gameSettings.gamma = Resources.lerp((float)Minecraft.getInstance().gameSettings.gamma, (float)eyeAdjust, 0.0005f);
+		
+		
+		if (event.getType() == ElementType.AIR) {
+	         FoodStats foodstats = playerentity.getFoodStats();
+	         int l = foodstats.getFoodLevel();
+	         IAttributeInstance iattributeinstance = playerentity.getAttribute(SharedMonsterAttributes.MAX_HEALTH);
+	         int i1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 91;
+	         int j1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 + 91;
+	         int k1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 39;
+	         float f = (float)iattributeinstance.getValue();
+	         int l1 = MathHelper.ceil(playerentity.getAbsorptionAmount());
+	         int i2 = MathHelper.ceil((f + (float)l1) / 2.0F / 10.0F);
+	         int j2 = Math.max(10 - (i2 - 2), 3);
+	         int k2 = k1 - (i2 - 1) * j2 - 10;
+	         int l2 = k1 - 10;
+	         int i3 = l1;
+	         int j3 = playerentity.getTotalArmorValue();
+	         int k3 = -1;
+			
+			int j6 = 0;
+			try {
+				Method m = IngameGui.class.getDeclaredMethod("func_212306_a", LivingEntity.class);
+				m.setAccessible(true);
+				j6 = (Integer)m.invoke(Minecraft.getInstance().ingameGUI, playerentity);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			int l6 = playerentity.getAir();
+	         int j7 = playerentity.getMaxAir();
+	         if (playerentity.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
+	            int l7 = 0;
+	            
+	            try {
+					Method m = IngameGui.class.getDeclaredMethod("func_212302_c", int.class);
+					m.setAccessible(true);
+					l7 = (Integer)m.invoke(Minecraft.getInstance().ingameGUI, j6) - 1;
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+	            
+	            l2 = l2 - l7 * 10;
+	            int j8 = MathHelper.ceil((double)(l6 - 2) * 10.0D / (double)j7);
+	            int l8 = MathHelper.ceil((double)l6 * 10.0D / (double)j7) - j8;
+
+	            for(int k5 = 0; k5 < j8 + l8; ++k5) {
+	               if (k5 < j8) {
+	                  Minecraft.getInstance().ingameGUI.blit(j1 - k5 * 8 - 9, l2, 16, 18, 9, 9);
+	               } else {
+	            	   Minecraft.getInstance().ingameGUI.blit(j1 - k5 * 8 - 9, l2, 25, 18, 9, 9);
+	               }
+	            }
+	         }
+			event.setCanceled(true);
+		}
+		
 		if (event.getType() == ElementType.DEBUG) {
 			int FPS = Minecraft.getDebugFPS();
 			
 			Vec3d pos = Minecraft.getInstance().player.getPositionVec();
 			Minecraft.getInstance().fontRenderer.drawStringWithShadow("FPS: " + FPS, 10, 10, Color.WHITE.getRGB());
 			Minecraft.getInstance().fontRenderer.drawStringWithShadow("X: " + roundHundreth(pos.getX()) + ", Y: " + roundHundreth(pos.getY()) + ", Z: " + roundHundreth(pos.getZ()), 10, 20, Color.WHITE.getRGB());
-			
-			if (FiveMinSurvival.DEBUG) {
+			boolean b = false;
+			if (FiveMinSurvival.DEBUG && b) {
 				Minecraft.getInstance().fontRenderer.drawStringWithShadow("Carbohydrates: " + roundHundreth(Resources.clientNutrients.carbs) + "%", 10, 30, Color.WHITE.getRGB());
 				Minecraft.getInstance().fontRenderer.drawStringWithShadow("Fatty Acids: " + roundHundreth(Resources.clientNutrients.fatty_acids) + "%", 10, 40, Color.WHITE.getRGB());
 				Minecraft.getInstance().fontRenderer.drawStringWithShadow("Phytonutrients: " + roundHundreth(Resources.clientNutrients.phytonutrients) + "%", 10, 50, Color.WHITE.getRGB());
@@ -240,18 +365,18 @@ public class OverlayEvents {
 //					}
 //				}
 				
-				
 				if (n.carbs < 15) {
 					lowValues.add("DANGEROUSLY LOW CARBOHYDRATES");
 					valColors.add(Color.RED);
 				}
 				else
-				if (n.carbs < 30) {
+				if (n.carbs < 50) {
+					
 					lowValues.add("LOW CARBOHYDRATES");
 					valColors.add(Color.YELLOW);
 				}
 				else
-				if (n.carbs < 60) {
+				if (n.carbs < 75) {
 					lowValues.add("MODERATELY LOW CARBOHYDRATES");
 					valColors.add(Color.WHITE);
 				}
@@ -261,12 +386,12 @@ public class OverlayEvents {
 					valColors.add(Color.RED);
 				}
 				else
-				if (n.fatty_acids < 30) {
+				if (n.fatty_acids < 50) {
 					lowValues.add("LOW FATTY ACIDS");
 					valColors.add(Color.YELLOW);
 				}
 				else
-				if (n.fatty_acids < 60) {
+				if (n.fatty_acids < 75) {
 					lowValues.add("MODERATELY LOW FATTY ACIDS");
 					valColors.add(Color.WHITE);
 				}
@@ -276,12 +401,12 @@ public class OverlayEvents {
 					valColors.add(Color.RED);
 				}
 				else
-				if (n.phytonutrients < 30) {
-					lowValues.add("LOW FATTY PHYTONUTRIENTS");
+				if (n.phytonutrients < 50) {
+					lowValues.add("LOW PHYTONUTRIENTS");
 					valColors.add(Color.YELLOW);
 				}
 				else
-				if (n.phytonutrients < 60) {
+				if (n.phytonutrients < 75) {
 					lowValues.add("MODERATELY LOW PHYTONUTRIENTS");
 					valColors.add(Color.WHITE);
 				}
@@ -291,12 +416,12 @@ public class OverlayEvents {
 					valColors.add(Color.RED);
 				}
 				else
-				if (n.protein < 30) {
-					lowValues.add("LOW FATTY PROTEIN");
+				if (n.protein < 50) {
+					lowValues.add("LOW PROTEIN");
 					valColors.add(Color.YELLOW);
 				}
 				else
-				if (n.protein < 60) {
+				if (n.protein < 75) {
 					lowValues.add("MODERATELY LOW PROTEIN");
 					valColors.add(Color.WHITE);
 				}
@@ -328,15 +453,8 @@ public class OverlayEvents {
 				}
 				
 				
-				
-				
-				if (n != null) {
-					Minecraft.getInstance().fontRenderer.drawStringWithShadow(lowValues.get(i), 10, 30 + 10 * i, valColors.get(i).getRGB());
-				}
-				
 				for (int i = 0; i < lowValues.size(); i++) {
-					String str = lowValues.get(i);
-					Color color = valColors.get(i);
+					Minecraft.getInstance().fontRenderer.drawStringWithShadow(lowValues.get(i), 10, 30 + 10 * i, valColors.get(i).getRGB());
 				}
 			}
 			
@@ -369,7 +487,7 @@ public class OverlayEvents {
 				newDayText = "Day " + day + " (Morning)";
 			}
 			
-			if (daytime % 24000L > 6000 - 3000L && daytime % 24000L < 6000L + 300L) {
+			if (daytime % 24000L > 6000 - 3000L && daytime % 24000L < 6000L + 3000L) {
 				newDayText = "Day " + day + " (Mid-Day)";
 			}
 			

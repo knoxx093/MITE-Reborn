@@ -8,6 +8,7 @@ import kelvin.fiveminsurvival.blocks.BlockRegistry;
 import kelvin.fiveminsurvival.entity.AnimalWatcherEntity;
 import kelvin.fiveminsurvival.entity.EntityRegistry;
 import kelvin.fiveminsurvival.entity.NewSkeletonEntity;
+import kelvin.fiveminsurvival.entity.goal.EnhancedPanicGoal;
 import kelvin.fiveminsurvival.items.HatchetItem;
 import kelvin.fiveminsurvival.items.ItemRegistry;
 import kelvin.fiveminsurvival.items.ShortswordItem;
@@ -25,6 +26,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -39,6 +42,7 @@ import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.monster.WitchEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.monster.ZombiePigmanEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -247,7 +251,10 @@ public class SurvivalEvents {
 	
 	@SubscribeEvent
 	public static void joinWorldEvent(EntityJoinWorldEvent event) {
-		
+		if (event.getEntity() instanceof AnimalEntity) {
+			AnimalEntity animal = (AnimalEntity)event.getEntity();
+			animal.goalSelector.addGoal(0, new EnhancedPanicGoal(animal, 2.0D));
+		}
 	}
 	
 	@SubscribeEvent
@@ -369,6 +376,8 @@ public class SurvivalEvents {
     		}
         		
     	}
+    	
+    	
     	if (entity instanceof PlayerEntity) {
 //    		event.getEntity().stepHeight = 1.0f;
     		
@@ -469,7 +478,7 @@ public class SurvivalEvents {
     		if (player.getHeldItemMainhand() != null) {
     			Item item = player.getHeldItemMainhand().getItem();
     			if (item == Items.STICK || item == Items.BONE) {
-    				if (new Random().nextInt(30) == 0) {
+    				if (new Random().nextInt(100) == 0) {
     					player.getHeldItemMainhand().setCount(player.getHeldItemMainhand().getCount() - 1);
     				}
     			}

@@ -7,10 +7,10 @@ import kelvin.fiveminsurvival.main.network.NetworkHandler;
 import kelvin.fiveminsurvival.main.network.SPacketSendWorldState;
 import kelvin.fiveminsurvival.survival.food.CustomFoodStats;
 import kelvin.fiveminsurvival.survival.food.Nutrients;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -154,7 +154,10 @@ public class WorldStateHolder extends WorldSavedData {
 			for (int i = 0; i < campfires.size(); i++) {
 				CampfireState state = campfires.get(i);
 				BlockPos pos = state.pos;
-				
+				if (world.getBlockState(pos).getBlock() != Blocks.CAMPFIRE) {
+					campfires.remove(i);
+					break;
+				}
 				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED) != null)
 				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED).booleanValue()) {
 					state.fuel = 0;
@@ -171,7 +174,6 @@ public class WorldStateHolder extends WorldSavedData {
 			
 		}
 		world.setDayTime(worldState.time);
-//		worldState.time = 13500+24000*(8 * 11 - 5);
 //		worldState.rainStrength = 0.0f;
 		NetworkHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SPacketSendWorldState(worldState.time, worldState.rainStrength));
 		this.markDirty();

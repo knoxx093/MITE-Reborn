@@ -14,6 +14,7 @@ import kelvin.fiveminsurvival.survival.world.WorldStateHolder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -39,7 +40,7 @@ public class FiveMinSurvival
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
     
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     
     public FiveMinSurvival() {
     	
