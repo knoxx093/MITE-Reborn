@@ -44,6 +44,7 @@ public class FoodNutrients implements Serializable {
 		register(Items.DRIED_KELP, new FoodNutrients().setHappiness(5).setFattyAcids(5).setProtein(1.0).setPhytonutrients(7));
 		register(Items.BEEF, new FoodNutrients().setHappiness(-5).setProtein(20).setSickness(5).setFattyAcids(5));
 		register(Items.PORKCHOP, new FoodNutrients().setHappiness(-7).setProtein(15).setSickness(6).setFattyAcids(4));
+		register(Items.PHANTOM_MEMBRANE, new FoodNutrients().setHappiness(15).setProtein(15).setFattyAcids(8).setSugars(0.3));
 		register(Items.MUTTON, new FoodNutrients().setHappiness(-7).setProtein(10).setSickness(5).setFattyAcids(4));
 		register(Items.RABBIT, new FoodNutrients().setHappiness(-7).setProtein(10).setSickness(5).setFattyAcids(4));
 		register(Items.CHICKEN, new FoodNutrients().setHappiness(-15).setProtein(10).setSickness(13).setFattyAcids(2));

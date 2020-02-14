@@ -28,17 +28,20 @@ public class MITEFurnaceContainer extends FurnaceContainer {
 	
 	public MITEFurnaceContainer(int p_i50082_1_, PlayerInventory p_i50082_2_) {
 		super(p_i50082_1_, p_i50082_2_);
+		System.out.println("3");
 	}
 	
 	public MITEFurnaceContainer(int p_i50082_1_, PlayerInventory p_i50082_2_, int HEAT_LEVEL) {
 		super(p_i50082_1_, p_i50082_2_);
 		this.HEAT_LEVEL = HEAT_LEVEL;
+		System.out.println(HEAT_LEVEL);
 	}
 	
 	public MITEFurnaceContainer(int p_i50083_1_, PlayerInventory p_i50083_2_, IInventory p_i50083_3_,
 			IIntArray p_i50083_4_, int HEAT_LEVEL) {
 		super(p_i50083_1_, p_i50083_2_, p_i50083_3_, p_i50083_4_);
 		this.HEAT_LEVEL = HEAT_LEVEL;
+
 	}
 	
 	protected int getHeatForItem(Item item) {
@@ -63,9 +66,10 @@ public class MITEFurnaceContainer extends FurnaceContainer {
 	}
 	
 	protected boolean func_217057_a(ItemStack p_217057_1_) {
+		  
 		if (p_217057_1_.getItem() != null) {
 			this.CURRENT_HEAT_LEVEL = getHeatForItem(p_217057_1_.getItem());
-			if (HEAT_LEVEL < CURRENT_HEAT_LEVEL) {
+			if (HEAT_LEVEL < CURRENT_HEAT_LEVEL) { 
 				return false;
 			}
 		}
@@ -144,6 +148,7 @@ public class MITEFurnaceContainer extends FurnaceContainer {
 
    @OnlyIn(Dist.CLIENT)
    public boolean func_217061_l() {
+	   
 	   try {
 	   Field field_217064_e = AbstractFurnaceContainer.class.getDeclaredField("field_217064_e");
 	   try {

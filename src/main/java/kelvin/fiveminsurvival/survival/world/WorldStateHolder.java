@@ -3,6 +3,7 @@ package kelvin.fiveminsurvival.survival.world;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import kelvin.fiveminsurvival.blocks.BlockRegistry;
 import kelvin.fiveminsurvival.main.network.NetworkHandler;
 import kelvin.fiveminsurvival.main.network.SPacketSendWorldState;
 import kelvin.fiveminsurvival.survival.food.CustomFoodStats;
@@ -30,6 +31,7 @@ public class WorldStateHolder extends WorldSavedData {
 	public IWorld world;
 	
 	public ArrayList<CampfireState> campfires = new ArrayList<CampfireState>();
+	public ArrayList<PlantState> crops = new ArrayList<PlantState>();
 	
 	public int placeTick = 0;
 	
@@ -96,7 +98,18 @@ public class WorldStateHolder extends WorldSavedData {
 				n.loadFromString(nbt.getString(str));
 				nutrients.put(str, n);
 			}
+			if (str.startsWith("$crop")) {
+				PlantState state = new PlantState();
+				String[] str2 = str.split(",");
+				int x = Integer.parseInt(str2[1]);
+				int y = Integer.parseInt(str2[2]);
+				int z = Integer.parseInt(str2[3]);
+				state.pos = new BlockPos(x, y, z);
+				state.dayPlanted = nbt.getLong(str);
+				crops.add(state);
+			}
 		}
+		
 		for (String str : nutrients.keySet()) {
 			System.out.println(str);
 		}
@@ -114,10 +127,10 @@ public class WorldStateHolder extends WorldSavedData {
 				CustomFoodStats customStats = (CustomFoodStats)p.getFoodStats();
 				if (customStats.nutrients != null) {
 					nutrients.put(UUID, customStats.nutrients);
-					System.out.println("addNutrientsToStack");
 				}
 			}
 		}
+		
 		for (String str : nutrients.keySet()) {
 			Nutrients n = nutrients.get(str);
 			compound.putString(str, n.getSaveString());
@@ -130,6 +143,12 @@ public class WorldStateHolder extends WorldSavedData {
 			int y = state.pos.getY();
 			int z = state.pos.getZ();
 			compound.putInt("$campfire,"+x+","+y+","+z, state.fuel);
+		}
+		for (PlantState state : crops) {
+			int x = state.pos.getX();
+			int y = state.pos.getY();
+			int z = state.pos.getZ();
+			compound.putLong("$crop,"+x+","+y+","+z, state.dayPlanted);
 		}
 		return compound;
 	}
@@ -154,25 +173,34 @@ public class WorldStateHolder extends WorldSavedData {
 			for (int i = 0; i < campfires.size(); i++) {
 				CampfireState state = campfires.get(i);
 				BlockPos pos = state.pos;
-				if (world.getBlockState(pos).getBlock() != Blocks.CAMPFIRE) {
+								
+				if (world.getBlockState(pos).getBlock() instanceof CampfireBlock == false) {
 					campfires.remove(i);
 					break;
 				}
+				boolean waterlogged = false;
 				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED) != null)
 				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED).booleanValue()) {
 					state.fuel = 0;
+					waterlogged = true;
 				}
 				state.fuel--;
 				if (world.isRainingAt(pos)) {
 					state.fuel -= 20;
 				}
+				if (state.fuel <= 20 * 60) {
+					world.setBlockState(pos, BlockRegistry.CAMPFIRE_LOW.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(true)));
+				} else {
+					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(true)));
+				}
 				if (state.fuel <= 0) {
 					campfires.remove(i);
-					world.setBlockState(pos, world.getBlockState(pos).with(CampfireBlock.LIT, Boolean.valueOf(false)));
+					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(false)).with(CampfireBlock.WATERLOGGED, waterlogged));
 				}
 			}
 			
 		}
+		worldState.time = 6000L + 24000L * 9;
 		world.setDayTime(worldState.time);
 //		worldState.rainStrength = 0.0f;
 		NetworkHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SPacketSendWorldState(worldState.time, worldState.rainStrength));

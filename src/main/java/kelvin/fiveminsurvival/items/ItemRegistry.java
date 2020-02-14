@@ -83,6 +83,7 @@ public class ItemRegistry {
 	public static Item CLAY_OVEN,
 	HARDENED_CLAY_OVEN, SANDSTONE_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
 	public static Item PEA_GRAVEL;
+	public static Item MANURE;
 
 
 
@@ -211,7 +212,6 @@ public class ItemRegistry {
   	      return Items.AIR;
  	   });
     	
-    	
     	try {
     		
 //    		makeFoodsEdible();
@@ -253,10 +253,18 @@ public class ItemRegistry {
     		Resources.makeFieldAccessible(CHARCOAL);
     		PAPER.set(null, register("paper", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 25)));
     		
+    		Field BONE_MEAL = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BONE_MEAL" : "field_196106_bc");
+    		Resources.makeFieldAccessible(BONE_MEAL);
+    		BONE_MEAL.set(null, register("bone_meal", new MITEBoneMealItem((new Item.Properties()).group(ItemGroup.MATERIALS))));
+
+    		Field PHANTOM_MEMBRANE = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "PHANTOM_MEMBRANE" : "field_204840_eX");
+    		Resources.makeFieldAccessible(PHANTOM_MEMBRANE);
+    		PHANTOM_MEMBRANE.set(null, register("phantom_membrane", new Item((new Item.Properties()).group(ItemGroup.BREWING).food(new Food.Builder().hunger(4).saturation(0.4f).build()))));
     		
     		Field ITEM = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "ITEM" : "field_212630_s");
     		Resources.makeFieldAccessible(ITEM);
     		ITEM.set(null, newItems);
+    		
     		
     		
     		Field f = Item.class.getDeclaredField(FiveMinSurvival.DEBUG ? "maxDamage" : "field_77699_b"); //maxDamage
@@ -469,7 +477,8 @@ public class ItemRegistry {
     			COBBLESTONE_FURNACE = new BlockItem(BlockRegistry.COBBLESTONE_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:cobblestone_furnace")),
     			OBSIDIAN_FURNACE = new BlockItem(BlockRegistry.OBSIDIAN_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:obsidian_furnace")),
     			NETHERRACK_FURNACE = new BlockItem(BlockRegistry.NETHERRACK_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:netherrack_furnace")),
-    			PEA_GRAVEL = new BlockItem(BlockRegistry.PEA_GRAVEL, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:pea_gravel"))
+    			PEA_GRAVEL = new BlockItem(BlockRegistry.PEA_GRAVEL, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:pea_gravel")),
+    			MANURE = new ItemManure((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:manure"))
     			);
     	try {
     		Field f = Item.class.getDeclaredField(FiveMinSurvival.DEBUG ? "maxDamage" : "field_77699_b"); //maxDamage

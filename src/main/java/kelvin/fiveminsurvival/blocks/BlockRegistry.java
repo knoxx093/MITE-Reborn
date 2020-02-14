@@ -8,9 +8,10 @@ import kelvin.fiveminsurvival.main.FiveMinSurvival;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredient;
 import kelvin.fiveminsurvival.main.gui.MITEFurnaceContainer;
 import kelvin.fiveminsurvival.main.resources.Resources;
+import kelvin.fiveminsurvival.survival.crops.CropTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.GravelBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -39,6 +40,7 @@ public class BlockRegistry {
 	public static Block CLAY_OVEN,
 	SANDSTONE_OVEN, HARDENED_CLAY_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
 	public static Block PEA_GRAVEL;
+	public static Block CAMPFIRE_LOW;
 
 	
 	public static Registry<Block> newBlocks;
@@ -125,13 +127,14 @@ public class BlockRegistry {
     		OBSIDIAN_CRAFTING_TABLE = register("fiveminsurvival:obsidian_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.FLINT_CRAFTING_TABLE));
 
     		CLAY_OVEN = register("fiveminsurvival:clay_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.CLAY));
-    		HARDENED_CLAY_OVEN = register("fiveminsurvival:hardened_clay_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.HARDENED_CLAY));
-    		SANDSTONE_OVEN = register("fiveminsurvival:sandstone_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.SANDSTONE));
-    		COBBLESTONE_FURNACE = register("fiveminsurvival:cobblestone_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.STONE));
-    		OBSIDIAN_FURNACE = register("fiveminsurvival:obsidian_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.OBSIDIAN));
-    		NETHERRACK_FURNACE = register("fiveminsurvival:netherrack_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.NETHERRACK));
+    		HARDENED_CLAY_OVEN = register("fiveminsurvival:hardened_clay_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.HARDENED_CLAY));
+    		SANDSTONE_OVEN = register("fiveminsurvival:sandstone_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.SANDSTONE));
+    		COBBLESTONE_FURNACE = register("fiveminsurvival:cobblestone_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.STONE));
+    		OBSIDIAN_FURNACE = register("fiveminsurvival:obsidian_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.OBSIDIAN));
+    		NETHERRACK_FURNACE = register("fiveminsurvival:netherrack_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.NETHERRACK));
     		PEA_GRAVEL = register("fiveminsurvival:pea_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
-
+    		CAMPFIRE_LOW = register("fiveminsurvival:campfire_low", new CampfireBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15).tickRandomly()));
+    		
     		Field BLOCK = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BLOCK" : "field_212618_g");
     		Resources.makeFieldAccessible(BLOCK);
     		BLOCK.set(null, newBlocks);
@@ -140,6 +143,6 @@ public class BlockRegistry {
     		e.printStackTrace();
     		System.exit(1);
     	}
-    	
+    	CropTypes.registerCropTypes();
     }
 }

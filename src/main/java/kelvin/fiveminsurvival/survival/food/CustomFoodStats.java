@@ -10,6 +10,8 @@ import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.Difficulty;
@@ -20,7 +22,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class CustomFoodStats extends FoodStats implements Serializable {
 	   public double foodLevel = 3 * 2;
-	   public int maxFoodLevel = 6;
+	   public int maxFoodLevel = 8;
 	   public float foodSaturationLevel;
 	   public float foodExhaustionLevel;
 	   public int foodTimer;
@@ -69,6 +71,27 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 	    * Handles the food game logic.
 	    */
 	   public void tick(PlayerEntity player) {
+		  
+		   if (nutrients != null) {
+			   if (nutrients.happiness > 150) {
+				   nutrients.happiness = 150;
+			   }
+			   if (nutrients.happiness < 0) {
+				   nutrients.happiness = 0;
+			   }
+		   }
+		   
+		   
+		   
+		   EffectInstance regen = player.getActivePotionEffect(Effects.REGENERATION);
+		   if (regen != null) {
+			   int amp = (256 - regen.getAmplifier());
+			   if (amp <= 0) amp = 1;
+			   if (player.ticksExisted % amp == 0) {
+				   player.heal(1.1f);
+			   }
+		   }
+		   
 		   if (this.foodLevel > this.maxFoodLevel) {
 			   this.foodLevel = maxFoodLevel;
 		   }
@@ -86,8 +109,20 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 				   NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SPacketSendNutrients(nutrients));
 			   }
 		   }
-		   this.maxFoodLevel = (player.experienceLevel / 5) * 2 + 6;
+		   this.maxFoodLevel = (player.experienceLevel / 5) * 2 + 8;
 		   if (this.maxFoodLevel > 20) this.maxFoodLevel = 20;
+		   
+		   if (this.nutrients != null) {
+			   if (nutrients.negativeLevel >= 5) {
+				   maxFoodLevel = 6;
+			   }
+			   if (nutrients.negativeLevel >= 15) {
+				   maxFoodLevel = 4;
+			   }
+			   if (nutrients.negativeLevel >= 25) {
+				   maxFoodLevel = 2;
+			   }
+		   }
 
 //		   if (this.foodLevel > maxFoodLevel) this.foodLevel = maxFoodLevel;
 		   ++this.foodTimer2;

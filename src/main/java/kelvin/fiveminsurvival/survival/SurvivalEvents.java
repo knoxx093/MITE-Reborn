@@ -1,11 +1,13 @@
 package kelvin.fiveminsurvival.survival;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import kelvin.fiveminsurvival.blocks.BlockRegistry;
 import kelvin.fiveminsurvival.entity.AnimalWatcherEntity;
+import kelvin.fiveminsurvival.entity.EntityAttackSquid;
 import kelvin.fiveminsurvival.entity.EntityRegistry;
 import kelvin.fiveminsurvival.entity.NewSkeletonEntity;
 import kelvin.fiveminsurvival.entity.goal.EnhancedPanicGoal;
@@ -21,13 +23,13 @@ import kelvin.fiveminsurvival.survival.world.WorldStateHolder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.command.arguments.EntityAnchorArgument.Type;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -44,7 +46,9 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.AxeItem;
@@ -60,11 +64,14 @@ import net.minecraft.item.ToolItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -81,6 +88,26 @@ public class SurvivalEvents {
 	
 	@SubscribeEvent
 	public static void handleExperienceDrop(LivingExperienceDropEvent event) {
+		if (event.getEntity() instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity)event.getEntity();
+			if (player.experienceLevel <= 0) {
+				Nutrients nutrients = WorldStateHolder.get(player.world).nutrients.get(player.getUniqueID().toString());
+				
+				if (nutrients != null) {
+					System.out.println("noot: " + nutrients.negativeLevel);
+					
+					if (nutrients.negativeLevel < 30) {
+						
+						nutrients.negativeLevel++;
+						if (player.getFoodStats() instanceof CustomFoodStats) {
+							((CustomFoodStats)player.getFoodStats()).nutrients.negativeLevel = nutrients.negativeLevel;
+						}
+					}
+				}
+				WorldStateHolder.get(player.world).markDirty();
+			}
+			return;
+		}
 		event.setDroppedExperience(5);
 		if (event.getEntity() instanceof SlimeEntity) event.setDroppedExperience(4);
 		if (event.getEntity() instanceof GhastEntity) event.setDroppedExperience(10);
@@ -124,6 +151,11 @@ public class SurvivalEvents {
 	}
 	
 	@SubscribeEvent
+	public static void handleDeathEvent(LivingDeathEvent event) {
+		
+	}
+	
+	@SubscribeEvent
 	public static void handleDamageEvent(LivingDamageEvent event) {
 		if (event.getEntity() instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity)event.getEntity();
@@ -153,64 +185,71 @@ public class SurvivalEvents {
 		World world = event.getWorld();
 		
 		WorldStateHolder stateHolder = WorldStateHolder.get(world);
-		if (stateHolder.placeTick == 0)
-		if (state.getBlock() == Blocks.CAMPFIRE && !world.isRemote()) {
-			
-			ItemStack stack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
-			if (stack != null) {
-				Item item = stack.getItem();
-				if (item != null) {
-					Map<IRegistryDelegate<Item>, Integer> BURNS = null;
-					try {
-						Field VANILLA_BURNS = ForgeHooks.class.getDeclaredField("VANILLA_BURNS");
-						Resources.makeFieldAccessible(VANILLA_BURNS);
-						BURNS = (Map<IRegistryDelegate<Item>, Integer>) VANILLA_BURNS.get(null);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					int burnTime = stack.getBurnTime();
-					if (BURNS != null) {
-						burnTime = BURNS.getOrDefault(item.delegate, 0);
-					}
-					System.out.println(burnTime);
-					boolean canDestroy = true;
-//					if (item == Items.FLINT_AND_STEEL) {
-//						burnTime = 6000;
-//						canDestroy = false;
-//					}
-					if (item == Items.CHARCOAL) {
-						burnTime = 6000;
-					}
-					if (item == Items.COAL || item == Items.LAVA_BUCKET || item == Items.BLAZE_ROD) {
-						burnTime = 0;
-					}
-					if (burnTime > 0) {
-						CampfireState fire = null;
-						for (int i = 0; i < stateHolder.campfires.size(); i++) {
-							CampfireState s = stateHolder.campfires.get(i);
-							if (s.pos.equals(pos)) {
-								fire = s;
-								stateHolder.campfires.remove(i);
-								break;
+		if (event.getEntity() instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity)event.getEntity();
+			if (event.getPlayer().getHeldItem(Hand.MAIN_HAND) != null)
+				if (event.getPlayer().getHeldItem(Hand.MAIN_HAND).getItem() != null)
+		if (player.getCooldownTracker().getCooldown(player.getHeldItem(Hand.MAIN_HAND).getItem(), 0) <= 0)
+			if (state.getBlock() instanceof CampfireBlock && !world.isRemote()) {
+				
+				ItemStack stack = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+				if (stack != null) {
+					Item item = stack.getItem();
+					if (item != null) {
+						Map<IRegistryDelegate<Item>, Integer> BURNS = null;
+						try {
+							Field VANILLA_BURNS = ForgeHooks.class.getDeclaredField("VANILLA_BURNS");
+							Resources.makeFieldAccessible(VANILLA_BURNS);
+							BURNS = (Map<IRegistryDelegate<Item>, Integer>) VANILLA_BURNS.get(null);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						int burnTime = stack.getBurnTime();
+						if (BURNS != null) {
+							burnTime = BURNS.getOrDefault(item.delegate, 0);
+						}
+						boolean canDestroy = true;
+	//					if (item == Items.FLINT_AND_STEEL) {
+	//						burnTime = 6000;
+	//						canDestroy = false;
+	//					}
+						if (item == Items.CHARCOAL) {
+							burnTime = 6000;
+						}
+						if (item == Items.COAL || item == Items.LAVA_BUCKET || item == Items.BLAZE_ROD) {
+							burnTime = 0;
+						}
+						if (burnTime > 0) {
+							CampfireState fire = null;
+							for (int i = 0; i < stateHolder.campfires.size(); i++) {
+								CampfireState s = stateHolder.campfires.get(i);
+								if (s.pos.equals(pos)) {
+									fire = s;
+									stateHolder.campfires.remove(i);
+									break;
+								}
 							}
+							if (fire == null) {
+								fire = new CampfireState();
+								fire.pos = pos;
+							}
+							fire.fuel += burnTime * 10;
+							if (fire.fuel > 60 * 20 * 10) {
+								fire.fuel = 60 * 20 * 10;
+							}
+							stateHolder.campfires.add(fire);
+							world.setBlockState(pos, state.with(CampfireBlock.LIT, Boolean.valueOf(true)));
+							
+								player.getCooldownTracker().setCooldown(stack.getItem(), 10);
+							
+							if (canDestroy);
+							stack.setCount(stack.getCount() - 1);
+							
 						}
-						if (fire == null) {
-							fire = new CampfireState();
-							fire.pos = pos;
-						}
-						fire.fuel += burnTime * 10;
-						if (fire.fuel > 60 * 20 * 10) {
-							fire.fuel = 60 * 20 * 10;
-						}
-						stateHolder.campfires.add(fire);
-						world.setBlockState(pos, state.with(CampfireBlock.LIT, Boolean.valueOf(true)));
-						if (canDestroy);
-						stack.setCount(stack.getCount() - 1);
 					}
 				}
 			}
 		}
-		
 		stateHolder.placeTick++;
 		if (stateHolder.placeTick > 3) stateHolder.placeTick = 0;
 		
@@ -260,7 +299,12 @@ public class SurvivalEvents {
 	@SubscribeEvent
 	public static void livingSpawnEvent(LivingSpawnEvent event) {
 		if (event.getEntity() instanceof PhantomEntity) {
-			event.getEntity().remove();
+			if (event.getWorld().getRandom().nextInt() <= 7)
+				event.getEntity().remove();
+			else {
+				PhantomEntity p = (PhantomEntity)event.getEntity();
+				p.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2 + p.getPhantomSize());
+			}
 		}
 		
 		if (event.getEntity() instanceof ZombieEntity && !(event.getEntity() instanceof AnimalWatcherEntity)) {
@@ -271,6 +315,16 @@ public class SurvivalEvents {
 			zombie.setPosition(pos.getX(), pos.getY(), pos.getZ());
 			event.getWorld().addEntity(zombie);
 		}
+		
+		if (event.getEntity() instanceof SquidEntity && !(event.getEntity() instanceof EntityAttackSquid)) {
+			BlockPos pos = event.getEntity().getPosition();
+			event.getEntity().remove();
+			
+			EntityAttackSquid entity = EntityRegistry.ATTACK_SQUID.create(event.getWorld().getWorld());
+			entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+			event.getWorld().addEntity(entity);
+		}
+		
 		if (event.getEntity() instanceof ItemEntity) {
 			ItemEntity i = (ItemEntity)event.getEntity();
 			i.lifespan = 20 * 60 * 15;//15 minutes until items despawn.
@@ -279,9 +333,6 @@ public class SurvivalEvents {
 		
 		if (event.getEntity() instanceof SkeletonEntity) {
 			SkeletonEntity s = (SkeletonEntity)event.getEntity();
-			s.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0);
-			s.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0);
-//			s.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
 			
 			if (s.ticksExisted < 100) {
 
@@ -308,24 +359,95 @@ public class SurvivalEvents {
 		}
 		
 		
+		
 	}
+	
 	
 	@SubscribeEvent
     public static void livingUpdateEvent(LivingEvent.LivingJumpEvent event) {
+		
+		
+
 		Entity entity = event.getEntity();
+		
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity)event.getEntity();
+			
 			player.getFoodStats().addExhaustion(0.3F);
 		}
+		
+		if (entity instanceof AnimalEntity) {
+			Random rand = new Random();
+			AnimalEntity animal = (AnimalEntity)entity;
+			if (!entity.world.isRemote && entity.isAlive() && !animal.isChild() && rand.nextInt(6000) <= 10) {
+				animal.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		        animal.entityDropItem(ItemRegistry.MANURE);
+		    }
+		}
+		
 	}
 	
     @SubscribeEvent
     public static void livingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
 		Entity entity = event.getEntity();
-    	if (entity instanceof PlayerEntity) {
-    		PlayerEntity player = (PlayerEntity)event.getEntity();
+		
+		if (entity != null) {
+			if (entity.world.getBlockState(entity.getPosition().down()).getBlock() instanceof FallingBlock) {
+				entity.world.getBlockState(entity.getPosition().down()).randomTick(entity.world, entity.getPosition().down(), entity.world.rand);
+			}
+		}
+		
+		if (entity instanceof AbstractGroupFishEntity) {
+			AbstractGroupFishEntity fish = (AbstractGroupFishEntity)entity;
+			if (fish.isInWaterOrBubbleColumn()) {
+				List<LivingEntity> things = fish.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(fish.getPositionVec().add(-4, -4, -4), fish.getPositionVec().add(4, 4, 4)));
+				Entity e = null;
+				double dist = 100;
+				for (int i = 0; i < things.size(); i++) {
+					if (things.get(i) != null)
+					if (!(things.get(i) instanceof AbstractGroupFishEntity) && !(things.get(i) instanceof SquidEntity)) {
+						double d2 = things.get(i).getPositionVec().distanceTo(fish.getPositionVec());
+						if (d2 <= dist && things.get(i).getMotion().length() >= 0.025f) {
+							dist = d2;
+							e = things.get(i);
+						}
+						
+					}
+				}
+				if (e != null) {
+					double velX = fish.getMotion().x;
+					double velZ = fish.getMotion().z;
+					
+					int dirX = fish.getPositionVec().x > e.getPositionVec().x ? 1 : -1;
+					int dirZ = fish.getPositionVec().z > e.getPositionVec().z ? 1 : -1;
+					
+					double accel = 0.1;
+					
+					velX += accel * dirX;
+					velZ += accel * dirZ;
+					
+					fish.setMotion(fish.getMotion().add(velX, 0, velZ));
+					
+					fish.lookAt(Type.EYES, fish.getPositionVector().add(fish.getMotion()));
+				}
+			}
+			
+		}
+		
+		if (entity instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity)event.getEntity();
+			
+			if (player.experienceLevel > 0) {
+				Nutrients nutrients = WorldStateHolder.get(player.world).nutrients.get(player.getUniqueID().toString());
+				if (nutrients != null) {
+					if (nutrients.negativeLevel > 0) {
+						nutrients.negativeLevel--;
+						player.addExperienceLevel(-1);
+					}
+				}
+			}
     		if (player.isAlive() == false) {
-    			WorldStateHolder.get(player.getEntityWorld()).nutrients.remove(player.getUniqueID().toString());
+    			WorldStateHolder.get(player.getEntityWorld()).nutrients.get(player.getUniqueID().toString()).reset();
     		}
     		if (!(player.getFoodStats() instanceof CustomFoodStats))
         		try {
@@ -359,13 +481,12 @@ public class SurvivalEvents {
     				Nutrients n = new Nutrients(customStats);
 
         			String UUID = player.getUniqueID().toString();
-        			
+        			System.out.println(UUID);
         			if (WorldStateHolder.get(entity.getEntityWorld()).nutrients.containsKey(UUID)) {
         				n = WorldStateHolder.get(entity.getEntityWorld()).nutrients.get(UUID);
         				n.foodStats = customStats;
         			} else {
         				WorldStateHolder.get(entity.world).nutrients.put(UUID, n);
-        				System.out.println("put nutrients");
         			}
         			
         			customStats.nutrients = n;
@@ -399,6 +520,8 @@ public class SurvivalEvents {
         			}
     				nutrients = foodStats.nutrients;
     				nutrients.tick(player, foodStats);
+    				
+    				if ((player.isSwimming() && player.isSprinting()) == false)
     				player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)Math.max(0.05, nutrients.getSpeedModifier()));
     			}
     		}

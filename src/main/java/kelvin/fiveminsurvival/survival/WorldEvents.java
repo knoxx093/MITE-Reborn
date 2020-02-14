@@ -15,17 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 public class WorldEvents {
 	
 	@SubscribeEvent
-	public static void handleBlockUpdates(NeighborNotifyEvent e) {
-		BlockPos pos = e.getPos();
-		BlockState state = e.getState();
-		if (state.getBlock() == Blocks.DIRT) {
-			if (e.getWorld().getBlockState(pos.down()).getMaterial().blocksMovement() == false) {
-				
-			}
-		}
-	}
-	
-	@SubscribeEvent
 	public static void handleLoadEvent(Load e) {
 		if (e.getWorld() instanceof ServerWorld) {
 			ServerWorld world = (ServerWorld)e.getWorld();

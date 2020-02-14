@@ -1,5 +1,7 @@
 package kelvin.fiveminsurvival.main;
 
+import java.lang.reflect.Field;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,21 +10,26 @@ import kelvin.fiveminsurvival.entity.model.ModelRegistry;
 import kelvin.fiveminsurvival.main.network.NetworkHandler;
 import kelvin.fiveminsurvival.survival.OverlayEvents;
 import kelvin.fiveminsurvival.survival.SurvivalEvents;
+import kelvin.fiveminsurvival.survival.crops.CropTypes;
 import kelvin.fiveminsurvival.survival.world.CampfireState;
+import kelvin.fiveminsurvival.survival.world.PlantState;
 import kelvin.fiveminsurvival.survival.world.WorldFeatures;
 import kelvin.fiveminsurvival.survival.world.WorldStateHolder;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
-import net.minecraft.client.gui.toasts.ToastGui;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,10 +47,14 @@ public class FiveMinSurvival
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
     
-    public static final boolean DEBUG = true;
+    public static boolean DEBUG = true;
     
     public FiveMinSurvival() {
-    	
+    	try {
+    		Field ITEM = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "ITEM" : "field_212630_s");
+    	} catch (Exception e) {
+    		DEBUG = false;
+    	}
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -65,6 +76,7 @@ public class FiveMinSurvival
 
         MinecraftForge.EVENT_BUS.addListener(FiveMinSurvival::onWorldTick);
         MinecraftForge.EVENT_BUS.addListener(FiveMinSurvival::onBlockUpdate);
+        MinecraftForge.EVENT_BUS.addListener(FiveMinSurvival::onCropGrowth);
 
         
         NetworkHandler.register();
@@ -80,7 +92,38 @@ public class FiveMinSurvival
 	}
     
     @SubscribeEvent
+    public static void onCropGrowth(BlockEvent.CropGrowEvent e) {
+    	BlockPos pos = e.getPos();
+		BlockState state = e.getState();
+    	if (state.getBlock() instanceof CropsBlock) {
+			WorldStateHolder stateHolder = WorldStateHolder.get(e.getWorld());
+			long dayPlanted = -1;
+			PlantState p = null;
+			for (int i = 0; i < stateHolder.crops.size(); i++) {
+				p = stateHolder.crops.get(i);
+				if (p.pos.equals(pos)) {
+					dayPlanted = p.dayPlanted;
+					break;
+				}
+				p = null;
+			}
+			if (dayPlanted != -1) {
+				long day = e.getWorld().getWorld().getDayTime() / 24000L;
+				if (p != null) {
+					CropTypes.tickForCrop(e.getWorld().getWorld(), pos, state, day, p);
+				}
+			} else {
+				p = new PlantState();
+				p.dayPlanted = e.getWorld().getWorld().getDayTime() / 24000L;
+				p.pos = pos;
+				stateHolder.crops.add(p);
+			}
+		}
+    }
+    
+    @SubscribeEvent
 	public static void onBlockUpdate(NeighborNotifyEvent e) {
+    	
 		BlockPos pos = e.getPos();
 		BlockState state = e.getState();
 		for (Direction d : e.getNotifiedSides()) {
@@ -99,7 +142,7 @@ public class FiveMinSurvival
 	            e.getWorld().addEntity(fallingblockentity);
 			}
 		}
-		if (state.getBlock() == Blocks.CAMPFIRE)
+		if (state.getBlock() instanceof CampfireBlock)
 		if (!e.getWorld().isRemote()) {
 			WorldStateHolder stateHolder = WorldStateHolder.get(e.getWorld());
 			int fuel = 0;
@@ -112,6 +155,40 @@ public class FiveMinSurvival
 			}
 			if (fuel <= 0)
 				e.getWorld().getWorld().setBlockState(pos, state.with(CampfireBlock.LIT, Boolean.valueOf(false)));
+		}
+		
+		if (state.getBlock() instanceof CropsBlock) {
+			WorldStateHolder stateHolder = WorldStateHolder.get(e.getWorld());
+			long dayPlanted = -1;
+			PlantState p = null;
+			for (int i = 0; i < stateHolder.crops.size(); i++) {
+				p = stateHolder.crops.get(i);
+				if (p.pos.equals(pos)) {
+					dayPlanted = p.dayPlanted;
+					break;
+				}
+				p = null;
+			}
+			if (dayPlanted != -1) {
+				long day = e.getWorld().getWorld().getDayTime() / 24000L;
+				if (p != null) {
+					CropTypes.tickForCrop(e.getWorld().getWorld(), pos, state, day, p);
+				}
+			} else {
+				p = new PlantState();
+				p.dayPlanted = e.getWorld().getWorld().getDayTime() / 24000L;
+				p.pos = pos;
+				stateHolder.crops.add(p);
+			}
+		}
+		if (state.getBlock() instanceof AirBlock) {
+			WorldStateHolder stateHolder = WorldStateHolder.get(e.getWorld());
+			for (PlantState p : stateHolder.crops) {
+				if (p.pos.equals(pos)) {
+					stateHolder.crops.remove(p);
+					break;
+				}
+			}
 		}
 	}
 

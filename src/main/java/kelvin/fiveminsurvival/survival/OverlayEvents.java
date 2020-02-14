@@ -127,7 +127,8 @@ public class OverlayEvents {
 			PlayerEntity player = Minecraft.getInstance().player;
 			World world = player.getEntityWorld();
 			
-			
+			if ((player.isSwimming() && player.isSprinting()) == false)
+			{
 			IAttributeInstance iattributeinstance = player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 		    player.setSprinting(false);
 			
@@ -143,7 +144,7 @@ public class OverlayEvents {
 		      }catch (Exception e) {
 //		    	  e.printStackTrace();
 		      }
-			
+			}
 			GameRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
 			
 			
@@ -238,6 +239,20 @@ public class OverlayEvents {
 		
 		Minecraft.getInstance().gameSettings.gamma = Resources.lerp((float)Minecraft.getInstance().gameSettings.gamma, (float)eyeAdjust, 0.0005f);
 		
+		if (event.getType() == ElementType.EXPERIENCE) {
+			if (Minecraft.getInstance().player.experienceLevel <= 0 && Resources.clientNutrients != null) {
+		         String s = "-" + Resources.clientNutrients.negativeLevel;
+		         if (Resources.clientNutrients.negativeLevel > 0) {
+		        	 int i1 = (Minecraft.getInstance().mainWindow.getScaledWidth() - Minecraft.getInstance().ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
+			         int j1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 31 - 4;
+			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)(i1 + 1), (float)j1, 0);
+			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)(i1 - 1), (float)j1, 0);
+			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)i1, (float)(j1 + 1), 0);
+			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)i1, (float)(j1 - 1), 0);
+			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)i1, (float)j1, 0x880000);
+		         }
+		      }
+		}
 		
 		if (event.getType() == ElementType.AIR) {
 	         FoodStats foodstats = playerentity.getFoodStats();
@@ -580,7 +595,22 @@ public class OverlayEvents {
 			int i1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 91;
 	         int j1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 + 91;
 	         int k1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 39;
-	         for(int k6 = 0; k6 < (playerentity.experienceLevel / 5) + 6 / 2 && k6 < 10; ++k6) {
+	         
+	         int maxfood = (playerentity.experienceLevel / 5) + 8;
+	         
+	         if (Resources.clientNutrients != null) {
+	        	 if (Resources.clientNutrients.negativeLevel >= 5) {
+	        		 maxfood = 6;
+	        	 }
+	        	 if (Resources.clientNutrients.negativeLevel >= 15) {
+	        		 maxfood = 4;
+	        	 }
+	        	 if (Resources.clientNutrients.negativeLevel >= 25) {
+	        		 maxfood = 2;
+	        	 }
+	         }
+	         
+	         for(int k6 = 0; k6 < maxfood / 2 && k6 < 10; ++k6) {
 	               int i7 = k1;
 	               int k7 = 16;
 	               int i8 = 0;

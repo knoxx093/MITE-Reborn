@@ -36,10 +36,17 @@ public class MITEFurnaceBlock extends AbstractFurnaceBlock {
 	    * inside AbstractFurnaceBlock.
 	    */
 	   protected void interactWith(World worldIn, BlockPos pos, PlayerEntity player) {
+		   if (worldIn.getTileEntity(pos) instanceof MITEFurnaceTileEntity) {
+			   if (((MITEFurnaceTileEntity)worldIn.getTileEntity(pos)).HEAT_LEVEL != HEAT_LEVEL) {
+				   this.createNewTileEntity(worldIn);
+			   }
+		   }
+		   
 	      TileEntity tileentity = worldIn.getTileEntity(pos);
-	      System.out.println(tileentity);
+	    
 	      if (tileentity instanceof MITEFurnaceTileEntity) {
-	         player.openContainer((INamedContainerProvider)tileentity);
+	    	 ((MITEFurnaceTileEntity)tileentity).HEAT_LEVEL = HEAT_LEVEL;
+	         player.openContainer((MITEFurnaceTileEntity)tileentity);
 	         player.addStat(Stats.INTERACT_WITH_FURNACE);
 	      }
 

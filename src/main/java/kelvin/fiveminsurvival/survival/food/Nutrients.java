@@ -327,21 +327,6 @@ public class Nutrients implements Serializable {
 			fatigue -= (1.0 - ((getHappinessReduction() / 4.0) * getSicknessModifier())) * 0.05;
 		}
 		
-		if (player.experience > 0 && negativeLevel > 0) {
-			negativeXP -= player.experience;
-			player.experience = 0;
-			if (negativeXP < 0) {
-				player.experience -= negativeXP;
-				negativeXP = xpRate;
-				negativeLevel--;
-				if (negativeLevel <= 0) {
-					negativeLevel = 0;
-					negativeXP = xpRate;
-				}
-			}
-		}
-		negativeLevel = (int)(negativeXP / xpRate);
-		
 		protein = clamp(protein, 0, 100 + player.experienceLevel * 5);
 		phytonutrients = clamp(phytonutrients, 0, 100 + player.experienceLevel * 5);
 		sugars = clamp(sugars, 0, 100 + player.experienceLevel * 5);
@@ -357,5 +342,18 @@ public class Nutrients implements Serializable {
 	
 	private double clamp(double var, double min, double max) {
 		return Math.min(Math.max(var, min), max);
+	}
+
+	public void reset() {
+		protein = 100.0;
+		phytonutrients = 100.0;
+		sugars = 0;
+		insulin_resistance = 0.0;
+		fatigue = 0.0;
+		fatigueHolder = 0.0;
+		fatty_acids = 100.0;
+		happiness = 100.0;
+		sickness = 0.0;
+		carbs = 100.0;
 	}
 }
