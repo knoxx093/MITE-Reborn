@@ -28,7 +28,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
@@ -38,13 +37,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 
-@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.FORGE,value=Dist.CLIENT)
 public class OverlayEvents {
 
 	public static boolean debug = false;
@@ -145,7 +145,7 @@ public class OverlayEvents {
 //		    	  e.printStackTrace();
 		      }
 			}
-			GameRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
+			WorldRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
 			
 			
 			if (world.getDayTime() % 24000 > 6000) {
@@ -187,13 +187,13 @@ public class OverlayEvents {
 				if (Seasons.isNight(world.getDayTime())) {
 					
 					if (deathMoon) {
-						GameRenderer.RAIN_TEXTURES = OverlayEvents.DEATH_MOON_RAIN_TEXTURES;
+						WorldRenderer.RAIN_TEXTURES = OverlayEvents.DEATH_MOON_RAIN_TEXTURES;
 					}
 					else
 					if (bloodMoon) {
-						GameRenderer.RAIN_TEXTURES = OverlayEvents.BLOOD_MOON_RAIN_TEXTURES;
+						WorldRenderer.RAIN_TEXTURES = OverlayEvents.BLOOD_MOON_RAIN_TEXTURES;
 					} else {
-						GameRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
+						WorldRenderer.RAIN_TEXTURES = OverlayEvents.RAIN_TEXTURES;
 					}
 					
 				}
@@ -217,6 +217,7 @@ public class OverlayEvents {
        	 Minecraft.getInstance().getTutorial().openInventory();
       	 Minecraft.getInstance().displayGuiScreen(new MITEInventoryScreen(Minecraft.getInstance().player));
    	 	}
+		
 		
 		//   public MITECraftingScreen(WorkbenchContainer p_i51094_1_, PlayerInventory p_i51094_2_, ITextComponent p_i51094_3_) {
 		
@@ -243,8 +244,8 @@ public class OverlayEvents {
 			if (Minecraft.getInstance().player.experienceLevel <= 0 && Resources.clientNutrients != null) {
 		         String s = "-" + Resources.clientNutrients.negativeLevel;
 		         if (Resources.clientNutrients.negativeLevel > 0) {
-		        	 int i1 = (Minecraft.getInstance().mainWindow.getScaledWidth() - Minecraft.getInstance().ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
-			         int j1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 31 - 4;
+		        	 int i1 = (Minecraft.getInstance().getMainWindow().getScaledWidth() - Minecraft.getInstance().ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
+			         int j1 = Minecraft.getInstance().getMainWindow().getScaledHeight() - 31 - 4;
 			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)(i1 + 1), (float)j1, 0);
 			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)(i1 - 1), (float)j1, 0);
 			         Minecraft.getInstance().ingameGUI.getFontRenderer().drawString(s, (float)i1, (float)(j1 + 1), 0);
@@ -258,9 +259,9 @@ public class OverlayEvents {
 	         FoodStats foodstats = playerentity.getFoodStats();
 	         int l = foodstats.getFoodLevel();
 	         IAttributeInstance iattributeinstance = playerentity.getAttribute(SharedMonsterAttributes.MAX_HEALTH);
-	         int i1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 91;
-	         int j1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 + 91;
-	         int k1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 39;
+	         int i1 = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 91;
+	         int j1 = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 + 91;
+	         int k1 = Minecraft.getInstance().getMainWindow().getScaledHeight() - 39;
 	         float f = (float)iattributeinstance.getValue();
 	         int l1 = MathHelper.ceil(playerentity.getAbsorptionAmount());
 	         int i2 = MathHelper.ceil((f + (float)l1) / 2.0F / 10.0F);
@@ -273,7 +274,7 @@ public class OverlayEvents {
 			
 			int j6 = 0;
 			try {
-				Method m = IngameGui.class.getDeclaredMethod("func_212306_a", LivingEntity.class);
+				Method m = IngameGui.class.getDeclaredMethod(FiveMinSurvival.DEBUG ? "getRenderMountHealth" : "func_212306_a", LivingEntity.class);
 				m.setAccessible(true);
 				j6 = (Integer)m.invoke(Minecraft.getInstance().ingameGUI, playerentity);
 			}catch (Exception e) {
@@ -285,7 +286,7 @@ public class OverlayEvents {
 	            int l7 = 0;
 	            
 	            try {
-					Method m = IngameGui.class.getDeclaredMethod("func_212302_c", int.class);
+					Method m = IngameGui.class.getDeclaredMethod(FiveMinSurvival.DEBUG ? "getVisibleMountHealthRows" : "func_212302_c", int.class);
 					m.setAccessible(true);
 					l7 = (Integer)m.invoke(Minecraft.getInstance().ingameGUI, j6) - 1;
 				}catch (Exception e) {
@@ -308,8 +309,15 @@ public class OverlayEvents {
 		}
 		
 		if (event.getType() == ElementType.DEBUG) {
-			int FPS = Minecraft.getDebugFPS();
 			
+			int FPS = 0;
+			try {
+				Field f = Minecraft.class.getDeclaredField("debugFPS");
+				Resources.makeFieldAccessible(f);
+				FPS = f.getInt(null);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 			Vec3d pos = Minecraft.getInstance().player.getPositionVec();
 			Minecraft.getInstance().fontRenderer.drawStringWithShadow("FPS: " + FPS, 10, 10, Color.WHITE.getRGB());
 			Minecraft.getInstance().fontRenderer.drawStringWithShadow("X: " + roundHundreth(pos.getX()) + ", Y: " + roundHundreth(pos.getY()) + ", Z: " + roundHundreth(pos.getZ()), 10, 20, Color.WHITE.getRGB());
@@ -572,18 +580,18 @@ public class OverlayEvents {
 			
 			if (text != null) {
 				for (MovingText t : text.mtext) {
-					Minecraft.getInstance().fontRenderer.drawStringWithShadow(t.text, t.x + Minecraft.getInstance().mainWindow.getScaledWidth() / 2, t.y, Color.WHITE.getRGB());
+					Minecraft.getInstance().fontRenderer.drawStringWithShadow(t.text, t.x + Minecraft.getInstance().getMainWindow().getScaledWidth() / 2, t.y, Color.WHITE.getRGB());
 				}
 			}
 			
 			if (text2 != null) {
 				for (MovingText t : text2.mtext) {
 					
-					Minecraft.getInstance().fontRenderer.drawStringWithShadow(t.text, t.x + Minecraft.getInstance().mainWindow.getScaledWidth() / 2, t.y, Color.WHITE.getRGB());
+					Minecraft.getInstance().fontRenderer.drawStringWithShadow(t.text, t.x + Minecraft.getInstance().getMainWindow().getScaledWidth() / 2, t.y, Color.WHITE.getRGB());
 				}
 			}
 			
-			Minecraft.getInstance().fontRenderer.drawStringWithShadow("--------", Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - Minecraft.getInstance().fontRenderer.getStringWidth("--------") / 2, 9, Color.WHITE.getRGB());
+			Minecraft.getInstance().fontRenderer.drawStringWithShadow("--------", Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - Minecraft.getInstance().fontRenderer.getStringWidth("--------") / 2, 9, Color.WHITE.getRGB());
 
 		}
 		if (event.getType() == ElementType.FOOD) {
@@ -592,23 +600,23 @@ public class OverlayEvents {
 			int l = foodstats.getActualFoodLevel();
 			if (l > 20) l = 20;
 			
-			int i1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 91;
-	         int j1 = Minecraft.getInstance().mainWindow.getScaledWidth() / 2 + 91;
-	         int k1 = Minecraft.getInstance().mainWindow.getScaledHeight() - 39;
+			int i1 = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 91;
+	         int j1 = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 + 91;
+	         int k1 = Minecraft.getInstance().getMainWindow().getScaledHeight() - 39;
 	         
-	         int maxfood = (playerentity.experienceLevel / 5) + 8;
+	         int maxfood = (playerentity.experienceLevel / 5) + 6;
 	         
-	         if (Resources.clientNutrients != null) {
-	        	 if (Resources.clientNutrients.negativeLevel >= 5) {
-	        		 maxfood = 6;
-	        	 }
-	        	 if (Resources.clientNutrients.negativeLevel >= 15) {
-	        		 maxfood = 4;
-	        	 }
-	        	 if (Resources.clientNutrients.negativeLevel >= 25) {
-	        		 maxfood = 2;
-	        	 }
-	         }
+//	         if (Resources.clientNutrients != null) {
+//	        	 if (Resources.clientNutrients.negativeLevel >= 5) {
+//	        		 maxfood = 6;
+//	        	 }
+//	        	 if (Resources.clientNutrients.negativeLevel >= 15) {
+//	        		 maxfood = 4;
+//	        	 }
+//	        	 if (Resources.clientNutrients.negativeLevel >= 25) {
+//	        		 maxfood = 2;
+//	        	 }
+//	         }
 	         
 	         for(int k6 = 0; k6 < maxfood / 2 && k6 < 10; ++k6) {
 	               int i7 = k1;

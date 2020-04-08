@@ -72,7 +72,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 		super(worldIn);
 		this.goalSelector.addGoal(1, new EntityAIWatchAnimal(this));
 		this.worldObj = worldIn;
-	this.RAND = rand;
+		this.RAND = rand;
 	}
 	
 	 protected void applyEntityAI() {
@@ -240,7 +240,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 
 	    protected double getCenterPosYForBlockDestroying()
 	    {
-	        return this.posY + (double)(this.getHeight() * 0.5F);
+	        return this.getPosY() + (double)(this.getHeight() * 0.5F);
 	    }
 
 	    protected Vec3d getEyePosForBlockDestroying()
@@ -269,13 +269,13 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	    protected Vec3d getAttackerLegPosForBlockDestroying()
 	    {
 	        Vec3Pool vec3_pool = vecPool;
-	        return vec3_pool.getVecFromPool(this.posX, this.posY + (double)(this.getHeight() * 0.25F), this.posZ);
+	        return vec3_pool.getVecFromPool(this.getPosX(), this.getPosY() + (double)(this.getHeight() * 0.25F), this.getPosZ());
 	    }
 
 	    protected Vec3d getTargetEntityCenterPosForBlockDestroying(LivingEntity entity_living_base)
 	    {
 	        Vec3Pool vec3_pool = vecPool;
-	        return vec3_pool.getVecFromPool(entity_living_base.posX, entity_living_base.posY + (double)(entity_living_base.getHeight() / 2.0F), entity_living_base.posZ);
+	        return vec3_pool.getVecFromPool(entity_living_base.getPosX(), entity_living_base.getPosY() + (double)(entity_living_base.getHeight() / 2.0F), entity_living_base.getPosZ());
 	    }
 
 	    public static final Vec3Pool vecPool = new Vec3Pool(300, 2000);
@@ -288,7 +288,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 
 	    private boolean isBlockClaimedByAnother(int x, int y, int z)
 	    {
-	        AxisAlignedBB bb = new AxisAlignedBB(this.posX - 4.0D, this.posY - 4.0D, this.posZ - 4.0D, this.posX + 4.0D, this.posY + 4.0D, this.posZ + 4.0D);
+	        AxisAlignedBB bb = new AxisAlignedBB(this.getPosX() - 4.0D, this.getPosY() - 4.0D, this.getPosZ() - 4.0D, this.getPosX() + 4.0D, this.getPosY() + 4.0D, this.getPosZ() + 4.0D);
 	        List entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, bb);
 	        Iterator i = entities.iterator();
 
@@ -356,7 +356,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	            {
 	                World world = this.worldObj;
 
-	                if (AnimalWatcherEntity.getDistanceSqFromDeltas(this.posX - (double)((float)x + 0.5F), this.getCenterPosYForBlockDestroying() - (double)((float)y + 0.5F), this.posZ - (double)((float)z + 0.5F)) > 3.25D)
+	                if (AnimalWatcherEntity.getDistanceSqFromDeltas(this.getPosX() - (double)((float)x + 0.5F), this.getCenterPosYForBlockDestroying() - (double)((float)y + 0.5F), this.getPosZ() - (double)((float)z + 0.5F)) > 3.25D)
 	                {
 	                    return false;
 	                }
@@ -700,7 +700,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	        }
 	        else
 	        {
-	            return this.getPositionVec().distanceTo(new Vec3d(target.posX, target.getBoundingBox().minY, target.posZ)) <= (double)1.5;
+	            return this.getPositionVec().distanceTo(new Vec3d(target.getPosX(), target.getBoundingBox().minY, target.getPosZ())) <= (double)1.5;
 	        }
 	    }
 		

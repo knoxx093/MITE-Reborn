@@ -30,12 +30,14 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Food;
+import net.minecraft.item.Foods;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemTier;
 import net.minecraft.item.Items;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SoupItem;
@@ -84,7 +86,18 @@ public class ItemRegistry {
 	HARDENED_CLAY_OVEN, SANDSTONE_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
 	public static Item PEA_GRAVEL;
 	public static Item MANURE;
+	public static Item COBWEB_BLOCK;
+	
+	public static Item COPPER_ORE;
+	public static Item SILVER_ORE;
+	
+	public static Item SHINING_GRAVEL;
+	public static Item SHINING_PEA_GRAVEL;
+	
+	public static Item COPPER_PICKAXE, COPPER_AXE, COPPER_HATCHET, COPPER_SHOVEL, COPPER_SWORD, COPPER_HOE, COPPER_SHEARS, COPPER_WAR_HAMMER, COPPER_BATTLE_AXE, COPPER_MATTOCK, COPPER_KNIFE, COPPER_NUGGET, COPPER_INGOT;
+	public static Item SILVER_PICKAXE, SILVER_AXE, SILVER_HATCHET, SILVER_SHOVEL, SILVER_SWORD, SILVER_HOE, SILVER_SHEARS, SILVER_WAR_HAMMER, SILVER_BATTLE_AXE, SILVER_MATTOCK, SILVER_KNIFE, SILVER_NUGGET, SILVER_INGOT;
 
+	public static Item SALAD;
 
 
 	public static void setItemTiers(Item[] item, ItemTier original, SurvivalItemTier[] tiers) {
@@ -143,7 +156,7 @@ public class ItemRegistry {
 	private static <T, R extends MutableRegistry<T>> R register(String p_222939_0_, R p_222939_1_, Supplier<T> p_222939_2_) {
 		ResourceLocation resourcelocation = new ResourceLocation(p_222939_0_);
 		try {
-			Field f = Registry.class.getDeclaredField("field_218376_a");
+			Field f = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "LOCATION_TO_SUPPLIER" : "field_218376_a");
 			Resources.makeFieldAccessible(f);
 			Map<ResourceLocation, Supplier<?>> reg = (Map<ResourceLocation, Supplier<?>>) f.get(null);
 			reg.remove(resourcelocation);
@@ -434,7 +447,7 @@ public class ItemRegistry {
     			if (item == Items.NETHER_BRICK) maxStack.set(item, 8);
     			if (item == Items.IRON_INGOT) maxStack.set(item, 8);
     			if (item == Items.GOLD_INGOT) maxStack.set(item, 8);
-    			if (item == Items.ARROW) maxStack.set(item, 16);
+    			if (item == Items.ARROW) maxStack.set(item, 32);
     			
     		}
     	}catch (Exception e) {
@@ -478,8 +491,39 @@ public class ItemRegistry {
     			OBSIDIAN_FURNACE = new BlockItem(BlockRegistry.OBSIDIAN_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:obsidian_furnace")),
     			NETHERRACK_FURNACE = new BlockItem(BlockRegistry.NETHERRACK_FURNACE, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:netherrack_furnace")),
     			PEA_GRAVEL = new BlockItem(BlockRegistry.PEA_GRAVEL, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:pea_gravel")),
-    			MANURE = new ItemManure((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:manure"))
+    			MANURE = new ItemManure((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:manure")),
+    			COBWEB_BLOCK = new BlockItem(BlockRegistry.COBWEB_BLOCK, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:cobweb_block")),
+    			SHINING_GRAVEL = new BlockItem(BlockRegistry.SHINING_GRAVEL, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:shining_gravel")),
+    			SHINING_PEA_GRAVEL = new BlockItem(BlockRegistry.SHINING_PEA_GRAVEL, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:shining_pea_gravel")),
+    			COPPER_ORE = new BlockItem(BlockRegistry.COPPER_ORE, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_ore")),
+    			SILVER_ORE = new BlockItem(BlockRegistry.SILVER_ORE, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).maxStackSize(4)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_ore")),
+    			COPPER_NUGGET = new Item((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(32)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_nugget")),
+    			SILVER_NUGGET = new Item((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(32)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_nugget")),
+    	    	COPPER_INGOT = new Item((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_ingot")),
+    	    	SILVER_INGOT = new Item((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_ingot")),
+    			COPPER_PICKAXE = new PickaxeItem(SurvivalItemTier.COPPER_PICKAXE, 1, -2.0f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_pickaxe")),
+    			COPPER_AXE = new AxeItem(SurvivalItemTier.COPPER_AXE, 5, -3.1f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_axe")),
+    			COPPER_SHOVEL = new ShovelItem(SurvivalItemTier.COPPER_SHOVEL, 1.0f, -3.0f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_shovel")),
+    			COPPER_SWORD = new SwordItem(SurvivalItemTier.COPPER_SWORD, 3, -2.4F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_sword")),
+    			COPPER_KNIFE = new SwordItem(SurvivalItemTier.COPPER_SHORTSWORD, 2, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_knife")),
+    			COPPER_HOE = new HoeItem(SurvivalItemTier.COPPER_SHORTSWORD, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_hoe")),
+    			COPPER_HATCHET = new AxeItem(SurvivalItemTier.COPPER_HATCHET, 3, -2.5f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:copper_hatchet")),
+
+    			SILVER_PICKAXE = new PickaxeItem(SurvivalItemTier.COPPER_PICKAXE, 1, -2.0f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_pickaxe")),
+    			SILVER_AXE = new AxeItem(SurvivalItemTier.COPPER_AXE, 5, -3.1f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_axe")),
+    	    	SILVER_SHOVEL = new ShovelItem(SurvivalItemTier.COPPER_SHOVEL, 1.0f, -3.0f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_shovel")),
+    			SILVER_SWORD = new SwordItem(SurvivalItemTier.COPPER_SWORD, 3, -2.4F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_sword")),
+    			SILVER_KNIFE = new SwordItem(SurvivalItemTier.COPPER_SHORTSWORD, 2, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_knife")),
+    			SILVER_HOE = new HoeItem(SurvivalItemTier.COPPER_SHORTSWORD, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_hoe")),
+    			SILVER_HATCHET = new AxeItem(SurvivalItemTier.COPPER_HATCHET, 3, -2.5f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_hatchet")),
+    			SALAD = new SoupItem((new Item.Properties()).maxStackSize(1).group(ItemGroup.FOOD).food(buildStew(1, 1))).setRegistryName(new ResourceLocation("fiveminsurvival:salad"))
+
     			);
+    	
+    	//   public static final Item IRON_SHOVEL = register("iron_shovel", new ShovelItem(ItemTier.IRON, 1.5F, -3.0F, (new Item.Properties()).group(ItemGroup.TOOLS)));
+
+    	  //new PickaxeItem(ItemTier.IRON, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
+
     	try {
     		Field f = Item.class.getDeclaredField(FiveMinSurvival.DEBUG ? "maxDamage" : "field_77699_b"); //maxDamage
     		Resources.makeFieldAccessible(f);
@@ -492,4 +536,8 @@ public class ItemRegistry {
     	FoodNutrients.init();
     	CraftingIngredients.init();
     }
+    
+    private static Food buildStew(int hunger, float saturation) {
+        return (new Food.Builder()).hunger(hunger).saturation(saturation).build();
+     }
 }

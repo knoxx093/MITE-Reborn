@@ -3,6 +3,7 @@ package kelvin.fiveminsurvival.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +16,7 @@ public class EntityRegistry {
 	public static EntityType<AnimalWatcherEntity> ZOMBIE_ENTITY;
 	public static EntityType<NewSkeletonEntity> SKELETON_ENTITY;
 	public static EntityType<EntityAttackSquid> ATTACK_SQUID;
+	public static final EntityType<CreeperEntity> CREEPER = register("fiveminsurvival:creeper", EntityType.Builder.create(CreeperEntity::new, EntityClassification.CREATURE).size(0.6F, 1.7F));
 
 	
 	private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {

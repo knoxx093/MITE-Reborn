@@ -71,7 +71,7 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 	    * Handles the food game logic.
 	    */
 	   public void tick(PlayerEntity player) {
-		  
+		  if (player.isCreative()) return;
 		   if (nutrients != null) {
 			   if (nutrients.happiness > 150) {
 				   nutrients.happiness = 150;
@@ -109,20 +109,20 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 				   NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SPacketSendNutrients(nutrients));
 			   }
 		   }
-		   this.maxFoodLevel = (player.experienceLevel / 5) * 2 + 8;
+		   this.maxFoodLevel = (player.experienceLevel / 5) * 2 + 6;
 		   if (this.maxFoodLevel > 20) this.maxFoodLevel = 20;
 		   
-		   if (this.nutrients != null) {
-			   if (nutrients.negativeLevel >= 5) {
-				   maxFoodLevel = 6;
-			   }
-			   if (nutrients.negativeLevel >= 15) {
-				   maxFoodLevel = 4;
-			   }
-			   if (nutrients.negativeLevel >= 25) {
-				   maxFoodLevel = 2;
-			   }
-		   }
+//		   if (this.nutrients != null) {
+//			   if (nutrients.negativeLevel >= 5) {
+//				   maxFoodLevel = 6;
+//			   }
+//			   if (nutrients.negativeLevel >= 15) {
+//				   maxFoodLevel = 4;
+//			   }
+//			   if (nutrients.negativeLevel >= 25) {
+//				   maxFoodLevel = 2;
+//			   }
+//		   }
 
 //		   if (this.foodLevel > maxFoodLevel) this.foodLevel = maxFoodLevel;
 		   ++this.foodTimer2;
@@ -142,9 +142,7 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 	            
 	            if (this.foodLevel <= 0) 
 	            {
-	            	if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL) {
-	 	               player.attackEntityFrom(DamageSource.STARVE, 1.0F);
-	 	            }
+ 	               player.attackEntityFrom(DamageSource.STARVE, 1.0F);
 	            }
 	         }
 	      }

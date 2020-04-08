@@ -32,7 +32,9 @@ public class MITEPlayerContainer extends PlayerContainer {
    private final PlayerEntity player;
 
    public MITEPlayerContainer(PlayerInventory playerInventory, boolean localWorld, PlayerEntity playerIn) {
+	   
       super(playerInventory, localWorld, playerIn);
+      
       this.isLocalWorld = localWorld;
       this.player = playerIn;
       this.addSlot(new CraftingResultSlot(playerInventory.player, this.field_75181_e, this.field_75179_f, 0, 154, 28));
@@ -120,7 +122,7 @@ public class MITEPlayerContainer extends PlayerContainer {
     * Called when the container is closed.
     */
    public void onContainerClosed(PlayerEntity playerIn) {
-	   
+
       super.onContainerClosed(playerIn);
       this.field_75179_f.clear();
       if (!playerIn.world.isRemote) {
@@ -140,7 +142,7 @@ public class MITEPlayerContainer extends PlayerContainer {
     * inventory and the other inventory(s).
     */
    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-	   
+
 
       ItemStack itemstack = ItemStack.EMPTY;
       Slot slot = this.inventorySlots.get(index);

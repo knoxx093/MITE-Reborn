@@ -106,7 +106,7 @@ public class EntityAIWatchAnimal extends Goal {
                     else
                     {
 //                        Vec3Pool var10 = world.getWorldVec3Pool();
-                        boolean var11 = isAirOrPassableBlock(this.digger.getBlockPosX(), MathHelper.floor(this.digger.getEyePosForBlockDestroying().getY() + 1.0D), this.digger.getBlockPosZ(), false, digger.getEntityWorld()) && checkForLineOfPhysicalReach(new Vec3d(this.digger.posX, this.digger.getEyePosForBlockDestroying().getY() + 1.0D, this.digger.posZ), target.getPositionVec().add(0, target.getHeight() * 0.75, 0), digger.getEntityWorld());
+                        boolean var11 = isAirOrPassableBlock(this.digger.getBlockPosX(), MathHelper.floor(this.digger.getEyePosForBlockDestroying().getY() + 1.0D), this.digger.getBlockPosZ(), false, digger.getEntityWorld()) && checkForLineOfPhysicalReach(new Vec3d(this.digger.getPosX(), this.digger.getEyePosForBlockDestroying().getY() + 1.0D, this.digger.getPosZ()), target.getPositionVec().add(0, target.getHeight() * 0.75, 0), digger.getEntityWorld());
 
                         if (distance_to_target > (var11 ? 8.0F : (this.digger.isFrenzied() ? 6.0F : 4.0F)))
                         {
@@ -115,7 +115,7 @@ public class EntityAIWatchAnimal extends Goal {
                         }
                         else
                         {
-                            Path var12 = this.digger.getNavigator().getPathToEntityLiving(target, 16);
+                            Path var12 = this.digger.getNavigator().getPathToEntity(target, 16);
 
                             if (!this.digger.getNavigator().noPath())
                             {
@@ -261,7 +261,7 @@ public class EntityAIWatchAnimal extends Goal {
         }
         else
         {
-            Path path = this.digger.getNavigator().getPathToEntityLiving(target, 16);
+            Path path = this.digger.getNavigator().getPathToEntity(target, 16);
             
             if (path == null)
             {
@@ -274,7 +274,7 @@ public class EntityAIWatchAnimal extends Goal {
                 float y = (float)final_point.y;
                 float z = (float)final_point.z + 0.5F;
                 World var10000 = this.digger.worldObj;
-                return Resources.getDistanceFromDeltas((double)x - target.posX, (double)y - target.posY, (double)z - target.posZ) > 1.0F ? false : !this.getIntersectingBlock(new Vec3d((double)x, (double)y, (double)z), this.digger.getTargetEntityCenterPosForBlockDestroying(target), this.digger.getEntityWorld()).isBlock();
+                return Resources.getDistanceFromDeltas((double)x - target.getPosX(), (double)y - target.getPosY(), (double)z - target.getPosZ()) > 1.0F ? false : !this.getIntersectingBlock(new Vec3d((double)x, (double)y, (double)z), this.digger.getTargetEntityCenterPosForBlockDestroying(target), this.digger.getEntityWorld()).isBlock();
             }
         }
     }
@@ -290,8 +290,8 @@ public class EntityAIWatchAnimal extends Goal {
         else
         {
             World var10000 = this.digger.worldObj;
-            double distance = (double)Resources.getDistanceFromDeltas(this.digger.posX - target.posX, this.digger.posY - target.posY, this.digger.posZ - target.posZ);
-            Path path = this.digger.getNavigator().getPathToEntityLiving(target, 16);
+            double distance = (double)Resources.getDistanceFromDeltas(this.digger.getPosX() - target.getPosX(), this.digger.getPosY() - target.getPosY(), this.digger.getPosZ() - target.getPosZ());
+            Path path = this.digger.getNavigator().getPathToEntity(target, 16);
             
             if (path == null)
             {
@@ -305,7 +305,7 @@ public class EntityAIWatchAnimal extends Goal {
                 float y = (float)final_point.y;
                 float z = (float)final_point.z + 0.5F;
                 var10000 = this.digger.worldObj;
-                return (double)Resources.getDistanceFromDeltas((double)x - target.posX, (double)y - target.posY, (double)z - target.posZ) < distance - 2.0D;
+                return (double)Resources.getDistanceFromDeltas((double)x - target.getPosX(), (double)y - target.getPosY(), (double)z - target.getPosZ()) < distance - 2.0D;
             }
         }
     }

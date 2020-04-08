@@ -47,7 +47,9 @@ public class CraftingIngredients {
 		register(Items.ARROW, CraftingIngredient.NO_WORKBENCH, 20);
 		register(Items.BOW, CraftingIngredient.NO_WORKBENCH, 40);
 		register(Items.REDSTONE, CraftingIngredient.NO_WORKBENCH, 10);
-		register(Items.IRON_INGOT, CraftingIngredient.IRON_CRAFTING_TABLE, 20 * 3);
+		register(ItemRegistry.COPPER_INGOT, CraftingIngredient.COPPER_CRAFTING_TABLE, 20 * 2);
+		register(ItemRegistry.SILVER_INGOT, CraftingIngredient.COPPER_CRAFTING_TABLE, 20 * 2);
+		register(Items.IRON_INGOT, CraftingIngredient.COPPER_CRAFTING_TABLE, 20 * 3);
 		register(Items.GOLD_INGOT, CraftingIngredient.COPPER_CRAFTING_TABLE, 20 * 3);
 		register(Items.COAL, CraftingIngredient.NO_WORKBENCH, 10);
 		register(Items.LAPIS_LAZULI, CraftingIngredient.NO_WORKBENCH, 10);
@@ -59,6 +61,9 @@ public class CraftingIngredients {
 		register(Items.POTATO, CraftingIngredient.NO_WORKBENCH, 20);
 		register(Items.CHARCOAL, CraftingIngredient.NO_WORKBENCH, 10);
 		register(Items.INK_SAC, CraftingIngredient.NO_WORKBENCH, 40);
+		register(ItemRegistry.COPPER_NUGGET, CraftingIngredient.NO_WORKBENCH, (int)((20 * 2) / 9.0));
+		register(ItemRegistry.SILVER_NUGGET, CraftingIngredient.NO_WORKBENCH, (int)((20 * 2) / 9.0));
+
 		register(Items.IRON_NUGGET, CraftingIngredient.NO_WORKBENCH, (int)((20 * 3) / 9.0));
 		register(Items.GOLD_NUGGET, CraftingIngredient.NO_WORKBENCH, (int)((15 * 3) / 9.0));
 		register(Items.GOLD_BLOCK, CraftingIngredient.COPPER_CRAFTING_TABLE, 15 * 3 * 9);
@@ -71,7 +76,7 @@ public class CraftingIngredients {
 		register(Material.EARTH, CraftingIngredient.NO_WORKBENCH, 10);
 		register(Material.GLASS, CraftingIngredient.NO_WORKBENCH, 10);
 		register(Material.GOURD, CraftingIngredient.NO_WORKBENCH, 20 * 5);
-		register(Material.IRON, CraftingIngredient.IRON_CRAFTING_TABLE, 20 * 3 * 9);
+		register(Material.IRON, CraftingIngredient.COPPER_CRAFTING_TABLE, 20 * 3 * 9);
 		register(Material.PLANTS, CraftingIngredient.NO_WORKBENCH, 20);
 		register(Material.OCEAN_PLANT, CraftingIngredient.NO_WORKBENCH, 20);
 		register(Material.ROCK, CraftingIngredient.FLINT_CRAFTING_TABLE, 20);

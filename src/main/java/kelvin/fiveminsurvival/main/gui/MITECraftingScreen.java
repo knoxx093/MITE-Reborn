@@ -67,12 +67,12 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
    protected void init() {
       super.init();
       this.widthTooNarrow = this.width < 379;
-      this.recipeBookGui.func_201520_a(this.width, this.height, this.minecraft, this.widthTooNarrow, this.container);
+      this.recipeBookGui.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.container);
       this.guiLeft = this.recipeBookGui.updateScreenPosition(this.widthTooNarrow, this.width, this.xSize);
       this.children.add(this.recipeBookGui);
-      this.func_212928_a(this.recipeBookGui);
+      this.setFocusedDefault(this.recipeBookGui);
       this.addButton(new ImageButton(this.guiLeft + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (p_214076_1_) -> {
-         this.recipeBookGui.func_201518_a(this.widthTooNarrow);
+         this.recipeBookGui.initSearchBar(this.widthTooNarrow);
          this.recipeBookGui.toggleVisibility();
          this.guiLeft = this.recipeBookGui.updateScreenPosition(this.widthTooNarrow, this.width, this.xSize);
          ((ImageButton)p_214076_1_).setPosition(this.guiLeft + 5, this.height / 2 - 49);
@@ -295,7 +295,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 		   if (this.crafting == true) {
 
 			   if (this.craftTimer < maxCraftTimer) {
-				   this.craftTimer += 1;
+				   this.craftTimer += 1 + Minecraft.getInstance().player.experienceLevel * 0.01f;
 				   this.canCraft = false;
 			   } else {
 				   this.canCraft = true;
@@ -354,7 +354,8 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
       super.removed();
    }
 
-   public RecipeBookGui func_194310_f() {
-      return this.recipeBookGui;
-   }
+	@Override
+	public RecipeBookGui getRecipeGui() {
+		return this.recipeBookGui;
+	}
 }

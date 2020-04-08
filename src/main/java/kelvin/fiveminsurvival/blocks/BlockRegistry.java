@@ -41,6 +41,11 @@ public class BlockRegistry {
 	SANDSTONE_OVEN, HARDENED_CLAY_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
 	public static Block PEA_GRAVEL;
 	public static Block CAMPFIRE_LOW;
+	public static Block COBWEB_BLOCK;
+	public static Block COPPER_ORE;
+	public static Block SILVER_ORE;
+	public static Block SHINING_GRAVEL;
+	public static Block SHINING_PEA_GRAVEL;
 
 	
 	public static Registry<Block> newBlocks;
@@ -51,7 +56,7 @@ public class BlockRegistry {
 	private static <T, R extends MutableRegistry<T>> R register(String p_222939_0_, R p_222939_1_, Supplier<T> p_222939_2_) {
 		ResourceLocation resourcelocation = new ResourceLocation(p_222939_0_);
 		try {
-			Field f = Registry.class.getDeclaredField("field_218376_a");
+			Field f = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "LOCATION_TO_SUPPLIER" : "field_218376_a");
 			Resources.makeFieldAccessible(f);
 			Map<ResourceLocation, Supplier<?>> reg = (Map<ResourceLocation, Supplier<?>>) f.get(null);
 			reg.remove(resourcelocation);
@@ -134,7 +139,13 @@ public class BlockRegistry {
     		NETHERRACK_FURNACE = register("fiveminsurvival:netherrack_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.NETHERRACK));
     		PEA_GRAVEL = register("fiveminsurvival:pea_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
     		CAMPFIRE_LOW = register("fiveminsurvival:campfire_low", new CampfireBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15).tickRandomly()));
-    		
+    		SHINING_PEA_GRAVEL = register("fiveminsurvival:shining_pea_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
+    		SHINING_GRAVEL = register("fiveminsurvival:shining_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
+
+    		COPPER_ORE = register("fiveminsurvival:copper_ore", new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
+    		SILVER_ORE = register("fiveminsurvival:silver_ore", new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
+
+    		COBWEB_BLOCK = register("fiveminsurvival:cobweb_block", new Block(Block.Properties.create(Material.WOOL, MaterialColor.IRON).hardnessAndResistance(0.25f).sound(SoundType.CLOTH)));
     		Field BLOCK = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BLOCK" : "field_212618_g");
     		Resources.makeFieldAccessible(BLOCK);
     		BLOCK.set(null, newBlocks);

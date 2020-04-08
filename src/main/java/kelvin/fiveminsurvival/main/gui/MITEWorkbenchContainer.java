@@ -96,7 +96,7 @@ public class MITEWorkbenchContainer extends RecipeBookContainer<CraftingInventor
 	      });
 	   }
 
-	   public void func_201771_a(RecipeItemHelper p_201771_1_) {
+	   public void fillStackedContents(RecipeItemHelper p_201771_1_) {
 	      this.field_75162_e.fillStackedContents(p_201771_1_);
 	   }
 

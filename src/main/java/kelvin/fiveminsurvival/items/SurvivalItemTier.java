@@ -12,7 +12,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 
 public enum SurvivalItemTier implements IItemTier {
 	   WOOD_PICKAXE(0, 10, 2.0F, 0.0F, 15, () -> {
@@ -24,6 +24,9 @@ public enum SurvivalItemTier implements IItemTier {
 	   IRON_PICKAXE(2, 50, 3.0F, 2.0F, 14, () -> {
 	      return Ingredient.fromItems(Items.IRON_INGOT);
 	   }, PickaxeItem.class),
+	   COPPER_PICKAXE(2, 15, 0.5F, 1.5F, 14, () -> {
+		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+		   }, PickaxeItem.class),
 	   DIAMOND_PICKAXE(3, 150, 4.0F, 3.0F, 10, () -> {
 	      return Ingredient.fromItems(Items.DIAMOND);
 	   }, PickaxeItem.class),
@@ -40,6 +43,9 @@ public enum SurvivalItemTier implements IItemTier {
 	   STONE_AXE(1, 3, 1.0F, 1.0F, 5, () -> {
 	      return Ingredient.fromItems(Blocks.COBBLESTONE);
 	   }, AxeItem.class),
+	   COPPER_AXE(2, 15, 1.5F, 1.5F, 14, () -> {
+		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+		   }, AxeItem.class),
 	   IRON_AXE(2, 50, 3.0F, 2.0F, 14, () -> {
 	      return Ingredient.fromItems(Items.IRON_INGOT);
 	   }, AxeItem.class),
@@ -59,6 +65,9 @@ public enum SurvivalItemTier implements IItemTier {
 		   STONE_HOE(1, 3, 1.0F, 1.0F, 5, () -> {
 		      return Ingredient.fromItems(Blocks.COBBLESTONE);
 		   }, HoeItem.class),
+		   COPPER_HOE(2, 15, 1.5F, 1.5F, 14, () -> {
+			      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+			   }, HoeItem.class),
 		   IRON_HOE(2, 50, 3.0F, 2.0F, 14, () -> {
 		      return Ingredient.fromItems(Items.IRON_INGOT);
 		   }, HoeItem.class),
@@ -78,6 +87,9 @@ public enum SurvivalItemTier implements IItemTier {
 			   STONE_SWORD(1, 3, 1.0F, 1.0F, 5, () -> {
 			      return Ingredient.fromItems(Blocks.COBBLESTONE);
 			   }, SwordItem.class),
+			   COPPER_SWORD(2, 30, 1.5F, 1.5F, 14, () -> {
+				      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+				   }, SwordItem.class),
 			   IRON_SWORD(2, 50, 3.0F, 2.0F, 14, () -> {
 			      return Ingredient.fromItems(Items.IRON_INGOT);
 			   }, SwordItem.class),
@@ -96,6 +108,9 @@ public enum SurvivalItemTier implements IItemTier {
 				   STONE_HATCHET(1, 3, 1.0F, 1.0F, 5, () -> {
 				      return Ingredient.fromItems(Blocks.COBBLESTONE);
 				   }, HatchetItem.class),
+				   COPPER_HATCHET(2, 15, 1.5F, 1.5F, 14, () -> {
+					      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+					   }, HatchetItem.class),
 				   IRON_HATCHET(2, 50, 3.0F, 2.0F, 14, () -> {
 				      return Ingredient.fromItems(Items.IRON_INGOT);
 				   }, HatchetItem.class),
@@ -114,6 +129,9 @@ public enum SurvivalItemTier implements IItemTier {
 					   STONE_SHORTSWORD(1, 3, 1.0F, 1.0F, 5, () -> {
 					      return Ingredient.fromItems(Blocks.COBBLESTONE);
 					   }, ShortswordItem.class),
+					   COPPER_SHORTSWORD(2, 20, 1.5F, 1.5F, 14, () -> {
+						      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+						   }, ShortswordItem.class),
 					   IRON_SHORTSWORD(2, 50, 3.0F, 2.0F, 14, () -> {
 					      return Ingredient.fromItems(Items.IRON_INGOT);
 					   }, ShortswordItem.class),
@@ -132,6 +150,9 @@ public enum SurvivalItemTier implements IItemTier {
 						   STONE_SHOVEL(1, 3, 1.0F, 1.0F, 5, () -> {
 						      return Ingredient.fromItems(Blocks.COBBLESTONE);
 						   }, ShovelItem.class),
+						   COPPER_SHOVEL(2, 15, 1.5F, 1.5F, 14, () -> {
+							      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+							   }, ShovelItem.class),
 						   IRON_SHOVEL(2, 50, 3.0F, 2.0F, 14, () -> {
 						      return Ingredient.fromItems(Items.IRON_INGOT);
 						   }, ShovelItem.class),
@@ -157,7 +178,7 @@ public enum SurvivalItemTier implements IItemTier {
 	   private final float efficiency;
 	   private final float attackDamage;
 	   private final int enchantability;
-	   private final LazyLoadBase<Ingredient> repairMaterial;
+	   private final LazyValue<Ingredient> repairMaterial;
 	   private final Class itemClass;
 	   private SurvivalItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn, Class itemClass) {
 	      this.harvestLevel = harvestLevelIn;
@@ -166,7 +187,7 @@ public enum SurvivalItemTier implements IItemTier {
 	      this.efficiency = efficiencyIn;
 	      this.attackDamage = attackDamageIn;
 	      this.enchantability = enchantabilityIn;
-	      this.repairMaterial = new LazyLoadBase<>(repairMaterialIn);
+	      this.repairMaterial = new LazyValue<>(repairMaterialIn);
 	      this.itemClass = itemClass;
 	     
 	   }

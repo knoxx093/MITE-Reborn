@@ -72,10 +72,10 @@ public class SpearEntity extends AbstractArrowEntity {
 	         this.dealtDamage = true;
 	      }
 	      
-	      System.out.println(this.getPosition());
+//	      System.out.println(this.getPosition());
 
 	      Entity entity = this.getShooter();
-	      if ((this.dealtDamage || this.func_203047_q()) && entity != null) {
+	      if ((this.dealtDamage || this.getNoClip()) && entity != null) {
 	         int i = this.dataManager.get(LOYALTY_LEVEL);
 	         if (i > 0 && !this.shouldReturnToThrower()) {
 	            if (!this.world.isRemote && this.pickupStatus == AbstractArrowEntity.PickupStatus.ALLOWED) {
@@ -84,11 +84,11 @@ public class SpearEntity extends AbstractArrowEntity {
 
 	            this.remove();
 	         } else if (i > 0) {
-	            this.func_203045_n(true);
-	            Vec3d vec3d = new Vec3d(entity.posX - this.posX, entity.posY + (double)entity.getEyeHeight() - this.posY, entity.posZ - this.posZ);
-	            this.posY += vec3d.y * 0.015D * (double)i;
+	            this.setNoClip(true);
+	            Vec3d vec3d = new Vec3d(entity.getPosX() - this.getPosX(), entity.getPosY() + (double)entity.getEyeHeight() - this.getPosY(), entity.getPosZ() - this.getPosZ());
+	            this.setPosition(getPosX(), vec3d.y * 0.015D * (double)i, getPosZ());
 	            if (this.world.isRemote) {
-	               this.lastTickPosY = this.posY;
+	               this.lastTickPosY = this.getPosY();
 	            }
 
 	            double d0 = 0.05D * (double)i;
@@ -119,10 +119,12 @@ public class SpearEntity extends AbstractArrowEntity {
 
 	   @Nullable
 	   protected EntityRayTraceResult func_213866_a(Vec3d p_213866_1_, Vec3d p_213866_2_) {
-	      return this.dealtDamage ? null : super.func_213866_a(p_213866_1_, p_213866_2_);
+	      return this.dealtDamage ? null : super.rayTraceEntities(p_213866_1_, p_213866_2_);
 	   }
 
-	   protected void func_213868_a(EntityRayTraceResult p_213868_1_) {
+	   protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
+
+		   
 	      Entity entity = p_213868_1_.getEntity();
 	      float f = 1.0F;
 	      if (entity instanceof LivingEntity) {
@@ -148,7 +150,7 @@ public class SpearEntity extends AbstractArrowEntity {
 	      float f1 = 1.0F;
 	      if (this.world instanceof ServerWorld && this.world.isThundering() && EnchantmentHelper.hasChanneling(this.thrownStack)) {
 	         BlockPos blockpos = entity.getPosition();
-	         if (this.world.isSkyLightMax(blockpos)) {
+	        if (this.world.canBlockSeeSky(blockpos)) {
 	            LightningBoltEntity lightningboltentity = new LightningBoltEntity(this.world, (double)blockpos.getX() + 0.5D, (double)blockpos.getY(), (double)blockpos.getZ() + 0.5D, false);
 	            lightningboltentity.setCaster(entity1 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity1 : null);
 	            ((ServerWorld)this.world).addLightningBolt(lightningboltentity);
@@ -158,6 +160,7 @@ public class SpearEntity extends AbstractArrowEntity {
 	      }
 
 	      this.playSound(soundevent, f1, 1.0F);
+	      
 	   }
 
 	   protected SoundEvent func_213867_k() {
@@ -196,7 +199,7 @@ public class SpearEntity extends AbstractArrowEntity {
 	   protected void tryDespawn() {
 	      int i = this.dataManager.get(LOYALTY_LEVEL);
 	      if (this.pickupStatus != AbstractArrowEntity.PickupStatus.ALLOWED || i <= 0) {
-	         super.tryDespawn();
+	         super.checkDespawn();
 	      }
 
 	   }

@@ -150,7 +150,7 @@ public class NearestEdibleFoodGoal extends Goal {
     */
    private boolean canEasilyReach(LivingEntity target) {
       this.targetSearchDelay = 10 + this.goalOwner.getRNG().nextInt(5);
-      Path path = this.goalOwner.getNavigator().getPathToEntityLiving(target, 0);
+      Path path = this.goalOwner.getNavigator().getPathToEntity(target, 0);
       if (path == null) {
          return false;
       } else {
@@ -158,8 +158,8 @@ public class NearestEdibleFoodGoal extends Goal {
          if (pathpoint == null) {
             return false;
          } else {
-            int i = pathpoint.x - MathHelper.floor(target.posX);
-            int j = pathpoint.z - MathHelper.floor(target.posZ);
+            int i = pathpoint.x - MathHelper.floor(target.getPosX());
+            int j = pathpoint.z - MathHelper.floor(target.getPosZ());
             return (double)(i * i + j * j) <= 2.25D;
          }
       }

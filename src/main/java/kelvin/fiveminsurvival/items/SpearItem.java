@@ -85,8 +85,9 @@ public class SpearItem extends Item {
 		                     p_220047_1_.sendBreakAnimation(entityLiving.getActiveHand());
 		                  });
 		                  if (j == 0) {
+		                	  
 		                     SpearEntity tridententity = new SpearEntity(worldIn, playerentity, stack);
-		                     tridententity.shoot(playerentity, playerentity.rotationPitch, playerentity.rotationYaw, 0.0F, 2.5F + (float)j * 0.5F, 1.0F);
+		                     tridententity.shoot(playerentity, playerentity.rotationPitch, playerentity.rotationYaw, 0.0F, (2.5F + (float)j * 0.5F) * 0.7F, 5.0F);
 		                     if (playerentity.abilities.isCreativeMode) {
 		                        tridententity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
 		                     }

@@ -3,6 +3,7 @@ package kelvin.fiveminsurvival.entity;
 import java.util.List;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -49,9 +50,9 @@ public class EntityAttackSquid extends SquidEntity {
 		if (target != null) {
 			if (target.isInWaterOrBubbleColumn()) {
 				squidstuff = true;
-				if (posX > target.posX) dirX = -1; else dirX = 1;
-				if (posY > target.posY) dirY = -1; else dirY = 1;
-				if (posZ > target.posZ) dirZ = -1; else dirZ = 1;
+				if (getPosX() > target.getPosX()) dirX = -1; else dirX = 1;
+				if (getPosY() > target.getPosY()) dirY = -1; else dirY = 1;
+				if (getPosZ() > target.getPosZ()) dirZ = -1; else dirZ = 1;
 				
 				double acceleration = 0.05f;
 				double speed = 2f;
@@ -87,8 +88,6 @@ public class EntityAttackSquid extends SquidEntity {
 				if (getPositionVec().distanceTo(target.getPositionVec()) <= 2) {
 					target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20 * 10, 2));
 					setMotion(getMotion().x, getMotion().y-0.1, getMotion().z);
-					target.setMotion(target.getMotion().x * 0.75, target.getMotion().y - 0.05f, target.getMotion().z * 0.75);
-					
 				}
 			}
 		}
@@ -135,7 +134,7 @@ public class EntityAttackSquid extends SquidEntity {
 	         }
 
 	         Vec3d vec3d = this.getMotion();
-	         float f1 = MathHelper.sqrt(func_213296_b(vec3d));
+	         float f1 = MathHelper.sqrt(horizontalMag(vec3d));
 	         this.renderYawOffset += (-((float)MathHelper.atan2(vec3d.x, vec3d.z)) * (180F / (float)Math.PI) - this.renderYawOffset) * 0.1F;
 	         this.rotationYaw = this.renderYawOffset;
 	         this.squidYaw = (float)((double)this.squidYaw + Math.PI * (double)this.rotateSpeed * 1.5D);

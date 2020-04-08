@@ -2,10 +2,10 @@ package kelvin.fiveminsurvival.main.gui;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import kelvin.fiveminsurvival.items.ItemRegistry;
 import kelvin.fiveminsurvival.main.FiveMinSurvival;
@@ -17,13 +17,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.DisplayEffectsScreen;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
-import net.minecraft.client.gui.screen.inventory.CraftingScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.widget.button.ImageButton;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +34,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -57,12 +56,22 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
 
    public MITEInventoryScreen(PlayerEntity player) {
       super(player.container, player.inventory, new TranslationTextComponent("container.crafting"));
-      try {
-	      Field container = PlayerEntity.class.getDeclaredField(FiveMinSurvival.DEBUG ? "container" : "field_71069_bz"); //container
-	      Resources.makeFieldAccessible(container);
-	      container.set(player, new MITEPlayerContainer(player.inventory, player.getEntityWorld().isRemote, player));
-      }catch (Exception e) {
-    	  e.printStackTrace();
+      if (player.isCreative() == false) {
+	      try {
+		      Field container = PlayerEntity.class.getDeclaredField(FiveMinSurvival.DEBUG ? "container" : "field_71069_bz"); //container
+		      Resources.makeFieldAccessible(container);
+		      container.set(player, new MITEPlayerContainer(player.inventory, player.getEntityWorld().isRemote, player));
+	      }catch (Exception e) {
+	    	  e.printStackTrace();
+	      }
+      } else {
+    	  try {
+		      Field container = PlayerEntity.class.getDeclaredField(FiveMinSurvival.DEBUG ? "container" : "field_71069_bz"); //container
+		      Resources.makeFieldAccessible(container);
+		      container.set(player, new PlayerContainer(player.inventory, player.getEntityWorld().isRemote, player));
+	      }catch (Exception e) {
+	    	  e.printStackTrace();
+	      }
       }
       this.passEvents = true;
    }
@@ -82,13 +91,13 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
       } else {
          super.init();
          this.widthTooNarrow = this.width < 379;
-         this.recipeBookGui.func_201520_a(this.width, this.height, this.minecraft, this.widthTooNarrow, this.container);
+         this.recipeBookGui.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.container);
          this.field_212353_B = true;
          this.guiLeft = this.recipeBookGui.updateScreenPosition(this.widthTooNarrow, this.width, this.xSize);
          this.children.add(this.recipeBookGui);
-         this.func_212928_a(this.recipeBookGui);
+         this.setFocusedDefault(this.recipeBookGui);
          this.addButton(new ImageButton(this.guiLeft + 104, this.height / 2 - 22, 20, 18, 0, 0, 19, RECIPE_BUTTON_TEXTURE, (p_214086_1_) -> {
-            this.recipeBookGui.func_201518_a(this.widthTooNarrow);
+            this.recipeBookGui.initSearchBar(this.widthTooNarrow);
             this.recipeBookGui.toggleVisibility();
             this.guiLeft = this.recipeBookGui.updateScreenPosition(this.widthTooNarrow, this.width, this.xSize);
             ((ImageButton)p_214086_1_).setPosition(this.guiLeft + 104, this.height / 2 - 22);
@@ -168,44 +177,44 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
    /**
     * Draws an entity on the screen looking toward the cursor.
     */
-   public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity ent) {
-      GlStateManager.enableColorMaterial();
-      GlStateManager.pushMatrix();
-      GlStateManager.translatef((float)posX, (float)posY, 50.0F);
-      GlStateManager.scalef((float)(-scale), (float)scale, (float)scale);
-      GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
-      float f = ent.renderYawOffset;
-      float f1 = ent.rotationYaw;
-      float f2 = ent.rotationPitch;
-      float f3 = ent.prevRotationYawHead;
-      float f4 = ent.rotationYawHead;
-      GlStateManager.rotatef(135.0F, 0.0F, 1.0F, 0.0F);
-      RenderHelper.enableStandardItemLighting();
-      GlStateManager.rotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-      GlStateManager.rotatef(-((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-      ent.renderYawOffset = (float)Math.atan((double)(mouseX / 40.0F)) * 20.0F;
-      ent.rotationYaw = (float)Math.atan((double)(mouseX / 40.0F)) * 40.0F;
-      ent.rotationPitch = -((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F;
-      ent.rotationYawHead = ent.rotationYaw;
-      ent.prevRotationYawHead = ent.rotationYaw;
-      GlStateManager.translatef(0.0F, 0.0F, 0.0F);
-      EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
-      entityrenderermanager.setPlayerViewY(180.0F);
-      entityrenderermanager.setRenderShadow(false);
-      entityrenderermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-      entityrenderermanager.setRenderShadow(true);
-      ent.renderYawOffset = f;
-      ent.rotationYaw = f1;
-      ent.rotationPitch = f2;
-      ent.prevRotationYawHead = f3;
-      ent.rotationYawHead = f4;
-      GlStateManager.popMatrix();
-      RenderHelper.disableStandardItemLighting();
-      GlStateManager.disableRescaleNormal();
-      GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-      GlStateManager.disableTexture();
-      GlStateManager.activeTexture(GLX.GL_TEXTURE0);
-   }
+   public static void drawEntityOnScreen(int p_228187_0_, int p_228187_1_, int p_228187_2_, float p_228187_3_, float p_228187_4_, LivingEntity p_228187_5_) {
+	      float f = (float)Math.atan((double)(p_228187_3_ / 40.0F));
+	      float f1 = (float)Math.atan((double)(p_228187_4_ / 40.0F));
+	      RenderSystem.pushMatrix();
+	      RenderSystem.translatef((float)p_228187_0_, (float)p_228187_1_, 1050.0F);
+	      RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+	      MatrixStack matrixstack = new MatrixStack();
+	      matrixstack.translate(0.0D, 0.0D, 1000.0D);
+	      matrixstack.scale((float)p_228187_2_, (float)p_228187_2_, (float)p_228187_2_);
+	      Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+	      Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+	      quaternion.multiply(quaternion1);
+	      matrixstack.rotate(quaternion);
+	      float f2 = p_228187_5_.renderYawOffset;
+	      float f3 = p_228187_5_.rotationYaw;
+	      float f4 = p_228187_5_.rotationPitch;
+	      float f5 = p_228187_5_.prevRotationYawHead;
+	      float f6 = p_228187_5_.rotationYawHead;
+	      p_228187_5_.renderYawOffset = 180.0F + f * 20.0F;
+	      p_228187_5_.rotationYaw = 180.0F + f * 40.0F;
+	      p_228187_5_.rotationPitch = -f1 * 20.0F;
+	      p_228187_5_.rotationYawHead = p_228187_5_.rotationYaw;
+	      p_228187_5_.prevRotationYawHead = p_228187_5_.rotationYaw;
+	      EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+	      quaternion1.conjugate();
+	      entityrenderermanager.setCameraOrientation(quaternion1);
+	      entityrenderermanager.setRenderShadow(false);
+	      IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+	      entityrenderermanager.renderEntityStatic(p_228187_5_, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+	      irendertypebuffer$impl.finish();
+	      entityrenderermanager.setRenderShadow(true);
+	      p_228187_5_.renderYawOffset = f2;
+	      p_228187_5_.rotationYaw = f3;
+	      p_228187_5_.rotationPitch = f4;
+	      p_228187_5_.prevRotationYawHead = f5;
+	      p_228187_5_.rotationYawHead = f6;
+	      RenderSystem.popMatrix();
+	   }
 
    protected boolean isPointInRegion(int p_195359_1_, int p_195359_2_, int p_195359_3_, int p_195359_4_, double p_195359_5_, double p_195359_7_) {
       return (!this.widthTooNarrow || !this.recipeBookGui.isVisible()) && super.isPointInRegion(p_195359_1_, p_195359_2_, p_195359_3_, p_195359_4_, p_195359_5_, p_195359_7_);
@@ -349,7 +358,7 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
 		   if (this.crafting == true) {
 
 			   if (this.craftTimer < maxCraftTimer) {
-				   this.craftTimer += 1;
+				   this.craftTimer += 1 + Minecraft.getInstance().player.experienceLevel * 0.01f;
 				   this.canCraft = false;
 			   } else {
 				   this.canCraft = true;
@@ -409,7 +418,7 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
       super.removed();
    }
 
-   public RecipeBookGui func_194310_f() {
+   public RecipeBookGui getRecipeGui() {
       return this.recipeBookGui;
    }
 }

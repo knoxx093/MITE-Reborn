@@ -200,7 +200,8 @@ public class WorldStateHolder extends WorldSavedData {
 			}
 			
 		}
-		worldState.time = 6000L + 24000L * 9;
+		
+//		worldState.time = 15000L; //-> night
 		world.setDayTime(worldState.time);
 //		worldState.rainStrength = 0.0f;
 		NetworkHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new SPacketSendWorldState(worldState.time, worldState.rainStrength));
