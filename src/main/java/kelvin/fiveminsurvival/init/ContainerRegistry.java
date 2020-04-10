@@ -18,6 +18,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.function.Supplier;
+
 public class ContainerRegistry {
 
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, FiveMinSurvival.MODID);
@@ -25,9 +27,9 @@ public class ContainerRegistry {
 
     public static final RegistryObject<ContainerType<MITEWorkbenchContainer>> WORKBENCH = CONTAINERS.register("workbench", () -> new ContainerType<>(MITEWorkbenchContainer::new));
     public static final RegistryObject<ContainerType<MITEFurnaceContainer>> FURNACE = CONTAINERS.register("furnace", () -> new ContainerType<>(MITEFurnaceContainer::new));
-    public static final RegistryObject<TileEntityType<TileEntity>> FURNACE_TILE_ENTITY = register("furnace", TileEntityType.Builder.create(MITEFurnaceTileEntity::new, BlockRegistry.CLAY_OVEN.get(), BlockRegistry.SANDSTONE_OVEN.get(), BlockRegistry.COBBLESTONE_FURNACE.get(), BlockRegistry.OBSIDIAN_FURNACE.get(), BlockRegistry.NETHERRACK_FURNACE.get()));
+    public static final RegistryObject<TileEntityType<TileEntity>> FURNACE_TILE_ENTITY = register("furnace", () -> TileEntityType.Builder.create(MITEFurnaceTileEntity::new, BlockRegistry.CLAY_OVEN.get(), BlockRegistry.SANDSTONE_OVEN.get(), BlockRegistry.COBBLESTONE_FURNACE.get(), BlockRegistry.OBSIDIAN_FURNACE.get(), BlockRegistry.NETHERRACK_FURNACE.get()));
 
-    private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, TileEntityType.Builder<T> builder) {
+    private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(String name, Supplier<TileEntityType.Builder<T>> builder) {
         Type<?> type = null;
 
         try {
@@ -39,7 +41,7 @@ public class ContainerRegistry {
 
         }
 		Type<?> finalType = type;
-		return TILE_ENTITIES.register(name, () -> builder.build(finalType));
+		return TILE_ENTITIES.register(name, () -> builder.get().build(finalType));
     }
 
 }
