@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 @Mod.EventBusSubscriber(modid = FiveMinSurvival.MODID)
 public class RecipeRemover {
 
-    public static final List<Item> vanillaRecipesToRemove = Arrays.asList(Items.FURNACE, Items.CRAFTING_TABLE, Items.DIAMOND_AXE);
+    public static final List<Item> vanillaRecipesToRemove = Arrays.asList(Items.FURNACE, Items.CRAFTING_TABLE, Items.DIAMOND_AXE, Items.WOODEN_SWORD);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
