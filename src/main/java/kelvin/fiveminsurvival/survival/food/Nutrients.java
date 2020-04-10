@@ -1,15 +1,14 @@
 package kelvin.fiveminsurvival.survival.food;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-
-import kelvin.fiveminsurvival.main.FiveMinSurvival;
 import kelvin.fiveminsurvival.main.resources.Resources;
 import kelvin.fiveminsurvival.survival.world.WorldStateHolder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
 
 public class Nutrients implements Serializable {
 	

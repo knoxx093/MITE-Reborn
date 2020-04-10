@@ -34,7 +34,7 @@ public class MovingWord {
 			width += Minecraft.getInstance().fontRenderer.getCharWidth(c);
 		}
 		for (char c : text.toCharArray()) {
-			mtext.add(new MovingText(""+c, startX, startY, endX + posX - (width / 2), endY, lerp));
+			mtext.add(new MovingText(""+c, startX, startY, endX + posX - (width / 2.0F), endY, lerp));
 			posX += Minecraft.getInstance().fontRenderer.getCharWidth(c);
 			i++;
 		}

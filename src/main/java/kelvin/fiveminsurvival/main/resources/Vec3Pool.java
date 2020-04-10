@@ -11,7 +11,7 @@ public class Vec3Pool
     private final int minimumSize;
 
     /** items at and above nextFreeSpace are assumed to be available */
-    private final List vec3Cache = new ArrayList();
+    private final List<Vec3d> vec3Cache = new ArrayList<>();
     private int nextFreeSpace;
     private int maximumSizeSinceLastTruncation;
     private int resetCount;

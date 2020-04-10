@@ -59,7 +59,6 @@ public class AnimalWatcherEntity extends ZombieEntity {
     
     public int RECENTLY_HIT;
     public Random RAND;
-    private EntityType t;
     
     public AnimalWatcherEntity(EntityType<? extends ZombieEntity> type, World worldIn) {
         super(type, worldIn);
@@ -640,7 +639,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 		public boolean hasLineOfStrike(Vec3d target_pos)
 	    {
 			
-			List<Vec3d> target_points = new ArrayList<Vec3d>();
+			List<Vec3d> target_points = new ArrayList<>();
 	        target_points.add(getPositionVec());
 	        target_points.add(new Vec3d(getPositionVec().x, getPositionVec().y + getHeight() * 0.5, getPositionVec().z));
 	        target_points.add(new Vec3d(getPositionVec().x, getPositionVec().y + getHeight() * 0.75, getPositionVec().z));
@@ -654,7 +653,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	                return false;
 	            }
 	        }
-	        while (!Resources.getBlockCollisionForPhysicalReach((Vec3d)i.next(), target_pos, this.getEntityWorld()).isBlock());
+	        while (!Resources.getBlockCollisionForPhysicalReach(i.next(), target_pos, this.getEntityWorld()).isBlock());
 
 	        return true;
 	    }
@@ -662,7 +661,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 		
 		public boolean hasLineOfStrike(Entity target)
 	    {
-	        List<Vec3d> target_points = new ArrayList<Vec3d>();
+	        List<Vec3d> target_points = new ArrayList<>();
 	        target_points.add(target.getPositionVec());
 	        target_points.add(new Vec3d(target.getPositionVec().x, target.getPositionVec().y + target.getHeight() * 0.5, target.getPositionVec().z));
 	        target_points.add(new Vec3d(target.getPositionVec().x, target.getPositionVec().y + target.getHeight() * 0.75, target.getPositionVec().z));

@@ -32,7 +32,7 @@ public class NearestEdibleFoodGoal extends Goal {
    protected ItemEntity target;
    protected int unseenMemoryTicks = 60;
 
-   protected final Class targetClass = ItemEntity.class;
+   protected final Class<ItemEntity> targetClass = ItemEntity.class;
    protected final int targetChance;
    protected ItemEntity nearestTarget;
    /** This filter is applied to the Entity search. Only matching entities will be targeted. */

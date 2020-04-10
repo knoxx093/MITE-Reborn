@@ -18,7 +18,7 @@ public class Resources {
 	
 	public static boolean malnourished = false;
 	
-	public static void makeFieldAccessible(Field field) throws Exception {
+	public static void makeFieldAccessible(Field field) {
 		Field modifiers = ObfuscationReflectionHelper.findField(Field.class, "modifiers");
 		try {
 			modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);

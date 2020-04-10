@@ -76,7 +76,7 @@ public class RecipeRemover {
      *
      * @param recipeClass   The recipe class
      */
-    private static void removeRecipes(final Class<? extends IRecipe> recipeClass) {
+    private static void removeRecipes(final Class<? extends IRecipe<?>> recipeClass) {
         final int recipesRemoved = removeRecipes(recipeClass::isInstance);
 
         LOGGER.info("Removed {} recipe(s) for class {}", recipesRemoved, recipeClass);
