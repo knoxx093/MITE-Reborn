@@ -1,7 +1,5 @@
 package kelvin.fiveminsurvival.survival.world;
 
-import net.minecraft.world.World;
-
 public class Seasons {
 	public static final int SPRING = 0, SUMMER = 1, WINTER = 2, FALL = 3;
 	

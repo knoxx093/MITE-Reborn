@@ -1,7 +1,6 @@
 package kelvin.fiveminsurvival.entity.model;
 
 import kelvin.fiveminsurvival.entity.EntityRegistry;
-import kelvin.fiveminsurvival.entity.SpearEntity;
 import kelvin.fiveminsurvival.entity.model.render.SpearRenderer;
 import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
