@@ -42,7 +42,7 @@ public class Vec3Pool
             }
             else
             {
-                var7 = (Vec3d)this.vec3Cache.get(this.nextFreeSpace);
+                var7 = this.vec3Cache.get(this.nextFreeSpace);
                 var7.mul(0, 0, 0);
                 var7.add(par1, par3, par5);
             }

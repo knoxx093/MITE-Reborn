@@ -35,7 +35,7 @@ public class WorldStateHolder extends WorldSavedData {
 	
 	public int placeTick = 0;
 	
-	public class WorldState {
+	public static class WorldState {
 		public long time = 0;
 		public double timeCounter = 0;
 		public float rainStrength;

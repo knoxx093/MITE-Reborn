@@ -414,7 +414,7 @@ public class SurvivalEvents {
 		}
 		
 		if (event instanceof LivingSpawnEvent.CheckSpawn) {
-			if (!event.getEntity().removed)
+			if (event.getEntity().isAlive())
 			{
 				if (event.getEntity() instanceof CreeperEntity) {
 					if (event.getWorld().getRandom().nextInt() <= 7) {
@@ -430,7 +430,7 @@ public class SurvivalEvents {
 				}
 			}
 		} else {
-			if (!event.getEntity().removed) {
+			if (event.getEntity().isAlive()) {
 				if (event.getEntity() instanceof CreeperEntity) {
 					if (event instanceof LivingSpawnEvent.SpecialSpawn) 
 					if (event.getWorld().getRandom().nextInt() <= 7) {
