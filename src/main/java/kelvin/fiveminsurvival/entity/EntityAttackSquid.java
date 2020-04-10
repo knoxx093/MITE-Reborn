@@ -34,11 +34,11 @@ public class EntityAttackSquid extends SquidEntity {
 		List<? extends PlayerEntity> players = world.getPlayers();
 		PlayerEntity target = null;
 		double dist = 25;
-		for (int i = 0; i < players.size(); i++) {
-			double d1 = players.get(i).getPositionVec().distanceTo(getPositionVec());
+		for (PlayerEntity player : players) {
+			double d1 = player.getPositionVec().distanceTo(getPositionVec());
 			if (d1 <= dist) {
 				dist = d1;
-				target = players.get(i);
+				target = player;
 			}
 		}
 		int dirX = 0;

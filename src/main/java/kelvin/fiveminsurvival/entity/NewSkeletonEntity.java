@@ -32,7 +32,7 @@ public class NewSkeletonEntity extends AbstractSkeletonEntity {
 	    * Gives armor or weapon for entity based on given DifficultyInstance
 	    */
 	   protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		   ItemStack club = new ItemStack(ItemRegistry.WOODEN_CLUB);
+		   ItemStack club = new ItemStack(ItemRegistry.WOODEN_CLUB.get());
 		   club.setDamage(rand.nextInt(4) + 2);
 	      this.setItemStackToSlot(EquipmentSlotType.MAINHAND, club);
 	   }

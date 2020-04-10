@@ -134,9 +134,7 @@ public class NearestEdibleFoodGoal extends Goal {
                this.targetSearchStatus = this.canEasilyReach(p_220777_1_) ? 1 : 2;
             }
 
-            if (this.targetSearchStatus == 2) {
-               return false;
-            }
+            return this.targetSearchStatus != 2;
          }
 
          return true;

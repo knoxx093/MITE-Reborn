@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class Resources {
 	public static final int dayTicks = 24000; //one day is 24000 ticks
@@ -18,15 +19,12 @@ public class Resources {
 	public static boolean malnourished = false;
 	
 	public static void makeFieldAccessible(Field field) throws Exception {
-		Field modifiers = Field.class.getDeclaredField("modifiers");
-		modifiers.setAccessible(true);
+		Field modifiers = ObfuscationReflectionHelper.findField(Field.class, "modifiers");
 		try {
 			modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 			modifiers.setInt(field, field.getModifiers() & ~Modifier.PROTECTED);
 			modifiers.setInt(field, field.getModifiers() | Modifier.PUBLIC);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}

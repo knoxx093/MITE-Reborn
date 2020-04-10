@@ -21,11 +21,11 @@ public class ModelRegistry
     public static void registerAllModels(ModelRegistryEvent event)
     {
         //Entity
-    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SPEAR_ENTITY, manager -> new SpearRenderer(manager));
-    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SKELETON_ENTITY, manager -> new SkeletonRenderer(manager));
-    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.ATTACK_SQUID, manager -> new SquidRenderer(manager));
-    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.CREEPER, manager -> new CreeperRenderer(manager));
-    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.ZOMBIE_ENTITY, manager -> new ZombieRenderer(manager));
+    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SPEAR_ENTITY, SpearRenderer::new);
+    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SKELETON_ENTITY, SkeletonRenderer::new);
+    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.ATTACK_SQUID, SquidRenderer::new);
+    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.CREEPER, CreeperRenderer::new);
+    	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.ZOMBIE_ENTITY, ZombieRenderer::new);
 
 
     }

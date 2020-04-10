@@ -64,7 +64,7 @@ public class MITEPlayerContainer extends PlayerContainer {
              */
             public boolean canTakeStack(PlayerEntity playerIn) {
                ItemStack itemstack = this.getStack();
-               return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.canTakeStack(playerIn);
+               return (itemstack.isEmpty() || playerIn.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.canTakeStack(playerIn);
             }
 
             @Nullable

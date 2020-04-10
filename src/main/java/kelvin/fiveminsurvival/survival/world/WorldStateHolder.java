@@ -189,7 +189,7 @@ public class WorldStateHolder extends WorldSavedData {
 					state.fuel -= 20;
 				}
 				if (state.fuel <= 20 * 60) {
-					world.setBlockState(pos, BlockRegistry.CAMPFIRE_LOW.getDefaultState().with(CampfireBlock.LIT, Boolean.TRUE));
+					world.setBlockState(pos, BlockRegistry.CAMPFIRE_LOW.get().getDefaultState().with(CampfireBlock.LIT, Boolean.TRUE));
 				} else {
 					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.TRUE));
 				}

@@ -1,17 +1,11 @@
 package kelvin.fiveminsurvival.main.gui;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import kelvin.fiveminsurvival.items.ItemRegistry;
-import kelvin.fiveminsurvival.main.FiveMinSurvival;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredient;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredients;
-import kelvin.fiveminsurvival.main.resources.Resources;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -38,6 +32,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 @OnlyIn(Dist.CLIENT)
 public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> implements IRecipeShownListener {
@@ -58,16 +56,14 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
       super(player.container, player.inventory, new TranslationTextComponent("container.crafting"));
       if (!player.isCreative()) {
 	      try {
-		      Field container = PlayerEntity.class.getDeclaredField(FiveMinSurvival.DEBUG ? "container" : "field_71069_bz"); //container
-		      Resources.makeFieldAccessible(container);
+		      Field container = ObfuscationReflectionHelper.findField(PlayerEntity.class, "field_71069_bz"); //container
 		      container.set(player, new MITEPlayerContainer(player.inventory, player.getEntityWorld().isRemote, player));
 	      }catch (Exception e) {
 	    	  e.printStackTrace();
 	      }
       } else {
     	  try {
-		      Field container = PlayerEntity.class.getDeclaredField(FiveMinSurvival.DEBUG ? "container" : "field_71069_bz"); //container
-		      Resources.makeFieldAccessible(container);
+		      Field container = ObfuscationReflectionHelper.findField(PlayerEntity.class, "field_71069_bz"); //container
 		      container.set(player, new PlayerContainer(player.inventory, player.getEntityWorld().isRemote, player));
 	      }catch (Exception e) {
 	    	  e.printStackTrace();
@@ -225,7 +221,7 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
       if (this.recipeBookGui.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_)) {
          return true;
       } else {
-         return this.widthTooNarrow && this.recipeBookGui.isVisible() ? false : super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+         return (!this.widthTooNarrow || !this.recipeBookGui.isVisible()) && super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
       }
    }
 
@@ -283,15 +279,15 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
 	   Slot slot = this.container.inventorySlots.get(0);
 	   if (slot.getHasStack()) {
 		   Item item = slot.getStack().getItem();
-		   if (item == ItemRegistry.COPPER_CRAFTING_TABLE ||
-				   item == ItemRegistry.SILVER_CRAFTING_TABLE ||
-				   item == ItemRegistry.GOLD_CRAFTING_TABLE || 
-				   item == ItemRegistry.IRON_CRAFTING_TABLE ||
-				   item == ItemRegistry.MITHRIL_CRAFTING_TABLE ||
-				   item == ItemRegistry.ANCIENT_METAL_CRAFTING_TABLE ||
-				   item == ItemRegistry.ADAMANTIUM_CRAFTING_TABLE)
+		   if (item == ItemRegistry.COPPER_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.SILVER_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.GOLD_CRAFTING_TABLE.get() || 
+				   item == ItemRegistry.IRON_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.MITHRIL_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.ANCIENT_METAL_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.ADAMANTIUM_CRAFTING_TABLE.get())
 			   difficulty2 --;
-		   if (item == ItemRegistry.OBSIDIAN_CRAFTING_TABLE) difficulty2 = 0;
+		   if (item == ItemRegistry.OBSIDIAN_CRAFTING_TABLE.get()) difficulty2 = 0;
 	   }
 	   
 	   if (difficulty2 > 0) return difficulty2;
