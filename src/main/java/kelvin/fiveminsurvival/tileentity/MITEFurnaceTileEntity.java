@@ -1,6 +1,6 @@
 package kelvin.fiveminsurvival.tileentity;
 
-import kelvin.fiveminsurvival.main.gui.Containers;
+import kelvin.fiveminsurvival.main.gui.ContainerRegistry;
 import kelvin.fiveminsurvival.main.gui.MITEFurnaceContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,12 +13,12 @@ public class MITEFurnaceTileEntity extends AbstractFurnaceTileEntity {
 		public int HEAT_LEVEL;
 		
 		 public MITEFurnaceTileEntity() {
-		      super(Containers.FURNACE_TILE_ENTITY, IRecipeType.SMELTING);
+		      super(ContainerRegistry.FURNACE_TILE_ENTITY.get(), IRecipeType.SMELTING);
 		      this.HEAT_LEVEL = 0;
 		   }
 		
 	   public MITEFurnaceTileEntity(int HEAT_LEVEL) {
-	      super(Containers.FURNACE_TILE_ENTITY, IRecipeType.SMELTING);
+	      super(ContainerRegistry.FURNACE_TILE_ENTITY.get(), IRecipeType.SMELTING);
 	      this.HEAT_LEVEL = HEAT_LEVEL;
 	   }
 

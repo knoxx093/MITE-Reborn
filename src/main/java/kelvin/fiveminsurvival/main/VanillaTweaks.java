@@ -25,8 +25,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SoupItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Field;
 
@@ -115,7 +115,7 @@ public class VanillaTweaks {
 
             Field maxStack = ObfuscationReflectionHelper.findField(Item.class, "field_77777_bU"); //maxStackSize
 
-            for (Item item : Registry.ITEM) {
+            for (Item item : ForgeRegistries.ITEMS) {
                 if (item == null) {
                     System.out.println("null");
                     continue;
