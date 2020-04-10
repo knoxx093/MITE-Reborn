@@ -2,7 +2,7 @@ package kelvin.fiveminsurvival.blocks;
 
 import java.util.Random;
 
-import kelvin.fiveminsurvival.blocks.TileEntities.MITEFurnaceTileEntity;
+import kelvin.fiveminsurvival.tileentity.MITEFurnaceTileEntity;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

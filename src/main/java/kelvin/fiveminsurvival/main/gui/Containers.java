@@ -4,7 +4,7 @@ import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
 
 import kelvin.fiveminsurvival.blocks.BlockRegistry;
-import kelvin.fiveminsurvival.blocks.TileEntities.MITEFurnaceTileEntity;
+import kelvin.fiveminsurvival.tileentity.MITEFurnaceTileEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;

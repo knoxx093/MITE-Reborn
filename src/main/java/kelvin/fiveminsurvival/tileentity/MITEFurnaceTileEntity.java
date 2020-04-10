@@ -1,4 +1,4 @@
-package kelvin.fiveminsurvival.blocks.TileEntities;
+package kelvin.fiveminsurvival.tileentity;
 
 import kelvin.fiveminsurvival.main.gui.Containers;
 import kelvin.fiveminsurvival.main.gui.MITEFurnaceContainer;
