@@ -2,7 +2,7 @@ package kelvin.fiveminsurvival.main.crafting;
 
 import java.util.HashMap;
 
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;

@@ -3,7 +3,7 @@ package kelvin.fiveminsurvival.survival.food;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 

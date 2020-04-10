@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class MITEFurnaceBlock extends AbstractFurnaceBlock {
     public int HEAT_LEVEL;
 
-    protected MITEFurnaceBlock(Block.Properties builder, int HEAT_LEVEL) {
+    public MITEFurnaceBlock(Block.Properties builder, int HEAT_LEVEL) {
         super(builder);
         this.HEAT_LEVEL = HEAT_LEVEL;
     }

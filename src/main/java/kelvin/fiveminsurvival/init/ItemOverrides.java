@@ -1,5 +1,8 @@
-package kelvin.fiveminsurvival.items;
+package kelvin.fiveminsurvival.init;
 
+import kelvin.fiveminsurvival.items.CustomMilkBucketItem;
+import kelvin.fiveminsurvival.items.ItemBurnable;
+import kelvin.fiveminsurvival.items.MITEBoneMealItem;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockNamedItem;

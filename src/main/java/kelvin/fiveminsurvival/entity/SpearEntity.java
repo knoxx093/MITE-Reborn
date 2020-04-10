@@ -2,7 +2,8 @@ package kelvin.fiveminsurvival.entity;
 
 import javax.annotation.Nullable;
 
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.EntityRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -43,18 +44,18 @@ public class SpearEntity extends AbstractArrowEntity {
     }
 
     public SpearEntity(World p_i48790_1_, LivingEntity p_i48790_2_, ItemStack p_i48790_3_) {
-        super(EntityRegistry.SPEAR_ENTITY, p_i48790_2_, p_i48790_1_);
+        super(EntityRegistry.SPEAR_ENTITY.get(), p_i48790_2_, p_i48790_1_);
         this.thrownStack = p_i48790_3_.copy();
         this.dataManager.set(LOYALTY_LEVEL, (byte) EnchantmentHelper.getLoyaltyModifier(p_i48790_3_));
     }
 
     @OnlyIn(Dist.CLIENT)
     public SpearEntity(World p_i48791_1_, double p_i48791_2_, double p_i48791_4_, double p_i48791_6_) {
-        super(EntityRegistry.SPEAR_ENTITY, p_i48791_2_, p_i48791_4_, p_i48791_6_, p_i48791_1_);
+        super(EntityRegistry.SPEAR_ENTITY.get(), p_i48791_2_, p_i48791_4_, p_i48791_6_, p_i48791_1_);
     }
 
     public SpearEntity(World world) {
-        super(EntityRegistry.SPEAR_ENTITY, world);
+        super(EntityRegistry.SPEAR_ENTITY.get(), world);
     }
 
 

@@ -1,14 +1,14 @@
 package kelvin.fiveminsurvival.survival;
 
-import kelvin.fiveminsurvival.blocks.BlockRegistry;
+import kelvin.fiveminsurvival.init.BlockRegistry;
 import kelvin.fiveminsurvival.entity.AnimalWatcherEntity;
 import kelvin.fiveminsurvival.entity.EntityAttackSquid;
-import kelvin.fiveminsurvival.entity.EntityRegistry;
+import kelvin.fiveminsurvival.init.EntityRegistry;
 import kelvin.fiveminsurvival.entity.NewSkeletonEntity;
 import kelvin.fiveminsurvival.entity.goal.EnhancedPanicGoal;
 import kelvin.fiveminsurvival.entity.goal.RunFromPlayerGoal;
 import kelvin.fiveminsurvival.items.HatchetItem;
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import kelvin.fiveminsurvival.items.ShortswordItem;
 import kelvin.fiveminsurvival.main.resources.Resources;
 import kelvin.fiveminsurvival.survival.food.CustomFoodStats;

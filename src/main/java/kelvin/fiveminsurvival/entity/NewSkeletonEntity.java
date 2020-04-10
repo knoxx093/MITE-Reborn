@@ -2,7 +2,7 @@ package kelvin.fiveminsurvival.entity;
 
 import javax.annotation.Nullable;
 
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class NewSkeletonEntity extends AbstractSkeletonEntity {
 
-	protected NewSkeletonEntity(EntityType<? extends AbstractSkeletonEntity> type, World worldIn) {
+	public NewSkeletonEntity(EntityType<? extends AbstractSkeletonEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 	

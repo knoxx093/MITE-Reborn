@@ -68,7 +68,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 		this.RAND = rand;
      }
     
-	protected AnimalWatcherEntity(World worldIn) {
+	public AnimalWatcherEntity(World worldIn) {
 		super(worldIn);
 		this.goalSelector.addGoal(1, new EntityAIWatchAnimal(this));
 		this.worldObj = worldIn;

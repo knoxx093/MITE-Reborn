@@ -1,5 +1,6 @@
 package kelvin.fiveminsurvival.items;
 
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LogBlock;
 import net.minecraft.entity.item.ItemEntity;

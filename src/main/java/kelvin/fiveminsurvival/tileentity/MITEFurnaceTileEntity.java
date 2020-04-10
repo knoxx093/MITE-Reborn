@@ -1,6 +1,6 @@
 package kelvin.fiveminsurvival.tileentity;
 
-import kelvin.fiveminsurvival.main.gui.ContainerRegistry;
+import kelvin.fiveminsurvival.init.ContainerRegistry;
 import kelvin.fiveminsurvival.main.gui.MITEFurnaceContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

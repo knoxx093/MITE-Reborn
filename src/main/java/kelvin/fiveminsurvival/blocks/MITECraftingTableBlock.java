@@ -22,7 +22,7 @@ public class MITECraftingTableBlock extends Block {
 	private static final ITextComponent field_220271_a = new TranslationTextComponent("container.crafting");
 
 	private int table = CraftingIngredient.FLINT_CRAFTING_TABLE;
-	   protected MITECraftingTableBlock(Block.Properties properties, int table) {
+	   public MITECraftingTableBlock(Block.Properties properties, int table) {
 	      super(properties);
 	      this.table = table;
 	   }

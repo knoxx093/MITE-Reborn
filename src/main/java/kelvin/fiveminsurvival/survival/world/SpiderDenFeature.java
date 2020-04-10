@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import com.mojang.datafixers.Dynamic;
 
-import kelvin.fiveminsurvival.blocks.BlockRegistry;
+import kelvin.fiveminsurvival.init.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SkullBlock;

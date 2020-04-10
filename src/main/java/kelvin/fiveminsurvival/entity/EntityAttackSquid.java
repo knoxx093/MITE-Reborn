@@ -2,6 +2,7 @@ package kelvin.fiveminsurvival.entity;
 
 import java.util.List;
 
+import kelvin.fiveminsurvival.init.EntityRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.player.PlayerEntity;

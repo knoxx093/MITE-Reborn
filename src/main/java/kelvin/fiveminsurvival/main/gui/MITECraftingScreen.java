@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredient;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredients;
 import net.minecraft.block.Block;

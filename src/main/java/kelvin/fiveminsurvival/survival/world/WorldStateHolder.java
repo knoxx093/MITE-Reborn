@@ -3,7 +3,7 @@ package kelvin.fiveminsurvival.survival.world;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import kelvin.fiveminsurvival.blocks.BlockRegistry;
+import kelvin.fiveminsurvival.init.BlockRegistry;
 import kelvin.fiveminsurvival.main.network.NetworkHandler;
 import kelvin.fiveminsurvival.main.network.SPacketSendWorldState;
 import kelvin.fiveminsurvival.survival.food.CustomFoodStats;

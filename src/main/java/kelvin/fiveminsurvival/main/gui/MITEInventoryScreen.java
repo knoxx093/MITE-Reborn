@@ -3,7 +3,7 @@ package kelvin.fiveminsurvival.main.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import kelvin.fiveminsurvival.items.ItemRegistry;
+import kelvin.fiveminsurvival.init.ItemRegistry;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredient;
 import kelvin.fiveminsurvival.main.crafting.CraftingIngredients;
 import net.minecraft.block.Block;
