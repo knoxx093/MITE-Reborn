@@ -89,7 +89,7 @@ public class SpearItem extends Item {
 		                     }
 
 		                     worldIn.addEntity(tridententity);
-		                     worldIn.playMovingSound((PlayerEntity)null, tridententity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+		                     worldIn.playMovingSound(null, tridententity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
 		                     if (!playerentity.abilities.isCreativeMode) {
 		                        playerentity.inventory.deleteStack(stack);
 		                     }
@@ -108,11 +108,11 @@ public class SpearItem extends Item {
 		                  f1 = f1 * (f5 / f4);
 		                  f2 = f2 * (f5 / f4);
 		                  f3 = f3 * (f5 / f4);
-		                  playerentity.addVelocity((double)f1, (double)f2, (double)f3);
+		                  playerentity.addVelocity(f1, f2, f3);
 		                  playerentity.startSpinAttack(20);
 		                  if (playerentity.onGround) {
 		                     float f6 = 1.1999999F;
-		                     playerentity.move(MoverType.SELF, new Vec3d(0.0D, (double)1.1999999F, 0.0D));
+		                     playerentity.move(MoverType.SELF, new Vec3d(0.0D, 1.1999999F, 0.0D));
 		                  }
 
 		                  SoundEvent soundevent;
@@ -124,7 +124,7 @@ public class SpearItem extends Item {
 		                     soundevent = SoundEvents.ITEM_TRIDENT_RIPTIDE_1;
 		                  }
 
-		                  worldIn.playMovingSound((PlayerEntity)null, playerentity, soundevent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+		                  worldIn.playMovingSound(null, playerentity, soundevent, SoundCategory.PLAYERS, 1.0F, 1.0F);
 		               }
 
 		            }
@@ -175,7 +175,7 @@ public class SpearItem extends Item {
 		      Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
 		      if (equipmentSlot == EquipmentSlotType.MAINHAND) {
 		         multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION));
-		         multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double)-2.9F, AttributeModifier.Operation.ADDITION));
+		         multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -2.9F, AttributeModifier.Operation.ADDITION));
 		      }
 
 		      return multimap;

@@ -223,7 +223,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 
 	            if (block.getDefaultState().getMaterial() == Material.GLASS)
 	            {
-	                world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), Blocks.GLASS.getDefaultState().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, Blocks.GLASS.getDefaultState().getSoundType().getVolume() + 2.0F, Blocks.GLASS.getDefaultState().getSoundType().getPitch() * 1.0F, false);
+	                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, Blocks.GLASS.getDefaultState().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, Blocks.GLASS.getDefaultState().getSoundType().getVolume() + 2.0F, Blocks.GLASS.getDefaultState().getSoundType().getPitch() * 1.0F, false);
 	            }
 	            else
 	            {
@@ -322,7 +322,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 
 	    public static double getDistanceSqFromDeltas(float dx, float dy, float dz)
 	    {
-	        return (double)(dx * dx + dy * dy + dz * dz);
+	        return dx * dx + dy * dy + dz * dz;
 	    }
 
 	    public static double getDistanceSqFromDeltas(double dx, double dz)
@@ -332,7 +332,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 
 	    public static double getDistanceFromDeltas(double dx, double dz)
 	    {
-	        return (double)MathHelper.sqrt(getDistanceSqFromDeltas(dx, dz));
+	        return MathHelper.sqrt(getDistanceSqFromDeltas(dx, dz));
 	    }
 	    protected boolean canDestroyBlock(int x, int y, int z, boolean check_clipping)
 	    {
@@ -564,7 +564,7 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	        {
 	            if (this.destroy_pause_ticks == 0)
 	            {
-	                this.getLookController().setLookPosition((double)((float)this.destroy_block_x + 0.5F), (double)((float)this.destroy_block_y + 0.5F), (double)((float)this.destroy_block_z + 0.5F), 10.0F, (float)this.getVerticalFaceSpeed());
+	                this.getLookController().setLookPosition((float)this.destroy_block_x + 0.5F, (float)this.destroy_block_y + 0.5F, (float)this.destroy_block_z + 0.5F, 10.0F, (float)this.getVerticalFaceSpeed());
 
 	                if (!this.canDestroyBlock(this.destroy_block_x, this.destroy_block_y, this.destroy_block_z, true))
 	                {
@@ -700,12 +700,12 @@ public class AnimalWatcherEntity extends ZombieEntity {
 	        }
 	        else
 	        {
-	            return this.getPositionVec().distanceTo(new Vec3d(target.getPosX(), target.getBoundingBox().minY, target.getPosZ())) <= (double)1.5;
+	            return this.getPositionVec().distanceTo(new Vec3d(target.getPosX(), target.getBoundingBox().minY, target.getPosZ())) <= 1.5;
 	        }
 	    }
 		
 		public boolean hasLineOfStrikeAndTargetIsWithinStrikingDistance(LivingEntity target)
 	    {
-	        return this.isTargetWithinStrikingDistance(target) && this.hasLineOfStrike((Entity)target);
+	        return this.isTargetWithinStrikingDistance(target) && this.hasLineOfStrike(target);
 	    }
 }

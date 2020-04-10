@@ -381,8 +381,8 @@ public class SurvivalEvents {
 				world.setBlockState(pos, Blocks.STRIPPED_SPRUCE_LOG.getDefaultState().with(LogBlock.AXIS, world.getBlockState(pos).get(LogBlock.AXIS)));
 				cutLog = true;
 			}
-			if (cutLog == true) {
 				world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.STRIPPED_BARK, new Random().nextInt(2) + 1)));
+			if (cutLog) {
 //				world.playSound(event.getPlayer(), pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 		}
@@ -421,7 +421,7 @@ public class SurvivalEvents {
 						event.setResult(Result.DENY);
 					}
 				}
-				if (event.getWorld().getWorld().isDaytime() == false) {
+				if (!event.getWorld().getWorld().isDaytime()) {
 					if (event.getEntity().getType() == EntityRegistry.CREEPER) {
 						if (event.getWorld().getRandom().nextInt() <= 7) {
 							event.setResult(Result.DENY);
@@ -437,7 +437,7 @@ public class SurvivalEvents {
 						event.setResult(Result.DENY);
 					}
 				}
-				if (event.getWorld().getWorld().isDaytime() == false) {
+				if (!event.getWorld().getWorld().isDaytime()) {
 					if (event.getEntity().getType() == EntityRegistry.CREEPER) {
 						if (event instanceof LivingSpawnEvent.SpecialSpawn) 
 						if (event.getWorld().getRandom().nextInt() <= 7) {
@@ -546,7 +546,7 @@ public class SurvivalEvents {
 		Entity entity = event.getEntity();
 		
 		if (entity != null) {
-			if (entity.isSpectator() == false)
+			if (!entity.isSpectator())
 			if (entity.world.getBlockState(entity.getPosition().down()).getBlock() instanceof FallingBlock) {
 				if (entity.world instanceof ServerWorld)
 				entity.world.getBlockState(entity.getPosition().down()).randomTick((ServerWorld)entity.world, entity.getPosition().down(), entity.world.rand);
@@ -585,7 +585,7 @@ public class SurvivalEvents {
 					}
 				}
 			}
-    		if (player.isAlive() == false) {
+    		if (!player.isAlive()) {
     			WorldStateHolder.get(player.getEntityWorld()).nutrients.get(player.getUniqueID().toString()).reset();
     		}
     		if (!(player.getFoodStats() instanceof CustomFoodStats))
@@ -663,7 +663,7 @@ public class SurvivalEvents {
     			CustomFoodStats foodStats = (CustomFoodStats)player.getFoodStats();
     			
     			if (foodStats.nutrients != null) {
-    				if (player.isAlive() == false) {
+    				if (!player.isAlive()) {
         				foodStats.nutrients = new Nutrients(foodStats);
         				String UUID = player.getUniqueID().toString();
         				WorldStateHolder.get(entity.getEntityWorld()).nutrients.put(UUID, foodStats.nutrients);
@@ -671,7 +671,7 @@ public class SurvivalEvents {
     				nutrients = foodStats.nutrients;
     				nutrients.tick(player, foodStats);
     				
-    				double speed = (double)Math.max(0.05, nutrients.getSpeedModifier());
+    				double speed = Math.max(0.05, nutrients.getSpeedModifier());
     				speed = 0;
 					player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.11f + speed);
     				
@@ -824,12 +824,12 @@ public class SurvivalEvents {
 						event.setNewSpeed(0.5f + event.getPlayer().experienceLevel * 0.01f);
 						set = true;
 					}
-					if (set == false) {
+					if (!set) {
 						event.setNewSpeed(-1);
 						set = true;
 					}
 				}
-				if (set == false)
+				if (!set)
 				if (state.getMaterial() == Material.EARTH || state.getMaterial() == Material.SAND || state.getMaterial() == Material.LEAVES
 						|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL) {					
 					event.setNewSpeed(event.getOriginalSpeed() * 0.05f + event.getPlayer().experienceLevel * 0.01f);
@@ -885,7 +885,7 @@ public class SurvivalEvents {
 					event.setNewSpeed(-1);
 					return;
 				}
-				if (set == false)
+				if (!set)
 				event.setNewSpeed(event.getOriginalSpeed() * 0.15f + event.getPlayer().experienceLevel * 0.01f);
 			}
 			

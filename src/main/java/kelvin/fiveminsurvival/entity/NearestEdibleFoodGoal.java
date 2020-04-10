@@ -110,7 +110,7 @@ public class NearestEdibleFoodGoal extends Goal {
     * Reset the task's internal state. Called when this task is interrupted by another one
     */
    public void resetTask() {
-      this.goalOwner.setAttackTarget((LivingEntity)null);
+      this.goalOwner.setAttackTarget(null);
       this.target = null;
    }
 

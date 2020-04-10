@@ -129,7 +129,7 @@ public class EntityAttackSquid extends SquidEntity {
 
 	         if (!this.world.isRemote) {
 	        	 if (move)
-	            this.setMotion((double)(this.randomMotionVecX * this.randomMotionSpeed), (double)(this.randomMotionVecY * this.randomMotionSpeed), (double)(this.randomMotionVecZ * this.randomMotionSpeed));
+	            this.setMotion(this.randomMotionVecX * this.randomMotionSpeed, this.randomMotionVecY * this.randomMotionSpeed, this.randomMotionVecZ * this.randomMotionSpeed);
 	         }
 
 	         Vec3d vec3d = this.getMotion();
@@ -137,7 +137,7 @@ public class EntityAttackSquid extends SquidEntity {
 	         this.renderYawOffset += (-((float)MathHelper.atan2(vec3d.x, vec3d.z)) * (180F / (float)Math.PI) - this.renderYawOffset) * 0.1F;
 	         this.rotationYaw = this.renderYawOffset;
 	         this.squidYaw = (float)((double)this.squidYaw + Math.PI * (double)this.rotateSpeed * 1.5D);
-	         this.squidPitch += (-((float)MathHelper.atan2((double)f1, vec3d.y)) * (180F / (float)Math.PI) - this.squidPitch) * 0.1F;
+	         this.squidPitch += (-((float)MathHelper.atan2(f1, vec3d.y)) * (180F / (float)Math.PI) - this.squidPitch) * 0.1F;
 	      } else {
 	         this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.squidRotation)) * (float)Math.PI * 0.25F;
 	         if (!this.world.isRemote) {

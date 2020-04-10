@@ -25,13 +25,13 @@ public class WorldStateHolder extends WorldSavedData {
 
 	private static final WorldStateHolder CLIENT_DUMMY = new WorldStateHolder();
 	
-	public HashMap<String, Nutrients> nutrients = new HashMap<String, Nutrients>();
+	public HashMap<String, Nutrients> nutrients = new HashMap<>();
 	public WorldState worldState = new WorldState();
 	
 	public IWorld world;
 	
-	public ArrayList<CampfireState> campfires = new ArrayList<CampfireState>();
-	public ArrayList<PlantState> crops = new ArrayList<PlantState>();
+	public ArrayList<CampfireState> campfires = new ArrayList<>();
+	public ArrayList<PlantState> crops = new ArrayList<>();
 	
 	public int placeTick = 0;
 	
@@ -174,13 +174,13 @@ public class WorldStateHolder extends WorldSavedData {
 				CampfireState state = campfires.get(i);
 				BlockPos pos = state.pos;
 								
-				if (world.getBlockState(pos).getBlock() instanceof CampfireBlock == false) {
+				if (!(world.getBlockState(pos).getBlock() instanceof CampfireBlock)) {
 					campfires.remove(i);
 					break;
 				}
 				boolean waterlogged = false;
 				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED) != null)
-				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED).booleanValue()) {
+				if (world.getBlockState(pos).get(CampfireBlock.WATERLOGGED)) {
 					state.fuel = 0;
 					waterlogged = true;
 				}
@@ -189,13 +189,13 @@ public class WorldStateHolder extends WorldSavedData {
 					state.fuel -= 20;
 				}
 				if (state.fuel <= 20 * 60) {
-					world.setBlockState(pos, BlockRegistry.CAMPFIRE_LOW.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(true)));
+					world.setBlockState(pos, BlockRegistry.CAMPFIRE_LOW.getDefaultState().with(CampfireBlock.LIT, Boolean.TRUE));
 				} else {
-					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(true)));
+					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.TRUE));
 				}
 				if (state.fuel <= 0) {
 					campfires.remove(i);
-					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.valueOf(false)).with(CampfireBlock.WATERLOGGED, waterlogged));
+					world.setBlockState(pos, Blocks.CAMPFIRE.getDefaultState().with(CampfireBlock.LIT, Boolean.FALSE).with(CampfireBlock.WATERLOGGED, waterlogged));
 				}
 			}
 			

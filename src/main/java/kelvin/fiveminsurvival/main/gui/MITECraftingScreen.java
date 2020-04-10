@@ -110,12 +110,12 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
       
       this.minecraft.getTextureManager().bindTexture(INVENTORY_EXTRAS);
       //18x17
-      if (this.craftTimer > 0 && this.maxCraftTimer > 0 && this.crafting == true)
+      if (this.craftTimer > 0 && this.maxCraftTimer > 0 && this.crafting)
       this.blit(this.arrow_position[0], this.arrow_position[1], this.arrow_location[0], this.arrow_location[1], (int)((double)this.arrow_size[0] * (this.craftTimer) / (this.maxCraftTimer)), this.arrow_size[1]);
       GlStateManager.disableDepthTest();
       int i = 8;
-      if (this.canCraft == false) {
-          if (this.crafting == true) {
+      if (!this.canCraft) {
+          if (this.crafting) {
               this.blit(this.lock_position[0] + 8, this.lock_position[1], this.lock_location[0] + 8, this.lock_location[1], 8 - (int)((double)8 * (this.craftTimer) / (this.maxCraftTimer)), 24);
           } else {
               this.blit(this.lock_position[0], this.lock_position[1], this.lock_location[0], this.lock_location[1], 24, 24);
@@ -123,13 +123,13 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
           if (this.getSlotUnderMouse() instanceof CraftingResultSlot) {
         	  
         	  
-        	  if (this.crafting == true) {
-        		  ArrayList<String> str = new ArrayList<String>();
+        	  if (this.crafting) {
+        		  ArrayList<String> str = new ArrayList<>();
         		  str.add(((int)(this.maxCraftTimer) - (int)(this.craftTimer)) / 20 + " seconds left");
             	  str.add("Wait until the item is finished crafting!");
             	  renderTooltip(str, (int)this.mouseX, (int)this.mouseY, Minecraft.getInstance().fontRenderer);
         	  } else {
-        		  ArrayList<String> str = new ArrayList<String>();
+        		  ArrayList<String> str = new ArrayList<>();
             	  str.add("LOCKED!");
             	  str.add("Higher tier table required!");
             	  renderTooltip(str, (int)this.mouseX, (int)this.mouseY, Minecraft.getInstance().fontRenderer);
@@ -201,7 +201,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 					   difficulty2 += ingredient.craftingTime;
 					   hasDifficulty = true;
 				   }
-				   if (hasDifficulty == false)
+				   if (!hasDifficulty)
 				   if (item instanceof BlockItem) {
 					   Material mat = ((BlockItem)item).getBlock().getDefaultState().getMaterial();
 					   if (CraftingIngredients.block_ingredients.containsKey(mat)) {
@@ -273,7 +273,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 					   }
 					   
 				   }
-				   if (hasDifficulty == false)
+				   if (!hasDifficulty)
 				   if (item instanceof BlockItem) {
 					   Material mat = ((BlockItem)item).getBlock().getDefaultState().getMaterial();
 					   if (CraftingIngredients.block_ingredients.containsKey(mat)) {
@@ -292,7 +292,7 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
    protected void craftingTick() {
 	   this.canCraft = this.canCraft();
 	   if (Minecraft.getInstance().world.getGameTime() > lastTick) {
-		   if (this.crafting == true) {
+		   if (this.crafting) {
 
 			   if (this.craftTimer < maxCraftTimer) {
 				   this.craftTimer += 1 + Minecraft.getInstance().player.experienceLevel * 0.01f;
@@ -318,10 +318,10 @@ public class MITECraftingScreen extends ContainerScreen<WorkbenchContainer> impl
 	   if (slotId == 0) {
 		   if (type == ClickType.QUICK_MOVE) return;
 		   this.craftSlot = slotIn;
-		   if (canCraft == false) {
+		   if (!canCraft) {
 			   return;
 		   }
-		   if (crafting == false) {
+		   if (!crafting) {
 			   this.craftSlot = slotIn;
 			   this.craftSlotId = slotId;
 			   this.clickButton = mouseButton;

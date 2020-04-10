@@ -289,8 +289,7 @@ public class EntityAIWatchAnimal extends Goal {
         }
         else
         {
-            World var10000 = this.digger.worldObj;
-            double distance = (double)Resources.getDistanceFromDeltas(this.digger.getPosX() - target.getPosX(), this.digger.getPosY() - target.getPosY(), this.digger.getPosZ() - target.getPosZ());
+            double distance = Resources.getDistanceFromDeltas(this.digger.getPosX() - target.getPosX(), this.digger.getPosY() - target.getPosY(), this.digger.getPosZ() - target.getPosZ());
             Path path = this.digger.getNavigator().getPathToEntity(target, 16);
             
             if (path == null)
@@ -304,7 +303,6 @@ public class EntityAIWatchAnimal extends Goal {
                 float x = (float)final_point.x + 0.5F;
                 float y = (float)final_point.y;
                 float z = (float)final_point.z + 0.5F;
-                var10000 = this.digger.worldObj;
                 return (double)Resources.getDistanceFromDeltas((double)x - target.getPosX(), (double)y - target.getPosY(), (double)z - target.getPosZ()) < distance - 2.0D;
             }
         }

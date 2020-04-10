@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 
 public class MovingWord {
-	public ArrayList<MovingText> mtext = new ArrayList<MovingText>();
+	public ArrayList<MovingText> mtext = new ArrayList<>();
 	
 	public float startX, startY;
 	public float x, y;

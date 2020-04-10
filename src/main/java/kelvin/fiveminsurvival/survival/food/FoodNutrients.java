@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
 public class FoodNutrients implements Serializable {
-	public static HashMap<Item, FoodNutrients> list = new HashMap<Item, FoodNutrients>();
+	public static HashMap<Item, FoodNutrients> list = new HashMap<>();
 	
 	public double protein = 0.0;
 	public double phytonutrients = 0.0;
