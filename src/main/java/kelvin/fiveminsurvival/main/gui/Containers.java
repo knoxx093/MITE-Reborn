@@ -26,7 +26,7 @@ public class Containers {
 
 	 @SubscribeEvent
 		public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
-		 Containers.FURNACE_TILE_ENTITY = register("fiveminsurvival:furnace", TileEntityType.Builder.create(MITEFurnaceTileEntity::new, BlockRegistry.CLAY_OVEN, BlockRegistry.SANDSTONE_OVEN, BlockRegistry.COBBLESTONE_FURNACE, BlockRegistry.OBSIDIAN_FURNACE, BlockRegistry.NETHERRACK_FURNACE));
+		 Containers.FURNACE_TILE_ENTITY = register("fiveminsurvival:furnace", TileEntityType.Builder.create(MITEFurnaceTileEntity::new, BlockRegistry.CLAY_OVEN.get(), BlockRegistry.SANDSTONE_OVEN.get(), BlockRegistry.COBBLESTONE_FURNACE.get(), BlockRegistry.OBSIDIAN_FURNACE.get(), BlockRegistry.NETHERRACK_FURNACE.get()));
 	 }
 	 @SubscribeEvent
 		public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {

@@ -72,9 +72,9 @@ public class FoodNutrients implements Serializable {
 		register(Items.GOLDEN_APPLE, new FoodNutrients().setHappiness(40).setProtein(4).setFattyAcids(15).setPhytonutrients(15).setSugars(15));
 		register(Items.ENCHANTED_GOLDEN_APPLE, new FoodNutrients().setHappiness(40).setProtein(4).setFattyAcids(15).setPhytonutrients(15).setSugars(15));
 		register(Items.SUGAR, new FoodNutrients().setHappiness(3).setSugars(1));
-		register(ItemRegistry.FLAX_SEEDS, new FoodNutrients().setHappiness(1).setPhytonutrients(3).setFattyAcids(4).setSugars(0.1).setCarbs(2));
-		register(ItemRegistry.BACON, new FoodNutrients().setHappiness(-3).setProtein(8).setSickness(2).setFattyAcids(2));
-		register(ItemRegistry.COOKED_BACON, new FoodNutrients().setHappiness(8).setProtein(8).setFattyAcids(4));
+		register(ItemRegistry.FLAX_SEEDS.get(), new FoodNutrients().setHappiness(1).setPhytonutrients(3).setFattyAcids(4).setSugars(0.1).setCarbs(2));
+		register(ItemRegistry.BACON.get(), new FoodNutrients().setHappiness(-3).setProtein(8).setSickness(2).setFattyAcids(2));
+		register(ItemRegistry.COOKED_BACON.get(), new FoodNutrients().setHappiness(8).setProtein(8).setFattyAcids(4));
 	}
 	
 	public static void register(Item item, FoodNutrients nutrients) {

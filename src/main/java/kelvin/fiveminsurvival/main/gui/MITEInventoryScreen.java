@@ -283,15 +283,15 @@ public class MITEInventoryScreen extends DisplayEffectsScreen<PlayerContainer> i
 	   Slot slot = this.container.inventorySlots.get(0);
 	   if (slot.getHasStack()) {
 		   Item item = slot.getStack().getItem();
-		   if (item == ItemRegistry.COPPER_CRAFTING_TABLE ||
-				   item == ItemRegistry.SILVER_CRAFTING_TABLE ||
-				   item == ItemRegistry.GOLD_CRAFTING_TABLE || 
-				   item == ItemRegistry.IRON_CRAFTING_TABLE ||
-				   item == ItemRegistry.MITHRIL_CRAFTING_TABLE ||
-				   item == ItemRegistry.ANCIENT_METAL_CRAFTING_TABLE ||
-				   item == ItemRegistry.ADAMANTIUM_CRAFTING_TABLE)
+		   if (item == ItemRegistry.COPPER_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.SILVER_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.GOLD_CRAFTING_TABLE.get() || 
+				   item == ItemRegistry.IRON_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.MITHRIL_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.ANCIENT_METAL_CRAFTING_TABLE.get() ||
+				   item == ItemRegistry.ADAMANTIUM_CRAFTING_TABLE.get())
 			   difficulty2 --;
-		   if (item == ItemRegistry.OBSIDIAN_CRAFTING_TABLE) difficulty2 = 0;
+		   if (item == ItemRegistry.OBSIDIAN_CRAFTING_TABLE.get()) difficulty2 = 0;
 	   }
 	   
 	   if (difficulty2 > 0) return difficulty2;

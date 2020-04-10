@@ -119,7 +119,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 									
 									pos2.setPos(blockpos.getX() + x, blockpos.getY() - y, blockpos.getZ() + z);
 									if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
-									worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+									worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 									pos2.setPos(blockpos.getX() + x, blockpos.getY() - y + 1, blockpos.getZ() + z);
 									
 								}
@@ -142,7 +142,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 											
 											if (type == 0) {
 												if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
-												worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+												worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 											}
 											
 											if (type == 1) {
@@ -155,7 +155,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 															if (dist <= RAD * mul) {
 																pos2.setPos(blockpos.getX() + x + xx, blockpos.getY() - y + ii, blockpos.getZ() + z + zz);
 																if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
-																worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+																worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 																mul -= 0.01 * rand.nextDouble();
 															}
 														}
@@ -210,7 +210,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 												distance <= min_radius + D + opening + 1) {
 											if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
 											{
-											worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+											worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 											if (rand.nextInt(1000) <= 3) {
 												webs.add(new BlockPos(pos2.getX(), pos2.getY(), pos2.getZ()));
 											}
@@ -254,7 +254,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 								if (worldIn.isAreaLoaded(pos2, 1))
 								if (worldIn.getBlockState(pos2).getBlock() != Blocks.SPAWNER)
 									if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
-								worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+								worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 								
 								if (rand.nextInt(500) == 0) {
 									if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST) {
@@ -275,7 +275,7 @@ public class SpiderDenFeature extends Feature<NoFeatureConfig> {
 										if (worldIn.isAreaLoaded(pos2, 1))
 											if (worldIn.getBlockState(pos2).getBlock() != Blocks.SPAWNER)
 												if (worldIn.getBlockState(pos2).getBlock() != Blocks.CHEST)
-										worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.getDefaultState(), 2);
+										worldIn.setBlockState(pos2, BlockRegistry.COBWEB_BLOCK.get().getDefaultState(), 2);
 									}
 								}
 							}

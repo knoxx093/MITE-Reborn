@@ -34,7 +34,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class SpearEntity extends AbstractArrowEntity {
 	   private static final DataParameter<Byte> LOYALTY_LEVEL = EntityDataManager.createKey(TridentEntity.class, DataSerializers.BYTE);
-	   private ItemStack thrownStack = new ItemStack(ItemRegistry.SPEAR);
+	   private ItemStack thrownStack = new ItemStack(ItemRegistry.SPEAR.get());
 	   private boolean dealtDamage;
 	   public int returningTicks;
 

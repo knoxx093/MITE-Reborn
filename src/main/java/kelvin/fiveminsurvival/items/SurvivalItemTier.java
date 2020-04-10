@@ -25,7 +25,7 @@ public enum SurvivalItemTier implements IItemTier {
 	      return Ingredient.fromItems(Items.IRON_INGOT);
 	   }, PickaxeItem.class),
 	   COPPER_PICKAXE(2, 15, 0.5F, 1.5F, 14, () -> {
-		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 		   }, PickaxeItem.class),
 	   DIAMOND_PICKAXE(3, 150, 4.0F, 3.0F, 10, () -> {
 	      return Ingredient.fromItems(Items.DIAMOND);
@@ -44,7 +44,7 @@ public enum SurvivalItemTier implements IItemTier {
 	      return Ingredient.fromItems(Blocks.COBBLESTONE);
 	   }, AxeItem.class),
 	   COPPER_AXE(2, 15, 1.5F, 1.5F, 14, () -> {
-		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+		      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 		   }, AxeItem.class),
 	   IRON_AXE(2, 50, 3.0F, 2.0F, 14, () -> {
 	      return Ingredient.fromItems(Items.IRON_INGOT);
@@ -66,7 +66,7 @@ public enum SurvivalItemTier implements IItemTier {
 		      return Ingredient.fromItems(Blocks.COBBLESTONE);
 		   }, HoeItem.class),
 		   COPPER_HOE(2, 15, 1.5F, 1.5F, 14, () -> {
-			      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+			      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 			   }, HoeItem.class),
 		   IRON_HOE(2, 50, 3.0F, 2.0F, 14, () -> {
 		      return Ingredient.fromItems(Items.IRON_INGOT);
@@ -88,7 +88,7 @@ public enum SurvivalItemTier implements IItemTier {
 			      return Ingredient.fromItems(Blocks.COBBLESTONE);
 			   }, SwordItem.class),
 			   COPPER_SWORD(2, 30, 1.5F, 1.5F, 14, () -> {
-				      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+				      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 				   }, SwordItem.class),
 			   IRON_SWORD(2, 50, 3.0F, 2.0F, 14, () -> {
 			      return Ingredient.fromItems(Items.IRON_INGOT);
@@ -109,7 +109,7 @@ public enum SurvivalItemTier implements IItemTier {
 				      return Ingredient.fromItems(Blocks.COBBLESTONE);
 				   }, HatchetItem.class),
 				   COPPER_HATCHET(2, 15, 1.5F, 1.5F, 14, () -> {
-					      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+					      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 					   }, HatchetItem.class),
 				   IRON_HATCHET(2, 50, 3.0F, 2.0F, 14, () -> {
 				      return Ingredient.fromItems(Items.IRON_INGOT);
@@ -130,7 +130,7 @@ public enum SurvivalItemTier implements IItemTier {
 					      return Ingredient.fromItems(Blocks.COBBLESTONE);
 					   }, ShortswordItem.class),
 					   COPPER_SHORTSWORD(2, 20, 1.5F, 1.5F, 14, () -> {
-						      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+						      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 						   }, ShortswordItem.class),
 					   IRON_SHORTSWORD(2, 50, 3.0F, 2.0F, 14, () -> {
 					      return Ingredient.fromItems(Items.IRON_INGOT);
@@ -151,7 +151,7 @@ public enum SurvivalItemTier implements IItemTier {
 						      return Ingredient.fromItems(Blocks.COBBLESTONE);
 						   }, ShovelItem.class),
 						   COPPER_SHOVEL(2, 15, 1.5F, 1.5F, 14, () -> {
-							      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
+							      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT.get());
 							   }, ShovelItem.class),
 						   IRON_SHOVEL(2, 50, 3.0F, 2.0F, 14, () -> {
 						      return Ingredient.fromItems(Items.IRON_INGOT);

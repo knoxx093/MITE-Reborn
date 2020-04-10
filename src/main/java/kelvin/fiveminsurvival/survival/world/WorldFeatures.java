@@ -32,7 +32,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-
 public class WorldFeatures {
 	public static FlaxFeature FLAX_FEATURE = new FlaxFeature(NoFeatureConfig::deserialize);
 	public static final WorldCarver<ProbabilityConfig> CAVE = new MITECaveCarver(ProbabilityConfig::deserialize, 256);
@@ -42,18 +41,18 @@ public class WorldFeatures {
 	
 	 @SubscribeEvent
 	    public static void onBiomeRegistry(final RegistryEvent.Register<Biome> event) {
-		 FLAX_CONFIG  = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BlockRegistry.FLAX.getDefaultState()), new SimpleBlockPlacer())).tries(4).build();
+		 FLAX_CONFIG  = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BlockRegistry.FLAX.get().getDefaultState()), new SimpleBlockPlacer())).tries(4).build();
 		for (Biome biomeIn : Biome.BIOMES) {
 			if (biomeIn.getTempCategory() == TempCategory.COLD || biomeIn.getTempCategory() == TempCategory.MEDIUM)
 		      biomeIn.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(FLAX_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(2))));
 		      
 		      if (biomeIn == Biomes.RIVER) {
-		          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.PEA_GRAVEL.getDefaultState(), 6, 2, Lists.newArrayList(Blocks.DIRT.getDefaultState(), Blocks.GRASS_BLOCK.getDefaultState(), Blocks.SAND.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
-		          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.SHINING_PEA_GRAVEL.getDefaultState(), 3, 2, Lists.newArrayList(BlockRegistry.PEA_GRAVEL.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
+		          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.PEA_GRAVEL.get().getDefaultState(), 6, 2, Lists.newArrayList(Blocks.DIRT.getDefaultState(), Blocks.GRASS_BLOCK.getDefaultState(), Blocks.SAND.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
+		          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.SHINING_PEA_GRAVEL.get().getDefaultState(), 3, 2, Lists.newArrayList(BlockRegistry.PEA_GRAVEL.get().getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
 		      }
-	          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.SHINING_GRAVEL.getDefaultState(), 3, 2, Lists.newArrayList(Blocks.GRAVEL.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
+	          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(BlockRegistry.SHINING_GRAVEL.get().getDefaultState(), 3, 2, Lists.newArrayList(Blocks.GRAVEL.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(2))));
 
-//	          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(BlockRegistry.SHINING_GRAVEL.getDefaultState(), 3, 2, Lists.newArrayList(Blocks.GRAVEL.getDefaultState())), Placement.COUNT_TOP_SOLID, new FrequencyConfig(1)));
+//	          biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.DISK, new SphereReplaceConfig(BlockRegistry.SHINING_GRAVEL.get().getDefaultState(), 3, 2, Lists.newArrayList(Blocks.GRAVEL.getDefaultState())), Placement.COUNT_TOP_SOLID, new FrequencyConfig(1)));
 
 		   biomeIn.getSpawns(EntityClassification.AMBIENT).add(
 				   new SpawnListEntry(EntityRegistry.CREEPER, 12, 1, 4)

@@ -51,7 +51,7 @@ public class ItemShaver extends Item {
 				cutLog = true;
 			}
 			if (cutLog == true) {
-				world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.STRIPPED_BARK, random.nextInt(2) + 1)));
+				world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.STRIPPED_BARK.get(), random.nextInt(2) + 1)));
 				world.playSound(context.getPlayer(), pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 			if (cutLog == true) {

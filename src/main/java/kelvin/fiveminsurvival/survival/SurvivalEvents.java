@@ -191,11 +191,11 @@ public class SurvivalEvents {
 				ItemStack stack = player.getHeldItemMainhand();
 				if (stack != null) {
 					Item item = stack.getItem();
-					if (item == ItemRegistry.SILVER_AXE || item == ItemRegistry.SILVER_BATTLE_AXE ||
-							item == ItemRegistry.SILVER_HATCHET || item == ItemRegistry.SILVER_HOE ||
-							item == ItemRegistry.SILVER_KNIFE || item == ItemRegistry.SILVER_MATTOCK ||
-							item == ItemRegistry.SILVER_PICKAXE || item == ItemRegistry.SILVER_SHEARS ||
-							item == ItemRegistry.SILVER_SWORD || item == ItemRegistry.SILVER_WAR_HAMMER) {
+					if (item == ItemRegistry.SILVER_AXE.get() || //item == ItemRegistry.SILVER_BATTLE_AXE.get() ||
+							item == ItemRegistry.SILVER_HATCHET.get() || item == ItemRegistry.SILVER_HOE.get() ||
+							item == ItemRegistry.SILVER_KNIFE.get() || //item == ItemRegistry.SILVER_MATTOCK.get() ||
+							item == ItemRegistry.SILVER_PICKAXE.get() || //item == ItemRegistry.SILVER_SHEARS.get() ||
+							item == ItemRegistry.SILVER_SWORD.get() /*|| item == ItemRegistry.SILVER_WAR_HAMMER.get()*/) {
 						event.setAmount(event.getAmount() * 2.0f);
 					}
 				}
@@ -326,7 +326,7 @@ public class SurvivalEvents {
 				cutLog = true;
 			}
 			if (cutLog == true) {
-				world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.STRIPPED_BARK, new Random().nextInt(2) + 1)));
+				world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.STRIPPED_BARK.get(), new Random().nextInt(2) + 1)));
 //				world.playSound(event.getPlayer(), pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 		}
@@ -440,7 +440,7 @@ public class SurvivalEvents {
 					s.remove();
 					NewSkeletonEntity skeleton = EntityRegistry.SKELETON_ENTITY.create(event.getWorld().getWorld());
 					skeleton.setPosition(pos.getX(), pos.getY(), pos.getZ());
-					ItemStack club = new ItemStack(ItemRegistry.WOODEN_CLUB);
+					ItemStack club = new ItemStack(ItemRegistry.WOODEN_CLUB.get());
 					club.setDamage(new Random().nextInt(5));
 					skeleton.setItemStackToSlot(EquipmentSlotType.MAINHAND, club);
 					skeleton.setDropChance(EquipmentSlotType.MAINHAND, 0.5f);
@@ -479,7 +479,7 @@ public class SurvivalEvents {
 			AnimalEntity animal = (AnimalEntity)entity;
 			if (!entity.world.isRemote && entity.isAlive() && !animal.isChild() && rand.nextInt(6000) <= 10) {
 				animal.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		        animal.entityDropItem(ItemRegistry.MANURE);
+		        animal.entityDropItem(ItemRegistry.MANURE.get());
 		    }
 		}
 		
@@ -658,13 +658,13 @@ public class SurvivalEvents {
 //    			if (item instanceof ScytheItem) {
 //    				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 1.0);
 //    			}
-    			if (item == ItemRegistry.WOODEN_CUDGEL) {
+    			if (item == ItemRegistry.WOODEN_CUDGEL.get()) {
     				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.25);
     			}
-    			if (item == ItemRegistry.WOODEN_CLUB) {
+    			if (item == ItemRegistry.WOODEN_CLUB.get()) {
     				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.5);
     			}
-    			if (item == ItemRegistry.FLINT_KNIFE) {
+    			if (item == ItemRegistry.FLINT_KNIFE.get()) {
     				player.getAttribute(PlayerEntity.REACH_DISTANCE).setBaseValue(baseReach + 0.25);
     			}
     			if (item instanceof HatchetItem) {
@@ -775,7 +775,7 @@ public class SurvivalEvents {
 				}
 				if (set == false)
 				if (state.getMaterial() == Material.EARTH || state.getMaterial() == Material.SAND || state.getMaterial() == Material.LEAVES
-						|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL) {					
+						|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL.get()) {
 					event.setNewSpeed(event.getOriginalSpeed() * 0.05f + event.getPlayer().experienceLevel * 0.01f);
 					set = true;
 				}
@@ -805,7 +805,7 @@ public class SurvivalEvents {
 						}
 						
 						if (state.getMaterial() == Material.EARTH || state.getMaterial() == Material.SAND || state.getMaterial() == Material.LEAVES
-								|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL) {					
+								|| state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.CLAY || state.getBlock() == BlockRegistry.PEA_GRAVEL.get()) {
 							if (item instanceof ShovelItem) {
 								event.setNewSpeed(2.0f * event.getOriginalSpeed() * 0.05f + event.getPlayer().experienceLevel * 0.01f);
 							}

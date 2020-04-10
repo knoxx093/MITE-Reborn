@@ -22,138 +22,43 @@ import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BlockRegistry {
 
-	public static Block FLAX;
-	public static Block FLINT_CRAFTING_TABLE;
-	public static Block ADAMANTIUM_CRAFTING_TABLE;
-	public static Block MITHRIL_CRAFTING_TABLE;
-	public static Block ANCIENT_METAL_CRAFTING_TABLE;
-	public static Block GOLD_CRAFTING_TABLE;
-	public static Block IRON_CRAFTING_TABLE;
-	public static Block OBSIDIAN_CRAFTING_TABLE;
-	public static Block COPPER_CRAFTING_TABLE;
-	public static Block SILVER_CRAFTING_TABLE;
-	public static Block CLAY_OVEN,
-	SANDSTONE_OVEN, HARDENED_CLAY_OVEN, COBBLESTONE_FURNACE, OBSIDIAN_FURNACE, NETHERRACK_FURNACE;
-	public static Block PEA_GRAVEL;
-	public static Block CAMPFIRE_LOW;
-	public static Block COBWEB_BLOCK;
-	public static Block COPPER_ORE;
-	public static Block SILVER_ORE;
-	public static Block SHINING_GRAVEL;
-	public static Block SHINING_PEA_GRAVEL;
+    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, FiveMinSurvival.MODID);
 
-	
-	public static Registry<Block> newBlocks;
-	
-	private static <T extends net.minecraftforge.registries.IForgeRegistryEntry<T>> DefaultedRegistry<T> forgeDefaulted(String name, Class<? super T> cls, Supplier<T> def)  {
-	      return BlockRegistry.<T, DefaultedRegistry<T>>register(name, net.minecraftforge.registries.GameData.<T>getWrapperDefaulted(cls), def);
-	   }
-	private static <T, R extends MutableRegistry<T>> R register(String p_222939_0_, R p_222939_1_, Supplier<T> p_222939_2_) {
-		ResourceLocation resourcelocation = new ResourceLocation(p_222939_0_);
-		try {
-			Field f = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "LOCATION_TO_SUPPLIER" : "field_218376_a");
-			Resources.makeFieldAccessible(f);
-			Map<ResourceLocation, Supplier<?>> reg = (Map<ResourceLocation, Supplier<?>>) f.get(null);
-			reg.remove(resourcelocation);
-	        reg.put(resourcelocation, p_222939_2_);
-		}catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-        return (R)(Registry.REGISTRY.register(resourcelocation, p_222939_1_));
-	}
-	
-	private static Block register(String key, Block p_221547_1_) {
-	      return register(new ResourceLocation(key), p_221547_1_);
-	   }
 
-	   private static Block register(ResourceLocation key, Block p_221544_1_) {
+    public static final RegistryObject<Block> FLAX = BLOCKS.register("flax", () -> new TallPlantBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.5f).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> FLINT_CRAFTING_TABLE = BLOCKS.register("flint_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.FLINT_CRAFTING_TABLE));
+    public static final RegistryObject<Block> ADAMANTIUM_CRAFTING_TABLE = BLOCKS.register("adamantium_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.ADAMANTIUM_CRAFTING_TABLE));
+    public static final RegistryObject<Block> COPPER_CRAFTING_TABLE = BLOCKS.register("copper_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
+    public static final RegistryObject<Block> SILVER_CRAFTING_TABLE = BLOCKS.register("silver_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
+    public static final RegistryObject<Block> GOLD_CRAFTING_TABLE = BLOCKS.register("gold_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
+    public static final RegistryObject<Block> IRON_CRAFTING_TABLE = BLOCKS.register("iron_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.IRON_CRAFTING_TABLE));
 
-	      return Registry.register(newBlocks, key, p_221544_1_);
-	   }
-	
-	   public static void changeHardnessAndResistance(Block block, float i) throws Exception {
-		   Field HARDNESS = Block.class.getDeclaredField(FiveMinSurvival.DEBUG ? "blockHardness" : "field_149782_v"); //blockHardness
-		   Field RESISTANCE = Block.class.getDeclaredField(FiveMinSurvival.DEBUG ? "blockResistance" : "field_149781_w"); //blockResistance
-		   Resources.makeFieldAccessible(HARDNESS);
-		   Resources.makeFieldAccessible(RESISTANCE);
-		   HARDNESS.set(block, i);
-		   RESISTANCE.set(block, i);
-	   }
-	   
-	   public static void changeMaterial(Block block, Material mat) throws Exception {
-		   Field MATERIAL = Block.class.getDeclaredField(FiveMinSurvival.DEBUG ? "material" : "field_149764_J"); //material
-		   Resources.makeFieldAccessible(MATERIAL);
-		   MATERIAL.set(block, mat);
-	   }
-	   
-    @SubscribeEvent
-    public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
-    	newBlocks = forgeDefaulted("block", Block.class, () -> {
-  	      return Blocks.AIR;
- 	   });
-    	try {
-    		changeHardnessAndResistance(Blocks.GRASS, 0.08f);
+    public static final RegistryObject<Block> MITHRIL_CRAFTING_TABLE = BLOCKS.register("mithril_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.MITHRIL_CRAFTING_TABLE));
+    public static final RegistryObject<Block> ANCIENT_METAL_CRAFTING_TABLE = BLOCKS.register("ancient_metal_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.MITHRIL_CRAFTING_TABLE));
+    public static final RegistryObject<Block> OBSIDIAN_CRAFTING_TABLE = BLOCKS.register("obsidian_crafting_table", () -> new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.FLINT_CRAFTING_TABLE));
 
-    		changeHardnessAndResistance(Blocks.TALL_GRASS, 0.08f);
-    		changeHardnessAndResistance(Blocks.DEAD_BUSH, 0.08f);
-    		changeHardnessAndResistance(Blocks.SUGAR_CANE, 0.25f);
-    		changeHardnessAndResistance(Blocks.SEAGRASS, 0.08f);
-    		changeHardnessAndResistance(Blocks.TALL_SEAGRASS, 0.08f);
-    		changeHardnessAndResistance(Blocks.KELP_PLANT, 0.08f);
-    		changeHardnessAndResistance(Blocks.KELP, 0.08f);
-    		changeHardnessAndResistance(Blocks.SWEET_BERRY_BUSH, 0.3f);
-    		changeHardnessAndResistance(Blocks.OBSIDIAN, 0.5f);
-    		changeMaterial(Blocks.OBSIDIAN, Material.EARTH);
-    		changeMaterial(Blocks.FURNACE, Material.EARTH);
-    		changeHardnessAndResistance(Blocks.FURNACE, 0.2f);
-    		changeHardnessAndResistance(Blocks.CRAFTING_TABLE, 0.2f);
-    		
-//    		Field dirt = Blocks.class.getDeclaredField("DIRT");
-//    		Resources.makeFieldAccessible(dirt);
-//    		dirt.set(null, register("dirt", new FallingBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND))));
-//    		
-    		
-    		FLAX = register("fiveminsurvival:flax", new TallPlantBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.5f).sound(SoundType.PLANT)));
-    		FLINT_CRAFTING_TABLE = register("fiveminsurvival:flint_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.FLINT_CRAFTING_TABLE));
-    		ADAMANTIUM_CRAFTING_TABLE = register("fiveminsurvival:adamantium_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.ADAMANTIUM_CRAFTING_TABLE));
-    		COPPER_CRAFTING_TABLE = register("fiveminsurvival:copper_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
-    		SILVER_CRAFTING_TABLE = register("fiveminsurvival:silver_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
-    		GOLD_CRAFTING_TABLE = register("fiveminsurvival:gold_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.COPPER_CRAFTING_TABLE));
-    		IRON_CRAFTING_TABLE = register("fiveminsurvival:iron_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.IRON_CRAFTING_TABLE));
+    public static final RegistryObject<Block> CLAY_OVEN = BLOCKS.register("clay_oven", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.CLAY));
+    public static final RegistryObject<Block> HARDENED_CLAY_OVEN = BLOCKS.register("hardened_clay_oven", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.HARDENED_CLAY));
+    public static final RegistryObject<Block> SANDSTONE_OVEN = BLOCKS.register("sandstone_oven", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.SANDSTONE));
+    public static final RegistryObject<Block> COBBLESTONE_FURNACE = BLOCKS.register("cobblestone_furnace", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.STONE));
+    public static final RegistryObject<Block> OBSIDIAN_FURNACE = BLOCKS.register("obsidian_furnace", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.OBSIDIAN));
+    public static final RegistryObject<Block> NETHERRACK_FURNACE = BLOCKS.register("netherrack_furnace", () -> new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.NETHERRACK));
+    public static final RegistryObject<Block> PEA_GRAVEL = BLOCKS.register("pea_gravel", () -> new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
+    public static final RegistryObject<Block> CAMPFIRE_LOW = BLOCKS.register("campfire_low", () -> new CampfireBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15).tickRandomly()));
+    public static final RegistryObject<Block> SHINING_PEA_GRAVEL = BLOCKS.register("shining_pea_gravel", () -> new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
+    public static final RegistryObject<Block> SHINING_GRAVEL = BLOCKS.register("shining_gravel", () -> new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
 
-    		MITHRIL_CRAFTING_TABLE = register("fiveminsurvival:mithril_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.MITHRIL_CRAFTING_TABLE));
-    		ANCIENT_METAL_CRAFTING_TABLE = register("fiveminsurvival:ancient_metal_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.MITHRIL_CRAFTING_TABLE));
-    		OBSIDIAN_CRAFTING_TABLE = register("fiveminsurvival:obsidian_crafting_table", new MITECraftingTableBlock((Block.Properties.create(Material.WOOD).hardnessAndResistance(0.2F).sound(SoundType.WOOD)), CraftingIngredient.FLINT_CRAFTING_TABLE));
+    public static final RegistryObject<Block> COPPER_ORE = BLOCKS.register("copper_ore", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
+    public static final RegistryObject<Block> SILVER_ORE = BLOCKS.register("silver_ore", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
 
-    		CLAY_OVEN = register("fiveminsurvival:clay_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.CLAY));
-    		HARDENED_CLAY_OVEN = register("fiveminsurvival:hardened_clay_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.HARDENED_CLAY));
-    		SANDSTONE_OVEN = register("fiveminsurvival:sandstone_oven", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.SANDSTONE));
-    		COBBLESTONE_FURNACE = register("fiveminsurvival:cobblestone_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.STONE));
-    		OBSIDIAN_FURNACE = register("fiveminsurvival:obsidian_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.OBSIDIAN));
-    		NETHERRACK_FURNACE = register("fiveminsurvival:netherrack_furnace", new MITEFurnaceBlock((Block.Properties.create(Material.CLAY).sound(SoundType.STONE).hardnessAndResistance(0.2F).sound(SoundType.GROUND)), MITEFurnaceContainer.NETHERRACK));
-    		PEA_GRAVEL = register("fiveminsurvival:pea_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
-    		CAMPFIRE_LOW = register("fiveminsurvival:campfire_low", new CampfireBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15).tickRandomly()));
-    		SHINING_PEA_GRAVEL = register("fiveminsurvival:shining_pea_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
-    		SHINING_GRAVEL = register("fiveminsurvival:shining_gravel", new GravelBlock(Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
+    public static final RegistryObject<Block> COBWEB_BLOCK = BLOCKS.register("cobweb_block", () -> new Block(Block.Properties.create(Material.WOOL, MaterialColor.IRON).hardnessAndResistance(0.25f).sound(SoundType.CLOTH)));
 
-    		COPPER_ORE = register("fiveminsurvival:copper_ore", new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
-    		SILVER_ORE = register("fiveminsurvival:silver_ore", new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
-
-    		COBWEB_BLOCK = register("fiveminsurvival:cobweb_block", new Block(Block.Properties.create(Material.WOOL, MaterialColor.IRON).hardnessAndResistance(0.25f).sound(SoundType.CLOTH)));
-    		Field BLOCK = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BLOCK" : "field_212618_g");
-    		Resources.makeFieldAccessible(BLOCK);
-    		BLOCK.set(null, newBlocks);
-    		
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		System.exit(1);
-    	}
-    	CropTypes.registerCropTypes();
-    }
 }
