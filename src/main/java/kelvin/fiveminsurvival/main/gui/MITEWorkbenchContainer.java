@@ -88,9 +88,7 @@ public class MITEWorkbenchContainer extends RecipeBookContainer<CraftingInventor
 	    * Callback for when the crafting matrix is changed.
 	    */
 	   public void onCraftMatrixChanged(IInventory inventoryIn) {
-	      this.field_217070_e.consume((p_217069_1_, p_217069_2_) -> {
-	         func_217066_a(this.windowId, p_217069_1_, this.player, this.field_75162_e, this.field_75160_f);
-	      });
+	      this.field_217070_e.consume((p_217069_1_, p_217069_2_) -> func_217066_a(this.windowId, p_217069_1_, this.player, this.field_75162_e, this.field_75160_f));
 	   }
 
 	   public void fillStackedContents(RecipeItemHelper p_201771_1_) {
@@ -111,9 +109,7 @@ public class MITEWorkbenchContainer extends RecipeBookContainer<CraftingInventor
 	    */
 	   public void onContainerClosed(PlayerEntity playerIn) {
 	      super.onContainerClosed(playerIn);
-	      this.field_217070_e.consume((p_217068_2_, p_217068_3_) -> {
-	         this.clearContainer(playerIn, p_217068_2_, this.field_75162_e);
-	      });
+	      this.field_217070_e.consume((p_217068_2_, p_217068_3_) -> this.clearContainer(playerIn, p_217068_2_, this.field_75162_e));
 	   }
 
 	   /**
@@ -134,9 +130,7 @@ public class MITEWorkbenchContainer extends RecipeBookContainer<CraftingInventor
 	         ItemStack itemstack1 = slot.getStack();
 	         itemstack = itemstack1.copy();
 	         if (index == 0) {
-	            this.field_217070_e.consume((p_217067_2_, p_217067_3_) -> {
-	               itemstack1.getItem().onCreated(itemstack1, p_217067_2_, playerIn);
-	            });
+	            this.field_217070_e.consume((p_217067_2_, p_217067_3_) -> itemstack1.getItem().onCreated(itemstack1, p_217067_2_, playerIn));
 	            if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
 	               return ItemStack.EMPTY;
 	            }

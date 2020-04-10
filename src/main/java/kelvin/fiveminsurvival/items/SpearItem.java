@@ -34,9 +34,7 @@ public class SpearItem extends Item {
 	private double attackDamage;
 	   public SpearItem(Item.Properties builder, double attackDamage) {
 		      super(builder);
-		      this.addPropertyOverride(new ResourceLocation("throwing"), (p_210315_0_, p_210315_1_, p_210315_2_) -> {
-		         return p_210315_2_ != null && p_210315_2_.isHandActive() && p_210315_2_.getActiveItemStack() == p_210315_0_ ? 1.0F : 0.0F;
-		      });
+		      this.addPropertyOverride(new ResourceLocation("throwing"), (p_210315_0_, p_210315_1_, p_210315_2_) -> p_210315_2_ != null && p_210315_2_.isHandActive() && p_210315_2_.getActiveItemStack() == p_210315_0_ ? 1.0F : 0.0F);
 		      this.attackDamage = attackDamage;
 		   }
 
@@ -81,9 +79,7 @@ public class SpearItem extends Item {
 		            int j = EnchantmentHelper.getRiptideModifier(stack);
 		            if (j <= 0 || playerentity.isWet()) {
 		               if (!worldIn.isRemote) {
-		                  stack.damageItem(1, playerentity, (p_220047_1_) -> {
-		                     p_220047_1_.sendBreakAnimation(entityLiving.getActiveHand());
-		                  });
+		                  stack.damageItem(1, playerentity, (p_220047_1_) -> p_220047_1_.sendBreakAnimation(entityLiving.getActiveHand()));
 		                  if (j == 0) {
 		                	  
 		                     SpearEntity tridententity = new SpearEntity(worldIn, playerentity, stack);
@@ -157,9 +153,7 @@ public class SpearItem extends Item {
 		    * the damage on the stack.
 		    */
 		   public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		      stack.damageItem(1, attacker, (p_220048_0_) -> {
-		         p_220048_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-		      });
+		      stack.damageItem(1, attacker, (p_220048_0_) -> p_220048_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
 		      return true;
 		   }
 
@@ -168,9 +162,7 @@ public class SpearItem extends Item {
 		    */
 		   public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 		      if ((double)state.getBlockHardness(worldIn, pos) != 0.0D) {
-		         stack.damageItem(2, entityLiving, (p_220046_0_) -> {
-		            p_220046_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-		         });
+		         stack.damageItem(2, entityLiving, (p_220046_0_) -> p_220046_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
 		      }
 
 		      return true;

@@ -38,8 +38,6 @@ public class MITECraftingTableBlock extends Block {
 	   }
 
 	   public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-	      return new SimpleNamedContainerProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
-	         return new MITEWorkbenchContainer(p_220270_2_, p_220270_3_, IWorldPosCallable.of(worldIn, pos), table);
-	      }, field_220271_a);
+	      return new SimpleNamedContainerProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> new MITEWorkbenchContainer(p_220270_2_, p_220270_3_, IWorldPosCallable.of(worldIn, pos), table), field_220271_a);
 	   }
 }
