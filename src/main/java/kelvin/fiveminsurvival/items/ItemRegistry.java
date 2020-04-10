@@ -98,6 +98,8 @@ public class ItemRegistry {
 	public static Item SILVER_PICKAXE, SILVER_AXE, SILVER_HATCHET, SILVER_SHOVEL, SILVER_SWORD, SILVER_HOE, SILVER_SHEARS, SILVER_WAR_HAMMER, SILVER_BATTLE_AXE, SILVER_MATTOCK, SILVER_KNIFE, SILVER_NUGGET, SILVER_INGOT;
 
 	public static Item SALAD;
+	
+	public static Item UNBAKED_CAKE;
 
 
 	public static void setItemTiers(Item[] item, ItemTier original, SurvivalItemTier[] tiers) {
@@ -263,8 +265,32 @@ public class ItemRegistry {
     		CHARCOAL.set(null, register("charcoal", new Item(new Item.Properties().group(ItemGroup.MISC))));
     		
     		Field PAPER = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "PAPER" : "field_151121_aF");
-    		Resources.makeFieldAccessible(CHARCOAL);
+    		Resources.makeFieldAccessible(PAPER);
     		PAPER.set(null, register("paper", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 25)));
+    		
+    		Field OAK_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221592_t" : "OAK_SAPLING");
+    		Resources.makeFieldAccessible(OAK_SAPLING);
+    		OAK_SAPLING.set(null, register("oak_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
+    		
+    		Field SPRUCE_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221593_u" : "SPRUCE_SAPLING");
+    		Resources.makeFieldAccessible(SPRUCE_SAPLING);
+    		SPRUCE_SAPLING.set(null, register("spruce_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
+    		
+    		Field BIRCH_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221594_v" : "BIRCH_SAPLING");
+    		Resources.makeFieldAccessible(BIRCH_SAPLING);
+    		BIRCH_SAPLING.set(null, register("birch_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
+    		
+    		Field JUNGLE_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221595_w" : "JUNGLE_SAPLING");
+    		Resources.makeFieldAccessible(JUNGLE_SAPLING);
+    		JUNGLE_SAPLING.set(null, register("jungle_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
+    		
+    		Field ACACIA_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221596_x" : "ACACIA_SAPLING");
+    		Resources.makeFieldAccessible(ACACIA_SAPLING);
+    		ACACIA_SAPLING.set(null, register("acacia_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
+    		
+    		Field DARK_OAK_SAPLING = Items.class.getDeclaredField(!FiveMinSurvival.DEBUG ? "field_221597_y" : "DARK_OAK_SAPLING");
+    		Resources.makeFieldAccessible(ACACIA_SAPLING);
+    		DARK_OAK_SAPLING.set(null, register("dark_oak_sapling", new ItemBurnable(new Item.Properties().group(ItemGroup.MISC), 110)));
     		
     		Field BONE_MEAL = Items.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BONE_MEAL" : "field_196106_bc");
     		Resources.makeFieldAccessible(BONE_MEAL);
@@ -516,8 +542,8 @@ public class ItemRegistry {
     			SILVER_KNIFE = new SwordItem(SurvivalItemTier.COPPER_SHORTSWORD, 2, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_knife")),
     			SILVER_HOE = new HoeItem(SurvivalItemTier.COPPER_SHORTSWORD, -1.0F, new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_hoe")),
     			SILVER_HATCHET = new AxeItem(SurvivalItemTier.COPPER_HATCHET, 3, -2.5f, new Item.Properties().group(ItemGroup.TOOLS)).setRegistryName(new ResourceLocation("fiveminsurvival:silver_hatchet")),
-    			SALAD = new SoupItem((new Item.Properties()).maxStackSize(1).group(ItemGroup.FOOD).food(buildStew(1, 1))).setRegistryName(new ResourceLocation("fiveminsurvival:salad"))
-
+    			SALAD = new SoupItem((new Item.Properties()).maxStackSize(1).group(ItemGroup.FOOD).food(buildStew(1, 1))).setRegistryName(new ResourceLocation("fiveminsurvival:salad")),
+    			UNBAKED_CAKE = new BlockItem(BlockRegistry.UNBAKED_CAKE, new Item.Properties().group(ItemGroup.FOOD).maxStackSize(1)).setRegistryName(new ResourceLocation("fiveminsurvival:unbaked_cake"))
     			);
     	
     	//   public static final Item IRON_SHOVEL = register("iron_shovel", new ShovelItem(ItemTier.IRON, 1.5F, -3.0F, (new Item.Properties()).group(ItemGroup.TOOLS)));

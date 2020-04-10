@@ -144,13 +144,13 @@ public enum SurvivalItemTier implements IItemTier {
 					   FLINT_SHORTSWORD(0, 8, 1.0F, 0.0F, 15, () -> {
 						      return Ingredient.fromItems(Items.GOLD_INGOT);
 					   }, ShortswordItem.class),
-					   WOOD_SHOVEL(0, 10, 2.0F, 0.0F, 15, () -> {
+					   WOOD_SHOVEL(0, 8, 2.0F, 0.0F, 15, () -> {
 						      return Ingredient.fromTag(ItemTags.PLANKS);
 						   }, ShovelItem.class),
 						   STONE_SHOVEL(1, 3, 1.0F, 1.0F, 5, () -> {
 						      return Ingredient.fromItems(Blocks.COBBLESTONE);
 						   }, ShovelItem.class),
-						   COPPER_SHOVEL(2, 15, 1.5F, 1.5F, 14, () -> {
+						   COPPER_SHOVEL(2, 30, 1.5F, 1.5F, 14, () -> {
 							      return Ingredient.fromItems(ItemRegistry.COPPER_INGOT);
 							   }, ShovelItem.class),
 						   IRON_SHOVEL(2, 50, 3.0F, 2.0F, 14, () -> {
@@ -162,7 +162,7 @@ public enum SurvivalItemTier implements IItemTier {
 						   GOLD_SHOVEL(0, 15, 3.0F, 0.0F, 22, () -> {
 						      return Ingredient.fromItems(Items.GOLD_INGOT);
 						   }, ShovelItem.class),
-						   FLINT_SHOVEL(0, 8, 1.0F, 0.0F, 15, () -> {
+						   FLINT_SHOVEL(0, 20, 1.0F, 0.0F, 15, () -> {
 							      return Ingredient.fromItems(Items.GOLD_INGOT);
 						   }, ShovelItem.class)
 	   ;

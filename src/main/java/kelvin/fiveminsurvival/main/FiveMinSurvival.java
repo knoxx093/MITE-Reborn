@@ -23,13 +23,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.CropsBlock;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker.MusicType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -38,9 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeColors;
-import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -126,13 +122,13 @@ public class FiveMinSurvival
 			double prismarineRate = -1.0;
 			double scaleRate = -1.0f;
 			
-			stoneRate *= 0.1;
-			chipRate *= 0.1;
-			flintRate *= 0.1;
-			ironRate *= 0.1;
-			goldRate *= 0.1;
-			copperRate *= 0.1;
-			silverRate *= 0.1;
+			stoneRate *= 0.25;
+			chipRate *= 0.25;
+			flintRate *= 0.25;
+			ironRate *= 0.25;
+			goldRate *= 0.25;
+			copperRate *= 0.25;
+			silverRate *= 0.25;
 			//   public ItemEntity(World worldIn, double x, double y, double z, ItemStack stack) {
 			Item drop = Items.GRAVEL;
 			if (block == BlockRegistry.PEA_GRAVEL || block == BlockRegistry.SHINING_PEA_GRAVEL) {

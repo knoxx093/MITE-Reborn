@@ -31,7 +31,7 @@ public class FlaxFeature extends Feature<NoFeatureConfig> {
 
 	      for(int j = 0; j < 128; ++j) {
 	         BlockPos blockpos = pos.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-	         if (rand.nextInt(50) == 0)
+	         if (rand.nextInt(500) == 0)
 	         if (worldIn.isAirBlock(blockpos) && BlockRegistry.FLAX.getDefaultState().isValidPosition(worldIn, blockpos)) {
 	            worldIn.setBlockState(blockpos, BlockRegistry.FLAX.getDefaultState(), 2);
 	            ++i;

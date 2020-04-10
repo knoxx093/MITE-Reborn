@@ -90,38 +90,31 @@ public class OverlayEvents {
 		
 		lastMouseX = mx;
 		lastMouseY = my;
-		if (Minecraft.getInstance().player.isCreative() == false)
-		try {
-			float lerpSpeed = 0.001f;
-			float moveMul = (float)(100 - Resources.clientNutrients.phytonutrients + Resources.clientNutrients.sugars) * 0.05f;
-			
-			if (mvx != 0)
-			mouseVelX = Resources.lerp(mouseVelX, mvx * moveMul, 0.5f);
-			if (mvy != 0)
-			mouseVelY = Resources.lerp(mouseVelY, mvy * moveMul, 0.5f);
-			
-			mouseVelX = Resources.lerp(mouseVelX, mouseVelX + (float)Math.cos(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
-			mouseVelY = Resources.lerp(mouseVelY, mouseVelY + (float)Math.sin(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
-
-			
-			mouseVelX = Resources.lerp(mouseVelX, 0, lerpSpeed);
-			mouseVelY = Resources.lerp(mouseVelY, 0, lerpSpeed);
-			
-			
-			Field MX = MouseHelper.class.getDeclaredField("xVelocity");
-			MX.setAccessible(true);
-			
-			Field MY = MouseHelper.class.getDeclaredField("yVelocity");
-			MY.setAccessible(true);
-			
-			float MVX = (float) (double) MX.get(Minecraft.getInstance().mouseHelper);
-			float MVY = (float) (double) MY.get(Minecraft.getInstance().mouseHelper);
-			
-			MX.set(Minecraft.getInstance().mouseHelper, Resources.lerp(MVX, mouseVelX, 0.01f));
-			MY.set(Minecraft.getInstance().mouseHelper, Resources.lerp(MVY, mouseVelY, 0.01f));
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+//		if (Minecraft.getInstance().player.isCreative() == false)
+//		try {
+//			float lerpSpeed = 0.001f;
+//			float moveMul = (float)(100 - Resources.clientNutrients.phytonutrients + Resources.clientNutrients.sugars) * 0.05f;
+//			
+//			if (mvx != 0)
+//			mouseVelX = MathHelper.lerp(mouseVelX, mvx * moveMul, 0.5f);
+//			if (mvy != 0)
+//			mouseVelY = MathHelper.lerp(mouseVelY, mvy * moveMul, 0.5f);
+//			
+//			mouseVelX = MathHelper.lerp(mouseVelX, mouseVelX + (float)Math.cos(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
+//			mouseVelY = MathHelper.lerp(mouseVelY, mouseVelY + (float)Math.sin(Math.toRadians(System.nanoTime() / 10.0f)) * moveMul * 5, lerpSpeed);
+//
+//			
+//			mouseVelX = MathHelper.lerp(mouseVelX, 0, lerpSpeed);
+//			mouseVelY = MathHelper.lerp(mouseVelY, 0, lerpSpeed);
+//			
+//			
+//			float MVX = (float) (double) Minecraft.getInstance().mouseHelper.xVelocity;
+//			float MVY = (float) (double) Minecraft.getInstance().mouseHelper.yVelocity;
+//			Minecraft.getInstance().mouseHelper.xVelocity = MathHelper.lerp(Minecraft.getInstance().mouseHelper.xVelocity, mouseVelX, 0.01);
+//			Minecraft.getInstance().mouseHelper.yVelocity = MathHelper.lerp(Minecraft.getInstance().mouseHelper.yVelocity, mouseVelY, 0.01);
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		if (Minecraft.getInstance().player != null) {
 			PlayerEntity player = Minecraft.getInstance().player;

@@ -20,8 +20,10 @@ import kelvin.fiveminsurvival.survival.food.CustomFoodStats;
 import kelvin.fiveminsurvival.survival.food.Nutrients;
 import kelvin.fiveminsurvival.survival.world.CampfireState;
 import kelvin.fiveminsurvival.survival.world.WorldStateHolder;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CakeBlock;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.LogBlock;
@@ -61,6 +63,8 @@ import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.AxeItem;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -93,6 +97,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -100,6 +105,57 @@ import net.minecraftforge.registries.IRegistryDelegate;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class SurvivalEvents {
+	
+	@SubscribeEvent
+	public static void handleClickBlock(RightClickBlock event) {
+		if (event.getItemStack() != null) {
+			if (event.getItemStack().getItem() instanceof DyeItem) {
+				DyeItem dye = (DyeItem)event.getItemStack().getItem();
+				DyeColor color = dye.getDyeColor();
+				BlockState state = event.getWorld().getBlockState(event.getPos());
+				Block block = state.getBlock();
+				Block red = BlockRegistry.RED_CAKE;
+				Block green = BlockRegistry.GREEN_CAKE;
+				Block blue = BlockRegistry.BLUE_CAKE;
+				Block cyan = BlockRegistry.CYAN_CAKE;
+				Block brown = BlockRegistry.BROWN_CAKE;
+				Block magenta = BlockRegistry.MAGENTA_CAKE;
+				Block orange = BlockRegistry.ORANGE_CAKE;
+				Block gray = BlockRegistry.GRAY_CAKE;
+				Block light_blue = BlockRegistry.LIGHT_BLUE_CAKE;
+				Block light_gray = BlockRegistry.LIGHT_GRAY_CAKE;
+				Block black = BlockRegistry.BLACK_CAKE;
+				Block lime = BlockRegistry.LIME_CAKE;
+				Block yellow = BlockRegistry.YELLOW_CAKE;
+				Block white = Blocks.CAKE;
+				Block purple = BlockRegistry.PURPLE_CAKE;
+				Block pink = BlockRegistry.PINK_CAKE;
+				
+				Block set = white;
+				if (block == Blocks.CAKE || block == BlockRegistry.RED_CAKE || block == BlockRegistry.GREEN_CAKE || block == BlockRegistry.BLUE_CAKE || block == BlockRegistry.YELLOW_CAKE ||
+						block == BlockRegistry.BROWN_CAKE || block == BlockRegistry.CYAN_CAKE || block == BlockRegistry.LIGHT_BLUE_CAKE || block == BlockRegistry.PURPLE_CAKE ||
+						block == BlockRegistry.MAGENTA_CAKE || block == BlockRegistry.BLACK_CAKE || block == BlockRegistry.PINK_CAKE ||
+						block == BlockRegistry.ORANGE_CAKE || block == BlockRegistry.GRAY_CAKE || block == BlockRegistry.LIGHT_GRAY_CAKE || block == BlockRegistry.LIME_CAKE) {
+					if (color == DyeColor.RED) set = red;
+					if (color == DyeColor.GREEN) set = green;
+					if (color == DyeColor.BLUE) set = blue;
+					if (color == DyeColor.CYAN) set = cyan;
+					if (color == DyeColor.BROWN) set = brown;
+					if (color == DyeColor.MAGENTA) set = magenta;
+					if (color == DyeColor.ORANGE) set = orange;
+					if (color == DyeColor.GRAY) set = gray;
+					if (color == DyeColor.LIGHT_BLUE) set = light_blue;
+					if (color == DyeColor.LIGHT_GRAY) set = light_gray;
+					if (color == DyeColor.BLACK) set = black;
+					if (color == DyeColor.LIME) set = lime;
+					if (color == DyeColor.YELLOW) set = yellow;
+					if (color == DyeColor.PURPLE) set = purple;
+					if (color == DyeColor.PINK) set = pink;
+				}
+				event.getWorld().setBlockState(event.getPos(), set.getDefaultState().with(CakeBlock.BITES, state.get(CakeBlock.BITES).intValue()));
+			}
+		}
+	}
 	
 	@SubscribeEvent
 	public static void handleItemEvent(ItemEvent event) {

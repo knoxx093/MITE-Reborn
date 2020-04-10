@@ -67,6 +67,7 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 
 	   }
 
+	   public int sendTicks = 0;
 	   /**
 	    * Handles the food game logic.
 	    */
@@ -107,6 +108,7 @@ public class CustomFoodStats extends FoodStats implements Serializable {
 			   if (player instanceof ServerPlayerEntity) {
 				   // 			NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), new SPacketSyncInventoryTerraria(0, 2, i, inventory.armor[i].stack));
 				   NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SPacketSendNutrients(nutrients));
+
 			   }
 		   }
 		   this.maxFoodLevel = (player.experienceLevel / 5) * 2 + 6;

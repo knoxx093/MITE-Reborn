@@ -46,6 +46,10 @@ public class BlockRegistry {
 	public static Block SILVER_ORE;
 	public static Block SHINING_GRAVEL;
 	public static Block SHINING_PEA_GRAVEL;
+	
+	public static Block UNBAKED_CAKE;
+	public static Block RED_CAKE, GREEN_CAKE, BLUE_CAKE, YELLOW_CAKE, BROWN_CAKE, PURPLE_CAKE, GRAY_CAKE, LIGHT_GRAY_CAKE,
+						MAGENTA_CAKE, PINK_CAKE, LIME_CAKE, CYAN_CAKE, LIGHT_BLUE_CAKE, ORANGE_CAKE, BLACK_CAKE;
 
 	
 	public static Registry<Block> newBlocks;
@@ -92,12 +96,21 @@ public class BlockRegistry {
 		   MATERIAL.set(block, mat);
 	   }
 	   
+	   public static void changeBlock(String field, Block block) throws Exception {
+		   Field FIELD = Blocks.class.getDeclaredField(field);
+		   Resources.makeFieldAccessible(FIELD);
+		   FIELD.set(null, block);
+	   }
+	   
     @SubscribeEvent
     public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
     	newBlocks = forgeDefaulted("block", Block.class, () -> {
   	      return Blocks.AIR;
  	   });
     	try {
+    		
+    		changeBlock(FiveMinSurvival.DEBUG ? "CAKE" : "field_150414_aQ", register(new ResourceLocation("minecraft:cake"), new MITECakeBlock(4, 0.3f, 20)));
+    		
     		changeHardnessAndResistance(Blocks.GRASS, 0.08f);
 
     		changeHardnessAndResistance(Blocks.TALL_GRASS, 0.08f);
@@ -146,6 +159,25 @@ public class BlockRegistry {
     		SILVER_ORE = register("fiveminsurvival:silver_ore", new Block(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(3.0F, 3.0F)));
 
     		COBWEB_BLOCK = register("fiveminsurvival:cobweb_block", new Block(Block.Properties.create(Material.WOOL, MaterialColor.IRON).hardnessAndResistance(0.25f).sound(SoundType.CLOTH)));
+    		
+    		UNBAKED_CAKE = register(new ResourceLocation("fiveminsurvival:unbaked_cake"), new MITECakeBlock(2, 0.2f, 5));
+    		RED_CAKE = register(new ResourceLocation("fiveminsurvival:red_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		GREEN_CAKE = register(new ResourceLocation("fiveminsurvival:green_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		BLUE_CAKE = register(new ResourceLocation("fiveminsurvival:blue_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		YELLOW_CAKE = register(new ResourceLocation("fiveminsurvival:yellow_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		ORANGE_CAKE = register(new ResourceLocation("fiveminsurvival:orange_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		BROWN_CAKE = register(new ResourceLocation("fiveminsurvival:brown_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		PURPLE_CAKE = register(new ResourceLocation("fiveminsurvival:purple_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		GRAY_CAKE = register(new ResourceLocation("fiveminsurvival:gray_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		LIGHT_GRAY_CAKE = register(new ResourceLocation("fiveminsurvival:light_gray_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		LIGHT_BLUE_CAKE = register(new ResourceLocation("fiveminsurvival:light_blue_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		MAGENTA_CAKE = register(new ResourceLocation("fiveminsurvival:magenta_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		LIME_CAKE = register(new ResourceLocation("fiveminsurvival:lime_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		PINK_CAKE = register(new ResourceLocation("fiveminsurvival:pink_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		BLACK_CAKE = register(new ResourceLocation("fiveminsurvival:black_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		CYAN_CAKE = register(new ResourceLocation("fiveminsurvival:cyan_cake"), new MITECakeBlock(4, 0.3f, 20));
+    		
+    		
     		Field BLOCK = Registry.class.getDeclaredField(FiveMinSurvival.DEBUG ? "BLOCK" : "field_212618_g");
     		Resources.makeFieldAccessible(BLOCK);
     		BLOCK.set(null, newBlocks);
