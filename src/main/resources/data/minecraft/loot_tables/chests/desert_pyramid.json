@@ -7,6 +7,7 @@
         "max": 4.0,
         "type": "minecraft:uniform"
       },
+      "entries": [
         {
           "type": "minecraft:item",
           "weight": 15,
