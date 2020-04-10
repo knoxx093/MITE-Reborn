@@ -422,7 +422,7 @@ public class SurvivalEvents {
 					}
 				}
 				if (!event.getWorld().getWorld().isDaytime()) {
-					if (event.getEntity().getType() == EntityRegistry.CREEPER) {
+					if (event.getEntity().getType() == EntityRegistry.CREEPER.get()) {
 						if (event.getWorld().getRandom().nextInt() <= 7) {
 							event.setResult(Result.DENY);
 						}
@@ -438,7 +438,7 @@ public class SurvivalEvents {
 					}
 				}
 				if (!event.getWorld().getWorld().isDaytime()) {
-					if (event.getEntity().getType() == EntityRegistry.CREEPER) {
+					if (event.getEntity().getType() == EntityRegistry.CREEPER.get()) {
 						if (event instanceof LivingSpawnEvent.SpecialSpawn) 
 						if (event.getWorld().getRandom().nextInt() <= 7) {
 							event.setResult(Result.DENY);
@@ -463,7 +463,7 @@ public class SurvivalEvents {
 			BlockPos pos = event.getEntity().getPosition();
 			event.getEntity().remove();
 			
-			AnimalWatcherEntity zombie = EntityRegistry.ZOMBIE_ENTITY.create(event.getWorld().getWorld());
+			AnimalWatcherEntity zombie = EntityRegistry.ZOMBIE_ENTITY.get().create(event.getWorld().getWorld());
 			zombie.setPosition(pos.getX(), pos.getY(), pos.getZ());
 			event.getWorld().addEntity(zombie);
 			event.setResult(Result.DENY);
@@ -473,7 +473,7 @@ public class SurvivalEvents {
 			BlockPos pos = event.getEntity().getPosition();
 			event.getEntity().remove();
 			
-			EntityAttackSquid entity = EntityRegistry.ATTACK_SQUID.create(event.getWorld().getWorld());
+			EntityAttackSquid entity = EntityRegistry.ATTACK_SQUID.get().create(event.getWorld().getWorld());
 			entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
 			event.getWorld().addEntity(entity);
 			event.setResult(Result.DENY);
@@ -494,7 +494,7 @@ public class SurvivalEvents {
 					
 					BlockPos pos = s.getPosition();
 					s.remove();
-					NewSkeletonEntity skeleton = EntityRegistry.SKELETON_ENTITY.create(event.getWorld().getWorld());
+					NewSkeletonEntity skeleton = EntityRegistry.SKELETON_ENTITY.get().create(event.getWorld().getWorld());
 					skeleton.setPosition(pos.getX(), pos.getY(), pos.getZ());
 					ItemStack club = new ItemStack(ItemRegistry.WOODEN_CLUB.get());
 					club.setDamage(new Random().nextInt(5));

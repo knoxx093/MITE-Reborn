@@ -26,7 +26,7 @@ public class EntityAttackSquid extends SquidEntity {
 	}
 	
 	public EntityAttackSquid(World worldIn) {
-		super(EntityRegistry.ATTACK_SQUID, worldIn);
+		super(EntityRegistry.ATTACK_SQUID.get(), worldIn);
 	}
 
 	public void livingTick() {
